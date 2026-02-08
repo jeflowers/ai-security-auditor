@@ -1,318 +1,438 @@
 # AI-Powered Security Auditor
 
-**Automated compliance assessment with verifiable evidence and anti-hallucination safeguards.**
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://img.shields.io/badge/tests-70%2B%20passing-brightgreen.svg)](#testing)
 
-A proof-of-concept multi-agent AI system demonstrating automated SOC 2, GDPR, HIPAA, and NIST 800-53A compliance assessments — built on the principle that **if you can't prove it, you can't claim it**.
+**Multi-agent system for automated compliance auditing with verifiable evidence and anti-hallucination safeguards.**
 
----
+> **"If you can't prove it, you can't claim it"**
 
-## Vision: Unified GRC + AI Governance Platform
-
-> This project is the **proof-of-concept starting point** for a comprehensive Cybersecurity, Governance, Risk & Compliance platform. The current four-framework implementation demonstrates the core architecture; the complete solution extends across the full compliance landscape.
-
-### Platform Roadmap
-
-| Domain | Frameworks / Standards | Status |
-|--------|----------------------|--------|
-| **IT Compliance** | SOC 2 Type II, GDPR, HIPAA, NIST 800-53A | ✅ Proof of Concept |
-| **Cybersecurity GRC** | Governance, Risk & Compliance platform | 🔄 Architecture Phase |
-| **AI Governance** | ISO/IEC 42001, NIST AI RMF | 📋 Planned |
-| **OT/ICS Security** | IEC 62443 (Operational Technology) | 📋 Planned |
-| **Cyber Risk Frameworks** | NIST CSF 2.0/RMF, FAIR | 📋 Planned |
-| **Blockchain & Cryptocurrency** | Crypto compliance & audit | 📋 Planned |
-| **Cross-Border Payments** | ISO 20022/23 | 📋 Planned |
-
-The architecture is designed from the ground up to support **pluggable compliance frameworks** — adding new standards requires only framework definition files and control mappings, not architectural changes.
+Built as a demonstration of NVIDIA-ready AI/ML engineering skills, this project implements a production-grade agentic AI system using LangChain, LangGraph, and RAG architecture.
 
 ---
 
-## Why This Exists
+## 🌐 Platform Vision
 
-Compliance auditing is broken. Organizations spend hundreds of thousands of dollars on manual assessments that take months, rely on subjective judgment, and produce inconsistent results. Meanwhile, AI tools that claim to "automate" compliance often hallucinate findings — generating plausible-sounding assessments with no evidentiary basis.
+This project is the **proof-of-concept engine** for a unified compliance platform — not a single-framework tool. The current four-agent system proves that evidence-based AI compliance assessment works. The architecture is designed to extend across the full spectrum of regulatory and security domains.
 
-This system solves both problems:
+### Layer 1 — Current PoC (What's Built)
 
-- **Speed**: Automated evidence collection and assessment across multiple compliance frameworks
-- **Accuracy**: Every claim must cite specific evidence artifacts — no exceptions
-- **Transparency**: Complete provenance chain from raw evidence to final assessment
-- **Reliability**: Six valid assessment states replace the false binary of "pass/fail"
-- **Extensibility**: Pluggable framework architecture supports any compliance standard
+Four specialized agents performing automated compliance assessment across **SOC 2, GDPR, HIPAA, and NIST 800-53A**. The core innovations are:
 
----
+- **Anti-hallucination framework** — Every claim requires cited evidence with provenance
+- **RAG-based compliance pipeline** — Evidence retrieval against regulatory control libraries
+- **Multi-agent orchestration** — LangGraph state machine coordinating specialized agents
+- **Evidence-based assessment** — Six valid states, no weasel words, no inference from missing data
 
-## Architecture
+### Layer 2 — Complete Vision (What It Becomes)
+
+A unified platform spanning:
+
+| Domain | Frameworks & Standards |
+|--------|----------------------|
+| **Cybersecurity GRC** | SOC 2, GDPR, HIPAA, NIST 800-53A |
+| **AI Governance** | ISO/IEC 42001, NIST AI RMF |
+| **OT/ICS Security** | IEC 62443 (Industrial Control Systems) |
+| **Cyber Risk Quantification** | NIST CSF 2.0/RMF, FAIR |
+| **Blockchain & Cryptocurrency** | BSA/AML, FinCEN Travel Rule, FATF Rec. 16 |
+| **Cross-Border Payments** | ISO 20022, ISO 20023 |
+
+### Layer 3 — XRP/XRPL Proof-of-Concept Use Cases
+
+Two blockchain compliance use cases demonstrate how the agent architecture extends to financial services:
+
+#### AuditPack — Automated Compliance Reporting
+
+Automated compliance reporting and audit package generation for companies using XRP/XRPL rails — payment processors, remittance startups, and corporate treasury operations.
+
+**How the existing agents extend:**
+
+| Agent | AuditPack Function |
+|-------|-------------------|
+| **Compliance Checker** | Validates BSA/AML and FinCEN Travel Rule adherence against XRPL transaction records |
+| **Log Analyzer** | Monitors XRPL transaction streams for suspicious patterns, velocity anomalies, and sanctions-list matches |
+| **Code Analyzer** | Audits smart contract hooks and payment channel logic for compliance-gate integrity |
+
+**Core deliverables:**
+- Monthly compliance packages with transaction-level evidence citations
+- Sanctions screening results with OFAC/SDN match provenance
+- Travel Rule compliance reports (originator/beneficiary data completeness)
+- Evidence vault integration — all artifacts hashed (SHA-256) and timestamped per the anti-hallucination framework's provenance chain
+
+**Regulatory framework mappings:** BSA/AML, FinCEN Travel Rule (31 CFR 1010.410), FATF Recommendation 16, state MSB licensing requirements.
+
+#### ContractorPay — Escrow-Based International Payouts
+
+International contractor payout platform using XRPL escrow with compliance gates. Every payout passes through a seven-stage gate sequence before funds release:
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                        ORCHESTRATOR                              │
-│              LangGraph Multi-Agent Coordinator                   │
-│         (Conditional routing based on severity findings)         │
-└──────────────────────────┬───────────────────────────────────────┘
-                           │
-       ┌───────────────────┼───────────────────┐
-       │                   │                   │
-       ▼                   ▼                   ▼
-┌──────────────┐   ┌──────────────┐   ┌──────────────┐
-│ Vulnerability│   │    Code      │   │     Log      │
-│   Scanner    │   │  Analyzer    │   │   Analyzer   │
-│ (OWASP ZAP)  │   │(OWASP Top10)│   │  (Anomaly)   │
-└──────────────┘   └──────────────┘   └──────────────┘
-       │                   │                   │
-       └───────────────────┼───────────────────┘
-                           │
-                           ▼
-                 ┌───────────────────┐
-                 │    Compliance     │
-                 │     Checker      │
-                 │  (RAG + Evidence) │
-                 └───────────────────┘
-                           │
-                           ▼
-                 ┌───────────────────┐
-                 │   Assessment      │
-                 │    Report         │
-                 │ (Cited Evidence)  │
-                 └───────────────────┘
+KYC/KYB Verification → Sanctions Screening → Risk Scoring →
+Escrow Hold (XRPL EscrowCreate) → Approval Release (EscrowFinish) →
+Post-Transfer Monitoring → Evidence Archival
 ```
 
-### Agent Responsibilities
+**How the existing agents extend:**
 
-| Agent | Purpose | Technology |
-|-------|---------|------------|
-| **Vulnerability Scanner** | Network and application threat detection | OWASP ZAP, CWE→OWASP→SOC2 mapping |
-| **Code Security Analyzer** | Static code analysis against OWASP Top 10 | AST parsing, pattern matching |
-| **Log Analyzer** | Anomaly detection in system and access logs | Pattern recognition, statistical analysis |
-| **Compliance Checker** | Framework-specific control validation | RAG pipeline, ChromaDB, evidence scoring |
+| Agent | ContractorPay Function |
+|-------|----------------------|
+| **Compliance Checker** | Validates each gate's evidence completeness before advancing to the next stage |
+| **Log Analyzer** | Monitors escrow lifecycle events, detects anomalous release patterns, tracks settlement timing |
+| **Vulnerability Scanner** | Assesses API endpoints handling KYC data and payment instructions for OWASP Top 10 vulnerabilities |
+
+**Gate sequence detail:**
+
+1. **KYC/KYB** — Identity verification with document-level evidence (government ID, corporate registry, UBO declarations)
+2. **Sanctions Screening** — Real-time OFAC/SDN/EU sanctions list checks with match provenance
+3. **Risk Scoring** — Composite risk score from jurisdiction risk, transaction velocity, counterparty history
+4. **Escrow Hold** — XRPL `EscrowCreate` with cryptographic condition; funds locked on-ledger
+5. **Approval Release** — Multi-signature or compliance-officer approval triggers `EscrowFinish`
+6. **Post-Transfer Monitoring** — 30/60/90-day lookback for suspicious downstream activity
+7. **Evidence Archival** — Complete gate evidence package sealed to the evidence vault with SHA-256 hashing and freshness scoring
+
+**Regulatory framework mappings:** BSA/AML, FinCEN Travel Rule, FATF Recommendation 16, OFAC compliance, IRS 1099 reporting (for US contractors), state MSB licensing.
+
+> **Evidence Vault alignment:** Both AuditPack and ContractorPay use the same evidence provenance infrastructure as the core Security Auditor — every compliance claim cites specific artifacts with source, timestamp, collector, scope, and cryptographic hash. The anti-hallucination framework's CITE_OR_ABSTAIN rule applies identically to blockchain compliance findings.
 
 ---
 
-## Anti-Hallucination Framework
+## 🎯 Key Features
 
-The core differentiator. While other AI tools generate plausible compliance assessments, this system **cannot** make a claim without evidence.
-
-### Five Validation Rules
-
-| Rule | Enforcement | Example |
-|------|------------|---------|
-| **CITE_OR_ABSTAIN** | Every claim requires evidence citation | ❌ "Likely compliant" → ✅ "Evidence CC6.1-E1-001 shows approved policy" |
-| **CONFIDENCE_SCORING** | Valid scores 0.0–1.0 only | No qualitative hand-waving |
-| **NO_WEASEL_WORDS** | Forbidden: "likely", "probably", "appears to", "seems to" | Hard validation at assessment time |
-| **SCOPE_BOUNDARY** | Findings must stay within evidence scope | Cannot infer control B from control A |
-| **PROVENANCE_CHAIN** | Full evidence lineage: source → hash → timestamp → collector | SHA256 integrity verification |
-
-### Six Valid Assessment States
-
-```
-PASS                    Evidence satisfies all requirements
-FAIL                    Evidence demonstrates non-compliance
-INSUFFICIENT_EVIDENCE   Evidence exists but is incomplete
-EVIDENCE_GAP            Required evidence not yet collected
-CONFLICTING_EVIDENCE    Multiple sources disagree
-NEEDS_MANUAL_REVIEW     Human judgment required
-```
-
-There is no "probably compliant." If the system cannot prove it, it says so explicitly.
+- **Four Specialized Agents** orchestrated via LangGraph workflow
+- **Anti-Hallucination Framework** — Every claim requires cited evidence
+- **Multi-Framework Compliance** — SOC 2, GDPR, HIPAA, NIST 800-53A
+- **Evidence-Based Assessment** — Provenance tracking for audit trails
+- **Production CLI** — Beautiful Rich-based command-line interface
+- **70+ Tests** — Comprehensive test coverage
 
 ---
 
-## Supported Frameworks (Proof of Concept)
-
-| Framework | Controls | Status |
-|-----------|----------|--------|
-| **SOC 2 Type II** | 10 Trust Service Criteria controls | ✅ Full implementation |
-| **GDPR** | Data protection controls | ✅ Framework defined |
-| **HIPAA** | Healthcare security controls | ✅ Framework defined |
-| **NIST 800-53A** | Federal security assessment controls | ✅ Framework defined |
-
----
-
-## Tech Stack
-
-### Backend
-- **Python 3.10+** — Core runtime
-- **FastAPI** — REST API with WebSocket support for real-time audit progress
-- **LangChain / LangGraph** — Agent orchestration and workflow management
-- **ChromaDB** — Vector database for RAG-based compliance reasoning
-- **OWASP ZAP** — Vulnerability scanning engine
-
-### Frontend
-- **Next.js 14** — React framework with TypeScript
-- **Tailwind CSS + shadcn/ui** — Component library
-- **Recharts** — Data visualization
-- **Zustand** — State management
-
-### AI/ML Pipeline
-- **RAG Pipeline** — Control-aware document chunking, hybrid semantic + keyword search
-- **Evidence Scoring** — Freshness windows (within 30d=1.0, 60d=0.7, 90d=0.3, 180d+=0.0)
-- **Pluggable Model Providers** — OpenAI API, NVIDIA NIM microservices, local inference
-
----
-
-## Project Structure
+## 🏗️ Architecture
 
 ```
-ai-security-auditor/
-├── agents/                        # Multi-agent system
-│   ├── orchestrator.py            #   LangGraph workflow coordinator
-│   ├── compliance_checker/        #   RAG-based compliance evaluation
-│   ├── vulnerability_scanner/     #   OWASP ZAP integration
-│   ├── code_analyzer/             #   Static code analysis
-│   └── log_analyzer/              #   Anomaly detection
-├── api/                           # FastAPI backend
-│   ├── routes.py                  #   REST + WebSocket endpoints
-│   └── models.py                  #   Pydantic request/response models
-├── collectors/                    # Evidence collection framework
-├── dashboard/                     # Next.js frontend
-│   └── src/
-│       ├── app/                   #   App router pages
-│       ├── components/            #   UI components
-│       ├── hooks/                 #   Custom React hooks
-│       └── types/                 #   TypeScript definitions
-├── frameworks/                    # Compliance framework definitions
-│   ├── soc2/                      #   SOC 2 controls + scoring rubric
-│   ├── gdpr/                      #   GDPR controls
-│   ├── hipaa/                     #   HIPAA controls
-│   └── nist800-53a/               #   NIST 800-53A controls
-├── rag/                           # RAG pipeline
-├── tests/                         # Comprehensive test suite
-├── cli/                           # Command-line interface
-├── utils/                         # Shared utilities
-└── scripts/                       # Demo and setup scripts
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    SECURITY AUDITOR ORCHESTRATOR                        │
+│                   (LangGraph State Machine Workflow)                    │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                 │
+         ┌───────────────────────┼───────────────────────┐
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│  Vulnerability  │     │     Code        │     │      Log        │
+│    Scanner      │     │   Analyzer      │     │    Analyzer     │
+│  ───────────    │     │  ───────────    │     │  ───────────    │
+│  OWASP ZAP      │     │  OWASP Top 10   │     │  Anomaly        │
+│  Integration    │     │  Static Scan    │     │  Detection      │
+└────────┬────────┘     └────────┬────────┘     └────────┬────────┘
+         │                       │                       │
+         └───────────────────────┼───────────────────────┘
+                                 │
+                                 ▼
+                     ┌───────────────────────┐
+                     │   Compliance Checker  │
+                     │  ─────────────────    │
+                     │  RAG Pipeline         │
+                     │  Evidence Retrieval   │
+                     │  Gap Analysis         │
+                     └───────────┬───────────┘
+                                 │
+                                 ▼
+                     ┌───────────────────────┐
+                     │    Final Report       │
+                     │  ─────────────────    │
+                     │  Cited Evidence       │
+                     │  Compliance Controls  │
+                     │  Remediation Guide    │
+                     └───────────────────────┘
 ```
 
 ---
 
-## Getting Started
+## 🤖 Four Specialized Agents
 
-### Prerequisites
+| Agent | Function | Key Technologies |
+|-------|----------|------------------|
+| **Vulnerability Scanner** | Detect web security threats | OWASP ZAP, threat modeling |
+| **Code Security Analyzer** | OWASP Top 10 compliance | AST parsing, 30+ vulnerability patterns |
+| **Log Analyzer** | Anomaly detection | Pattern recognition, event correlation |
+| **Compliance Checker** | Framework validation | RAG pipeline, ChromaDB |
 
-- Python 3.10+
-- Node.js 18+ (for dashboard)
-- OWASP ZAP (optional — mock client available for testing)
+---
 
-### Backend Setup
+## 🛡️ Anti-Hallucination Framework
+
+The system enforces five fundamental rules to prevent AI hallucination in compliance assessments:
+
+### Rule 1: Evidence Required
+Every claim **MUST** cite specific evidence with artifact ID.
+```
+❌ "Based on general practices, likely compliant"
+✅ "Evidence [CC6.1-E1-001.pdf] dated 2024-03-15 shows approved policy"
+```
+
+### Rule 2: No Inference from Missing Evidence
+Missing evidence ≠ control doesn't exist.
+```
+❌ "No firewall config provided, so controls don't exist"
+✅ "EVIDENCE_GAP: Firewall config (CC6.6-E1) not collected"
+```
+
+### Rule 3: Six Valid Assessment States
+- `PASS` — Evidence satisfies requirements
+- `FAIL` — Evidence shows non-compliance
+- `INSUFFICIENT_EVIDENCE` — Evidence exists but incomplete
+- `EVIDENCE_GAP` — Required evidence not collected
+- `CONFLICTING_EVIDENCE` — Sources disagree
+- `NEEDS_MANUAL_REVIEW` — Human judgment required
+
+### Rule 4: Forbidden "Weasel Words"
+These phrases are **prohibited** in assessments:
+- "likely", "probably", "appears to be", "seems to"
+- "suggests", "implies", "may indicate"
+
+### Rule 5: Provenance Required
+Every evidence artifact must have metadata: source, timestamp, collector, scope, hash.
+
+---
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
-git clone https://github.com/lc29337/ai-security-auditor.git
+# Clone the repository
+git clone https://github.com/jeflowers/ai-security-auditor.git
 cd ai-security-auditor
 
-# Create virtual environment
+# Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Optional: Set up API keys
-cp .env.example .env
-# Edit .env with your keys (OpenAI for embeddings, etc.)
+# Install package
+pip install -e ".[dev]"
 ```
 
-### Dashboard Setup
+### Basic Usage
 
 ```bash
-cd dashboard
-npm install
-npm run dev
-# Dashboard available at http://localhost:3000
+# Check system status
+security-auditor status
+
+# Analyze source code for vulnerabilities
+security-auditor analyze-code ./src
+
+# Analyze logs for security events
+security-auditor analyze-logs ./logs
+
+# Run full security audit
+security-auditor audit ./my-project --output ./reports
 ```
 
-### Start the API Server
+### Programmatic Usage
 
-```bash
-uvicorn api.routes:app --reload --port 8000
+```python
+from agents.orchestrator import run_audit_sync
+
+# Run a complete audit
+report = run_audit_sync(
+    audit_id="AUDIT-2025-001",
+    framework="SOC2",
+    scope={
+        "systems": ["app-server-01", "db-server-01"],
+        "period_start": "2024-10-01",
+        "period_end": "2024-12-31",
+    },
+    target_path="./my-project",
+)
+
+print(f"Status: {report['overall_status']}")
+print(f"Findings: {report['summary']['total_findings']}")
+print(f"Evidence Gaps: {len(report['evidence_gaps'])}")
 ```
 
-### Run Tests
+---
+
+## 📊 CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `security-auditor status` | Show agent availability and dependencies |
+| `security-auditor analyze-code <path>` | Static code analysis for OWASP Top 10 |
+| `security-auditor analyze-logs <path>` | Security event detection in logs |
+| `security-auditor scan --target <url>` | OWASP ZAP vulnerability scan |
+| `security-auditor compliance <evidence>` | RAG-based compliance assessment |
+| `security-auditor audit <project>` | Full 4-phase security audit |
+
+### Example Output
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ 🛡️ Full Security Audit                              │
+│                                                     │
+│ Audit ID: AUDIT-20251231-001745                     │
+│ Target: ./my-project                                │
+│ Framework: SOC2                                     │
+└─────────────────────────────────────────────────────────┘
+
+Phase 1/4: Code Security Analysis
+──────────────────────────────────────────────────────────
+┌─ 📊 Summary ───────────────────────────────────────────┐
+│ CRITICAL: 2  HIGH: 2  MEDIUM: 0  LOW: 0  │ Total: 4│
+└────────────────────────────────────────────────────────┘
+✓ Evidence saved: CC6.6-E4-ANALYSIS-9627e4c43b28
+```
+
+---
+
+## 📁 Project Structure
+
+```
+ai-security-auditor/
+├── agents/
+│   ├── code_analyzer/          # Static code analysis agent
+│   │   ├── agent.py            # Main CodeSecurityAnalyzerAgent
+│   │   ├── models.py           # Finding, Location, Severity models
+│   │   ├── parsers.py          # AST parsers (Python, JS, TS, Java)
+│   │   └── security_patterns.py # 30+ vulnerability patterns
+│   ├── compliance_checker/     # RAG-based compliance agent
+│   │   ├── agent.py            # ComplianceChecker with RAG
+│   │   └── anti_hallucination.py # Validation rules
+│   ├── log_analyzer/           # Log analysis agent
+│   │   ├── agent.py            # LogAnalyzerAgent
+│   │   └── models.py           # Event types, severity models
+│   ├── vulnerability_scanner/  # OWASP ZAP integration
+│   │   ├── agent.py            # VulnerabilityScannerAgent
+│   │   └── zap_client.py       # ZAP API client
+│   └── orchestrator.py         # LangGraph workflow coordinator
+├── cli/
+│   └── main.py                 # Typer CLI with Rich output
+├── collectors/
+│   └── evidence_collector.py   # Evidence with provenance tracking
+├── frameworks/
+│   └── soc2/
+│       ├── controls.yaml       # 12 SOC 2 control definitions
+│       └── scoring_rubric.yaml # Anti-hallucination rules
+├── rag/
+│   ├── pipeline.py             # RAG orchestrator
+│   ├── document_processor.py   # Control-aware chunking
+│   ├── embeddings.py           # Embedding service (OpenAI/local)
+│   └── vector_store.py         # ChromaDB integration
+├── tests/
+│   ├── test_code_analyzer.py   # 40+ code analyzer tests
+│   ├── test_log_analyzer.py    # Log analyzer tests
+│   ├── test_compliance_checker.py # Compliance tests
+│   └── test_rag_pipeline.py    # RAG pipeline tests
+└── pyproject.toml              # Package configuration
+```
+
+---
+
+## 🔬 Testing
 
 ```bash
-# All tests
+# Run all tests
 pytest tests/ -v
 
-# Specific agent tests
-pytest tests/test_compliance_checker.py -v
-pytest tests/test_vulnerability_scanner.py -v
+# Run specific test file
 pytest tests/test_code_analyzer.py -v
-pytest tests/test_log_analyzer.py -v
 
-# Anti-hallucination validation tests
-pytest tests/test_anti_hallucination.py -v
+# Run with coverage
+pytest tests/ --cov=agents --cov-report=html
 ```
 
+**Test Coverage:**
+- 70+ tests across all agents
+- Unit tests for vulnerability patterns
+- Integration tests for CLI commands
+- RAG pipeline tests
+
 ---
 
-## Quick Demo
+## 🎯 SOC 2 Controls Implemented
 
-```python
-from agents.vulnerability_scanner import VulnerabilityScannerAgent
+| Control | Title | Focus |
+|---------|-------|-------|
+| CC6.1 | Logical Access Security | Access control policy, MFA |
+| CC6.2 | User Registration | Provisioning procedures |
+| CC6.3 | User Access Removal | Termination procedures |
+| CC6.6 | External Threat Protection | Firewalls, vulnerability scans |
+| CC6.7 | Information Transmission | Encryption, DLP |
+| CC7.1 | Security Event Detection | SIEM, monitoring |
+| CC7.2 | System Monitoring | Log aggregation |
+| CC7.3 | Security Event Evaluation | Incident response |
+| CC8.1 | Change Management | Change approval process |
+| CC9.1 | Risk Assessment | Risk register, reviews |
 
-# Use mock client (no ZAP instance needed)
-agent = VulnerabilityScannerAgent(mock=True)
+---
 
-async with agent.zap:
-    evidence = await agent.scan("https://example.com")
-    summary = agent.generate_summary(evidence)
-    print(f"Findings: {summary['total_findings']}")
-    print(f"By severity: {summary['by_severity']}")
+## 🖥️ NVIDIA Edge-Core Architecture (Future)
+
+This project is designed for deployment on NVIDIA's edge-core architecture:
+
+```
+Edge (Jetson Orin)          Core (NIM/DGX)
+─────────────────           ──────────────
+• Agent Orchestrator        • LLM Chat Service
+• Local Cache               • Embedding Service
+• Document Preprocessor     • Reranking Service
+• Web UI                    • Code Analysis Model
 ```
 
-```python
-from rag import ComplianceRAGPipeline
-from agents.compliance_checker.rag_agent import RAGComplianceChecker
-from pathlib import Path
-
-# Initialize RAG pipeline
-pipeline = ComplianceRAGPipeline(persist_dir=Path("rag_data"))
-await pipeline.index_all(frameworks_dir=Path("frameworks"))
-
-# Run compliance assessment
-checker = RAGComplianceChecker(
-    rag_pipeline=pipeline,
-    controls_path=Path("frameworks/soc2/controls.yaml")
-)
-assessment = await checker.assess_control("CC6.1", collected_evidence={})
-print(f"Status: {assessment.status}")  # → EVIDENCE_GAP (no evidence provided)
-```
+**Pluggable Model Provider Pattern** enables seamless switching between:
+- Cloud APIs (OpenAI) for development
+- NIM endpoints for testing
+- Local Jetson inference for edge deployment
 
 ---
 
-## Roadmap
+## 🗺️ Roadmap
 
-### Completed
-- ✅ Multi-agent orchestrator with LangGraph workflow
-- ✅ Four specialized agents (vulnerability, code, log, compliance)
-- ✅ Anti-hallucination framework with five validation rules
-- ✅ RAG pipeline with ChromaDB and control-aware chunking
-- ✅ Evidence collection framework with SHA256 provenance
-- ✅ SOC 2, GDPR, HIPAA, and NIST 800-53A framework definitions
-- ✅ Next.js dashboard with real-time WebSocket updates
-- ✅ FastAPI backend with REST endpoints
-- ✅ Comprehensive test suite
-
-### In Progress
-- 🔄 Multi-tenant architecture for scalable deployment
-- 🔄 LLM integration for automated compliance reasoning
-- 🔄 Cybersecurity GRC platform architecture
-
-### Planned — Platform Expansion
-- 📋 AI Governance (ISO/IEC 42001, NIST AI RMF)
-- 📋 OT/ICS Security (IEC 62443)
-- 📋 NIST CSF 2.0/RMF + FAIR risk quantification
-- 📋 Blockchain & Cryptocurrency compliance
-- 📋 ISO 20022/23 cross-border payments compliance
-- 📋 PDF/HTML report generation
-- 📋 External integrations (Okta, Jira, AWS Config)
-- 📋 NVIDIA Jetson Orin edge deployment with TensorRT-LLM
-- 📋 CI/CD pipeline with automated security scanning
+| Phase | Scope | Status |
+|-------|-------|--------|
+| **Phase 1** | SOC 2, GDPR, HIPAA, NIST 800-53A compliance | ✅ Complete |
+| **Phase 2** | XRP/XRPL PoC — AuditPack & ContractorPay | 🔄 In Progress |
+| **Phase 3** | AI Governance — ISO/IEC 42001, NIST AI RMF | 📋 Planned |
+| **Phase 4** | OT/ICS Security — IEC 62443 | 📋 Planned |
+| **Phase 5** | Cyber Risk Quantification — NIST CSF 2.0, FAIR | 📋 Planned |
+| **Phase 6** | Cross-Border Payments — ISO 20022/23 | 📋 Planned |
 
 ---
 
-## Contributing
+## 🎓 Technologies Demonstrated
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
+| Category | Technologies |
+|----------|--------------|
+| **Agent Frameworks** | LangChain, LangGraph |
+| **RAG Pipeline** | ChromaDB, OpenAI Embeddings |
+| **Static Analysis** | AST parsing, regex patterns |
+| **CLI** | Typer, Rich |
+| **Testing** | pytest, pytest-asyncio |
+| **Package Management** | pyproject.toml, setuptools |
 
 ---
 
-## License
+## 📝 License
 
-MIT — see [LICENSE](LICENSE) for details.
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+## 👤 Author
+
+**Chaniyk** - AI/ML Engineer
+
+This project was developed as a capstone demonstration for NVIDIA ML/AI interview preparation, showcasing:
+- Multi-agent system design and orchestration
+- Production-grade RAG implementation
+- Anti-hallucination safeguards for AI reliability
+- Edge-to-core deployment architecture understanding
+- Evidence-based compliance across cybersecurity, AI governance, and financial services
+
+---
+
+## 🔗 Related Documentation
+
+- [NVIDIA Agentic AI Study Plan](./docs/NVIDIA_Agentic_AI_Study_Plan.md)
+- [Edge-Core Architecture Design](./docs/Jetson_NIM_Edge_Core_Architecture.md)
+- [OWASP Top 10 Mapping](./docs/owasp_mapping.md)
