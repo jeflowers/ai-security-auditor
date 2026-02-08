@@ -1,0 +1,607 @@
+# HIPAA Security Rule Scoring Rubric
+# AI-Powered Security Auditor Framework
+#
+# Anti-Hallucination Rules for HIPAA Compliance Assessment
+# Core Principle: "If you can't prove it, you can't claim it"
+#
+# Reference: 45 CFR Part 164 - Security and Privacy
+
+rubric:
+  name: "HIPAA Security Rule Scoring Rubric"
+  version: "2024.1"
+  framework: "HIPAA"
+  
+# =============================================================================
+# FUNDAMENTAL ASSESSMENT RULES
+# =============================================================================
+
+fundamental_rules:
+  # ---------------------------------------------------------------------------
+  # Rule 1: Evidence Citation Required
+  # ---------------------------------------------------------------------------
+  - id: "HIPAA-FR-001"
+    title: "Evidence Citation Required"
+    description: |
+      Every compliance claim MUST cite specific evidence artifacts with 
+      provenance metadata. Vague references are prohibited.
+    
+    examples:
+      valid:
+        - "Evidence [HIPAA-TS-312.a1-E1-001] dated 2024-03-15 shows MFA configuration for all ePHI systems with TOTP implementation"
+        - "Backup verification log [HIPAA-AS-308.a7-E1-backup-2024-Q4.json] confirms successful restoration test on 2024-12-01"
+        - "Risk assessment [HIPAA-AS-308.a1-E1-RA-2024.pdf] identifies 12 vulnerabilities with mitigation plans documented"
+      
+      invalid:
+        - "Based on general healthcare practices, the organization likely has encryption in place"
+        - "Authentication appears to be implemented"
+        - "The organization seems to have policies in place"
+        - "Standard industry practices suggest compliance"
+    
+    validation:
+      require_artifact_id: true
+      require_timestamp: true
+      require_source: true
+
+  # ---------------------------------------------------------------------------
+  # Rule 2: No Inference from Missing Evidence
+  # ---------------------------------------------------------------------------
+  - id: "HIPAA-FR-002"
+    title: "No Inference from Missing Evidence"
+    description: |
+      Missing evidence DOES NOT imply non-compliance. Report as EVIDENCE_GAP 
+      and specify what evidence was requested but not provided.
+    
+    examples:
+      valid:
+        - "EVIDENCE_GAP: Risk assessment documentation (HIPAA-AS-308.a1-E1) not provided. Cannot assess compliance with Security Management Process requirements."
+        - "EVIDENCE_GAP: MFA configuration evidence (HIPAA-TS-312.a1-E1) not collected. Manual verification required."
+        - "Audit log samples (HIPAA-TS-312.b-E2) were requested but not provided within evidence collection period."
+      
+      invalid:
+        - "No encryption configuration was provided, therefore encryption is not implemented"
+        - "Since no risk assessment was shared, the organization has not performed one"
+        - "The absence of training records suggests employees are not trained"
+    
+    validation:
+      on_missing_evidence: "EVIDENCE_GAP"
+      prohibit_negative_inference: true
+
+  # ---------------------------------------------------------------------------
+  # Rule 3: Explicit Finding-to-Evidence Mapping
+  # ---------------------------------------------------------------------------
+  - id: "HIPAA-FR-003"
+    title: "Explicit Finding-to-Evidence Mapping"
+    description: |
+      Every security finding MUST map to specific evidence artifacts AND 
+      specific HIPAA control requirements. The mapping chain must be explicit:
+      Finding ↔ Evidence ↔ Control
+    
+    mapping_requirements:
+      - finding_id: "Required unique identifier"
+      - evidence_ids: "List of supporting evidence artifact IDs"
+      - control_ids: "List of HIPAA control IDs addressed"
+      - regulation_refs: "Specific CFR section references"
+      - determination: "Clear compliance/gap determination"
+    
+    examples:
+      valid:
+        finding: "Missing encryption at rest for ePHI database"
+        evidence_ids:
+          - "HIPAA-TS-312.a1-E4-db-config-2024.json"
+        control_ids:
+          - "HIPAA-TS-312.a1.iv"
+        regulation_ref: "45 CFR §164.312(a)(2)(iv)"
+        determination: "FAIL - Encryption implementation specification not satisfied"
+
+  # ---------------------------------------------------------------------------
+  # Rule 4: Addressable vs Required Distinction
+  # ---------------------------------------------------------------------------
+  - id: "HIPAA-FR-004"
+    title: "Addressable vs Required Specification Handling"
+    description: |
+      HIPAA has 'Required' and 'Addressable' implementation specifications.
+      For 'Addressable' specifications, organizations may implement alternative
+      measures if documented with rationale.
+    
+    required_specifications:
+      assessment_approach: |
+        For REQUIRED specifications, evidence must demonstrate implementation.
+        Missing or inadequate implementation = FAIL.
+    
+    addressable_specifications:
+      assessment_approach: |
+        For ADDRESSABLE specifications, evaluate:
+        1. Is the specification implemented? If yes → assess implementation
+        2. If not implemented, is there documented rationale?
+        3. If alternative measure implemented, is it equivalent or better?
+        4. If specification deemed not reasonable, is determination documented?
+      
+      valid_outcomes:
+        - "PASS - Specification implemented as written"
+        - "PASS - Alternative measure implemented with documented rationale"
+        - "PASS - Specification not reasonable/appropriate - documented"
+        - "FAIL - No implementation and no documented rationale"
+        - "INSUFFICIENT_EVIDENCE - Cannot determine implementation status"
+
+  # ---------------------------------------------------------------------------
+  # Rule 5: Prohibited Phrases (Weasel Words)
+  # ---------------------------------------------------------------------------
+  - id: "HIPAA-FR-005"
+    title: "Prohibited Phrases in Assessments"
+    description: |
+      Certain phrases indicate speculation rather than evidence-based 
+      assessment. These phrases are PROHIBITED in compliance determinations.
+    
+    prohibited_phrases:
+      certainty_hedges:
+        - "likely"
+        - "probably"
+        - "possibly"
+        - "presumably"
+        - "apparently"
+        - "ostensibly"
+        - "seemingly"
+      
+      appearance_phrases:
+        - "appears to be"
+        - "seems to"
+        - "looks like"
+        - "gives the impression"
+        - "suggests"
+        - "implies"
+        - "indicates"
+        - "points to"
+      
+      possibility_phrases:
+        - "may be"
+        - "might be"
+        - "could be"
+        - "may indicate"
+        - "might suggest"
+        - "potentially"
+        - "conceivably"
+      
+      assumption_phrases:
+        - "assuming"
+        - "it is assumed"
+        - "we can assume"
+        - "presumably"
+        - "it stands to reason"
+        - "one would expect"
+      
+      opinion_phrases:
+        - "in my opinion"
+        - "I believe"
+        - "I think"
+        - "it seems"
+        - "arguably"
+        - "generally speaking"
+        - "based on typical practices"
+        - "industry standard suggests"
+    
+    validation:
+      fail_on_prohibited_phrase: true
+      require_rewording: true
+
+  # ---------------------------------------------------------------------------
+  # Rule 6: PHI/ePHI Sensitivity Recognition
+  # ---------------------------------------------------------------------------
+  - id: "HIPAA-FR-006"
+    title: "PHI/ePHI Sensitivity Recognition"
+    description: |
+      Assessments must recognize the heightened sensitivity of Protected 
+      Health Information and assess controls accordingly.
+    
+    phi_categories:
+      - "Individually identifiable health information"
+      - "Past, present, or future physical or mental health conditions"
+      - "Healthcare provision records"
+      - "Payment information for healthcare"
+      - "Demographic data linked to health information"
+    
+    assessment_considerations:
+      - "Apply heightened scrutiny to controls protecting ePHI"
+      - "Consider breach notification implications"
+      - "Evaluate access on minimum necessary basis"
+      - "Assess business associate handling of ePHI"
+
+# =============================================================================
+# VALID ASSESSMENT STATES
+# =============================================================================
+
+assessment_states:
+  # ---------------------------------------------------------------------------
+  # State 1: PASS
+  # ---------------------------------------------------------------------------
+  - state: "PASS"
+    code: "HIPAA-STATE-PASS"
+    description: |
+      Evidence demonstrates that the control requirement is satisfied.
+      For Required specifications: implementation is adequate.
+      For Addressable specifications: implementation OR documented alternative is adequate.
+    
+    requirements:
+      - "Specific evidence artifact(s) cited"
+      - "Evidence dated within assessment period"
+      - "Evidence demonstrates control operation"
+      - "For Addressable: documented rationale if alternative used"
+    
+    example: |
+      PASS: Evidence [HIPAA-TS-312.a1-E4-encryption-config.json] dated 2024-12-15 
+      confirms AES-256 encryption is implemented for all ePHI databases. 
+      Key management procedure [HIPAA-TS-312.a1-E4-key-mgmt.pdf] shows 
+      quarterly key rotation with documented procedures.
+
+  # ---------------------------------------------------------------------------
+  # State 2: FAIL
+  # ---------------------------------------------------------------------------
+  - state: "FAIL"
+    code: "HIPAA-STATE-FAIL"
+    description: |
+      Evidence demonstrates that the control requirement is NOT satisfied.
+      There is affirmative evidence of non-compliance.
+    
+    requirements:
+      - "Specific evidence artifact(s) cited showing gap"
+      - "Clear explanation of how requirement is not met"
+      - "Reference to specific HIPAA regulation"
+      - "For Addressable: no alternative measure or documentation found"
+    
+    example: |
+      FAIL: Configuration review [HIPAA-TS-312.b-E1-config-review.json] dated 
+      2024-12-10 shows audit logging is disabled on database server 
+      containing ePHI. This violates 45 CFR §164.312(b) requirement 
+      for mechanisms that record and examine activity in ePHI systems.
+
+  # ---------------------------------------------------------------------------
+  # State 3: INSUFFICIENT_EVIDENCE
+  # ---------------------------------------------------------------------------
+  - state: "INSUFFICIENT_EVIDENCE"
+    code: "HIPAA-STATE-INSUFF"
+    description: |
+      Evidence was provided but is incomplete, outdated, or does not 
+      adequately address the control requirement.
+    
+    requirements:
+      - "Specify what evidence was provided"
+      - "Explain why evidence is insufficient"
+      - "State what additional evidence would be needed"
+      - "Do NOT assume compliance or non-compliance"
+    
+    example: |
+      INSUFFICIENT_EVIDENCE: Risk assessment document [HIPAA-AS-308.a1-E1-RA-2023.pdf] 
+      was provided but dated 2023-03-15 (over 12 months old). Per HIPAA 
+      guidance, risk assessments should be reviewed periodically. Cannot 
+      determine current risk posture. Recommend updated risk assessment.
+
+  # ---------------------------------------------------------------------------
+  # State 4: EVIDENCE_GAP
+  # ---------------------------------------------------------------------------
+  - state: "EVIDENCE_GAP"
+    code: "HIPAA-STATE-GAP"
+    description: |
+      Required evidence was not collected or provided during the assessment.
+      This is a collection gap, NOT a compliance determination.
+    
+    requirements:
+      - "Specify exactly what evidence was requested"
+      - "State when evidence was requested"
+      - "Do NOT infer non-compliance from missing evidence"
+      - "Recommend evidence collection for future assessment"
+    
+    example: |
+      EVIDENCE_GAP: Business Associate Agreement inventory (HIPAA-AS-308.b1-E1) 
+      was requested on 2024-12-01 but not provided. Cannot assess compliance 
+      with 45 CFR §164.308(b)(1) BA contract requirements. Evidence needed: 
+      Complete inventory of BAs with executed BAA copies.
+
+  # ---------------------------------------------------------------------------
+  # State 5: CONFLICTING_EVIDENCE
+  # ---------------------------------------------------------------------------
+  - state: "CONFLICTING_EVIDENCE"
+    code: "HIPAA-STATE-CONFLICT"
+    description: |
+      Multiple evidence sources provide contradictory information 
+      about control implementation.
+    
+    requirements:
+      - "List all conflicting evidence artifacts"
+      - "Explain the nature of the conflict"
+      - "Do NOT arbitrarily choose one source"
+      - "Recommend resolution approach"
+    
+    example: |
+      CONFLICTING_EVIDENCE: Access control policy [HIPAA-TS-312.a1-E1-policy.pdf] 
+      states 15-minute session timeout is required. However, configuration 
+      export [HIPAA-TS-312.a1-E3-timeout-config.json] shows 30-minute timeout 
+      configured. Cannot determine if policy or configuration represents 
+      actual state. Recommend verification of implemented timeout value.
+
+  # ---------------------------------------------------------------------------
+  # State 6: NEEDS_MANUAL_REVIEW
+  # ---------------------------------------------------------------------------
+  - state: "NEEDS_MANUAL_REVIEW"
+    code: "HIPAA-STATE-MANUAL"
+    description: |
+      The control requires human judgment or interpretation that cannot 
+      be automated. Common for policy adequacy or risk acceptance decisions.
+    
+    requirements:
+      - "Explain why automated assessment is not possible"
+      - "Provide relevant evidence for human reviewer"
+      - "Suggest specific questions for reviewer"
+      - "Do NOT make compliance determination"
+    
+    example: |
+      NEEDS_MANUAL_REVIEW: Risk acceptance document [HIPAA-AS-308.a1-E2-risk-accept.pdf] 
+      shows management accepted residual risk for VPN without MFA for 
+      remote contractors. Determination of whether this is "reasonable 
+      and appropriate" per HIPAA requires human judgment on:
+      1. Nature and sensitivity of ePHI accessed
+      2. Compensating controls in place
+      3. Contractor access scope limitations
+
+  # ---------------------------------------------------------------------------
+  # State 7: NOT_APPLICABLE
+  # ---------------------------------------------------------------------------
+  - state: "NOT_APPLICABLE"
+    code: "HIPAA-STATE-NA"
+    description: |
+      The control requirement does not apply to this organization based 
+      on documented scope or operational characteristics.
+    
+    requirements:
+      - "Cite documentation justifying non-applicability"
+      - "Explain why control does not apply"
+      - "Verify scope exclusion is appropriate"
+      - "Note if periodic re-evaluation is needed"
+    
+    example: |
+      NOT_APPLICABLE: Clearinghouse isolation requirement (HIPAA-AS-308.a4.i) 
+      does not apply. Organization assessment scope [HIPAA-SCOPE-2024.pdf] 
+      confirms entity operates solely as a covered entity (health plan) 
+      with no healthcare clearinghouse functions.
+
+# =============================================================================
+# EVIDENCE PROVENANCE REQUIREMENTS
+# =============================================================================
+
+provenance_requirements:
+  description: |
+    All evidence artifacts MUST have complete provenance metadata.
+    Provenance ensures evidence authenticity and enables audit trail.
+  
+  required_fields:
+    - field: "artifact_id"
+      description: "Unique identifier following HIPAA-{category}-{section}-E{num}-{descriptor} pattern"
+      example: "HIPAA-TS-312.a1-E4-encryption-config-2024Q4"
+    
+    - field: "source"
+      description: "Origin of the evidence (system, person, process)"
+      example: "AWS Systems Manager Parameter Store export"
+    
+    - field: "collection_timestamp"
+      description: "When the evidence was collected (ISO 8601 format)"
+      example: "2024-12-15T14:30:00Z"
+    
+    - field: "collector"
+      description: "Who or what collected the evidence"
+      example: "Security Auditor Agent / John Smith"
+    
+    - field: "scope"
+      description: "What systems/processes the evidence covers"
+      example: "Production ePHI database servers (db-prod-01, db-prod-02)"
+    
+    - field: "hash"
+      description: "Integrity hash of evidence content"
+      example: "sha256:a1b2c3d4e5f6..."
+    
+    - field: "phi_indicator"
+      description: "Whether evidence contains actual PHI"
+      example: "true - sanitized prior to storage"
+
+  optional_fields:
+    - field: "chain_of_custody"
+      description: "Handling record if evidence changed hands"
+    
+    - field: "expiration"
+      description: "When evidence should be re-collected"
+    
+    - field: "related_artifacts"
+      description: "IDs of related evidence"
+
+# =============================================================================
+# SCORING METHODOLOGY
+# =============================================================================
+
+scoring:
+  description: |
+    HIPAA compliance is not scored on a numeric scale but assessed 
+    per control and implementation specification.
+  
+  control_level_scoring:
+    method: "Per-Control Assessment"
+    approach: |
+      Each control is assessed independently. Overall compliance 
+      requires ALL required specifications to PASS and all addressable 
+      specifications to be PASS or documented as not reasonable/appropriate.
+    
+    aggregation:
+      overall_compliant:
+        requirements:
+          - "All REQUIRED specifications: PASS"
+          - "All ADDRESSABLE specifications: PASS or documented alternative"
+          - "No unmitigated FAIL states"
+          - "No critical EVIDENCE_GAPs"
+      
+      overall_non_compliant:
+        triggers:
+          - "Any REQUIRED specification: FAIL"
+          - "Any ADDRESSABLE specification: FAIL without documentation"
+          - "Critical control EVIDENCE_GAP affecting ePHI protection"
+      
+      overall_incomplete:
+        triggers:
+          - "Multiple EVIDENCE_GAPs"
+          - "NEEDS_MANUAL_REVIEW pending resolution"
+          - "CONFLICTING_EVIDENCE unresolved"
+
+  risk_weighting:
+    description: "Controls are weighted by risk to ePHI confidentiality, integrity, availability"
+    
+    critical_controls:
+      - "HIPAA-TS-312.a1"  # Access Control
+      - "HIPAA-TS-312.e1"  # Transmission Security
+      - "HIPAA-TS-312.b"   # Audit Controls
+      - "HIPAA-AS-308.a1"  # Security Management Process
+      - "HIPAA-AS-308.a6"  # Security Incident Procedures
+    
+    high_controls:
+      - "HIPAA-TS-312.d"   # Authentication
+      - "HIPAA-TS-312.c1"  # Integrity
+      - "HIPAA-AS-308.a7"  # Contingency Plan
+      - "HIPAA-PS-310.d1"  # Device and Media Controls
+    
+    standard_controls:
+      - "HIPAA-AS-308.a2"  # Assigned Security Responsibility
+      - "HIPAA-AS-308.a3"  # Workforce Security
+      - "HIPAA-AS-308.a5"  # Security Awareness
+      - "HIPAA-PP-316.a"   # Policies and Procedures
+
+# =============================================================================
+# HIPAA-SPECIFIC VALIDATION RULES
+# =============================================================================
+
+hipaa_validation:
+  # ---------------------------------------------------------------------------
+  # Breach Notification Thresholds
+  # ---------------------------------------------------------------------------
+  breach_assessment:
+    description: |
+      When assessing potential breaches, apply the four-factor risk assessment 
+      per 45 CFR §164.402(2).
+    
+    factors:
+      - factor: "Nature and extent of PHI involved"
+        considerations:
+          - "Types of identifiers involved"
+          - "Likelihood of re-identification"
+          - "Sensitivity of clinical data"
+      
+      - factor: "Unauthorized person who used/accessed PHI"
+        considerations:
+          - "Relationship to covered entity"
+          - "Obligations under other agreements"
+          - "Known intentions"
+      
+      - factor: "Whether PHI was actually acquired or viewed"
+        considerations:
+          - "Evidence of access vs. exposure"
+          - "Technical access vs. actual viewing"
+          - "Encryption status"
+      
+      - factor: "Extent risk to PHI has been mitigated"
+        considerations:
+          - "Actions taken to reduce harm"
+          - "Assurances obtained"
+          - "Remediation completed"
+    
+    low_probability_threshold: |
+      Notification not required only if risk assessment demonstrates 
+      low probability that PHI was compromised based on ALL four factors.
+
+  # ---------------------------------------------------------------------------
+  # Business Associate Validation
+  # ---------------------------------------------------------------------------
+  ba_validation:
+    description: "Validation rules for Business Associate compliance"
+    
+    baa_requirements:
+      - "Satisfactory assurances of PHI safeguarding"
+      - "Report security incidents including breaches"
+      - "Ensure subcontractor compliance"
+      - "Return or destroy PHI at termination"
+      - "Compliance with Security Rule"
+    
+    evidence_requirements:
+      - "Complete BA inventory"
+      - "Executed BAA for each BA"
+      - "BA security due diligence records"
+      - "BA incident notification records"
+
+  # ---------------------------------------------------------------------------
+  # Encryption Safe Harbor
+  # ---------------------------------------------------------------------------
+  encryption_assessment:
+    description: |
+      Properly encrypted PHI is not "unsecured PHI" for breach notification 
+      purposes if encryption meets NIST standards.
+    
+    valid_encryption:
+      at_rest: "NIST SP 800-111 compliant"
+      in_transit: "FIPS 140-2 validated"
+    
+    assessment_approach: |
+      When encryption is claimed, verify:
+      1. Algorithm meets NIST standards (AES-128 or higher)
+      2. Key management is appropriate
+      3. Encryption is consistently applied
+      4. No unencrypted copies exist
+
+# =============================================================================
+# REPORT GENERATION RULES
+# =============================================================================
+
+report_generation:
+  structure:
+    - section: "Executive Summary"
+      content:
+        - "Overall compliance status"
+        - "Critical findings summary"
+        - "Evidence gap summary"
+        - "Immediate action items"
+    
+    - section: "Scope and Methodology"
+      content:
+        - "Assessment period"
+        - "Systems in scope"
+        - "Evidence collection methods"
+        - "Limitations"
+    
+    - section: "Administrative Safeguards Assessment"
+      content:
+        - "Per-control findings"
+        - "Evidence citations"
+        - "Remediation recommendations"
+    
+    - section: "Physical Safeguards Assessment"
+      content:
+        - "Per-control findings"
+        - "Evidence citations"
+        - "Remediation recommendations"
+    
+    - section: "Technical Safeguards Assessment"
+      content:
+        - "Per-control findings"
+        - "Evidence citations"
+        - "Remediation recommendations"
+    
+    - section: "Organizational Requirements Assessment"
+      content:
+        - "BAA compliance status"
+        - "Documentation requirements"
+    
+    - section: "Breach Notification Readiness"
+      content:
+        - "Incident response capability"
+        - "Notification procedure assessment"
+    
+    - section: "Appendices"
+      content:
+        - "Evidence inventory"
+        - "Gap remediation tracker"
+        - "Control mapping reference"
+
+  citation_format:
+    template: "[{artifact_id}] dated {timestamp}"
+    example: "[HIPAA-TS-312.a1-E4-mfa-config.json] dated 2024-12-15T10:30:00Z"

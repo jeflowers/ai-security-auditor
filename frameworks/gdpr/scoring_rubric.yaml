@@ -1,0 +1,533 @@
+# GDPR Compliance Scoring Rubric
+# Assessment Rules and Anti-Hallucination Framework
+#
+# Core Principle: "If you can't prove it, you can't claim it"
+#
+# This rubric defines how to assess GDPR compliance with verifiable evidence
+# and prevents AI hallucination in compliance assessments.
+
+framework: "GDPR"
+version: "1.0.0"
+
+# ============================================================================
+# ANTI-HALLUCINATION RULES
+# ============================================================================
+
+anti_hallucination_rules:
+  fundamental_principles:
+    - id: "AH-RULE-1"
+      name: "Evidence Required"
+      description: |
+        Every compliance claim MUST cite specific evidence with artifact ID.
+        Claims without evidence citations are INVALID.
+      examples:
+        correct:
+          - "Evidence [ART5.1f-E2-ENC-001.pdf] dated 2024-03-15 shows TLS 1.3 encryption configuration"
+          - "Privacy policy [ART13-E1-PP-v3.2.html] contains all required Article 13 elements"
+          - "DPIA [ART35-E3-DPIA-2024-007.docx] completed 2024-02-20 covers high-risk AI processing"
+        incorrect:
+          - "Based on general practices, likely compliant with Article 32"
+          - "The organisation appears to have encryption in place"
+          - "Standard industry practices suggest compliance"
+
+    - id: "AH-RULE-2"
+      name: "No Inference from Missing Evidence"
+      description: |
+        Missing evidence does NOT imply the control doesn't exist.
+        Missing evidence MUST be reported as EVIDENCE_GAP.
+        NEVER assume non-compliance from lack of evidence.
+      examples:
+        correct:
+          - "EVIDENCE_GAP: Data processing agreement (ART28-E1) not collected for processor XYZ"
+          - "EVIDENCE_GAP: DPIA (ART35-E3) for high-risk processing not provided"
+        incorrect:
+          - "No DPA provided, therefore non-compliant with Article 28"
+          - "Since no DPIA was shared, the organisation fails Article 35"
+
+    - id: "AH-RULE-3"
+      name: "Explicit Finding-Evidence Mapping"
+      description: |
+        Every finding MUST explicitly map to:
+        1. Specific GDPR article(s)
+        2. Evidence artifact(s) supporting the finding
+        3. Assessment state with justification
+      structure:
+        finding:
+          article: "Article reference"
+          evidence_ids: ["list of evidence artifact IDs"]
+          state: "PASS|FAIL|INSUFFICIENT_EVIDENCE|EVIDENCE_GAP|CONFLICTING_EVIDENCE|NEEDS_MANUAL_REVIEW"
+          justification: "Specific explanation citing evidence"
+
+    - id: "AH-RULE-4"
+      name: "Bounded Assessment States"
+      description: |
+        Only SIX valid assessment states exist. No ambiguous states permitted.
+      states:
+        - PASS: "Evidence demonstrates compliance with requirements"
+        - FAIL: "Evidence demonstrates non-compliance"
+        - INSUFFICIENT_EVIDENCE: "Evidence exists but is incomplete or unclear"
+        - EVIDENCE_GAP: "Required evidence was not collected"
+        - CONFLICTING_EVIDENCE: "Multiple sources provide contradictory information"
+        - NEEDS_MANUAL_REVIEW: "Requires human judgment (legal, context-dependent)"
+
+    - id: "AH-RULE-5"
+      name: "Provenance Required"
+      description: |
+        Every evidence artifact MUST have provenance metadata.
+        Evidence without provenance is INVALID for assessment.
+      required_metadata:
+        - field: "artifact_id"
+          description: "Unique identifier following naming convention"
+          format: "{ARTICLE}-{EVIDENCE_REQ}-{TYPE}-{HASH}"
+          example: "ART32-E2-CONFIG-a1b2c3d4"
+        - field: "source"
+          description: "Origin of the evidence"
+          examples: ["policy_repository", "security_scanner", "manual_collection"]
+        - field: "collected_at"
+          description: "ISO 8601 timestamp"
+          example: "2024-03-15T14:30:00Z"
+        - field: "collector"
+          description: "Person or system that collected evidence"
+          examples: ["jane.doe@company.com", "automated_scanner_v2"]
+        - field: "scope"
+          description: "Systems, time period, or boundaries covered"
+          examples: ["production_eu_systems", "Q1_2024"]
+        - field: "hash"
+          description: "SHA-256 hash of evidence content"
+          example: "a1b2c3d4e5f6..."
+
+# ============================================================================
+# FORBIDDEN PHRASES (WEASEL WORDS)
+# ============================================================================
+
+forbidden_phrases:
+  description: |
+    These phrases indicate uncertainty or inference without evidence.
+    Assessments containing these phrases MUST be rejected and re-evaluated.
+  
+  phrases:
+    probability_indicators:
+      - "likely"
+      - "unlikely"
+      - "probably"
+      - "possibly"
+      - "perhaps"
+      - "might"
+      - "may"
+      - "could"
+    
+    appearance_indicators:
+      - "appears to be"
+      - "appears to have"
+      - "seems to"
+      - "seems like"
+      - "looks like"
+      
+    inference_indicators:
+      - "suggests"
+      - "implies"
+      - "indicates"
+      - "may indicate"
+      - "could suggest"
+      - "points to"
+      
+    assumption_indicators:
+      - "presumably"
+      - "presumably"
+      - "one would assume"
+      - "it's reasonable to assume"
+      - "standard practice suggests"
+      - "based on industry norms"
+      - "typically"
+      - "generally"
+      - "in most cases"
+      - "usually"
+      
+    vague_qualifiers:
+      - "somewhat"
+      - "fairly"
+      - "relatively"
+      - "reasonably"
+      - "more or less"
+      - "to some extent"
+      - "partially"
+
+# ============================================================================
+# GDPR-SPECIFIC ASSESSMENT RULES
+# ============================================================================
+
+gdpr_assessment_rules:
+  
+  # Article 5 - Principles
+  principle_assessment:
+    description: "Rules for assessing Article 5 principles"
+    rules:
+      - id: "GDPR-AR-001"
+        applies_to: ["ART5.1a", "ART5.1b", "ART5.1c", "ART5.1d", "ART5.1e", "ART5.1f"]
+        rule: |
+          Article 5 principles are foundational. Each principle must be assessed
+          independently with specific evidence. A failure in any principle affects
+          overall compliance status.
+        
+      - id: "GDPR-AR-002"
+        applies_to: ["ART5.2"]
+        rule: |
+          Accountability requires demonstrable compliance. Documentation alone is
+          insufficient - evidence must show implementation and effectiveness.
+
+  # Legal Basis Assessment
+  legal_basis_assessment:
+    description: "Rules for assessing Article 6 legal basis"
+    rules:
+      - id: "GDPR-AR-010"
+        applies_to: ["ART6"]
+        rule: |
+          Each processing activity MUST have exactly ONE documented legal basis.
+          Multiple legal bases for the same processing is a red flag requiring review.
+          
+      - id: "GDPR-AR-011"
+        applies_to: ["ART6"]
+        rule: |
+          Legal basis must be determined BEFORE processing begins.
+          Retrospective legal basis assignment is non-compliant.
+          
+      - id: "GDPR-AR-012"
+        applies_to: ["ART6", "ART7"]
+        rule: |
+          If consent is the legal basis, it MUST meet Article 7 conditions.
+          Bundled consent, pre-ticked boxes, or consent without easy withdrawal = FAIL.
+
+  # Data Subject Rights Assessment
+  rights_assessment:
+    description: "Rules for assessing data subject rights (Articles 15-22)"
+    rules:
+      - id: "GDPR-AR-020"
+        applies_to: ["ART15", "ART16", "ART17", "ART18", "ART20", "ART21", "ART22"]
+        rule: |
+          Each right requires BOTH:
+          1. A documented procedure for handling requests
+          2. Technical capability to fulfill the right
+          Procedure alone without technical capability = FAIL.
+          
+      - id: "GDPR-AR-021"
+        applies_to: ["ART15", "ART16", "ART17", "ART18", "ART20"]
+        rule: |
+          Response time for data subject requests MUST be documented.
+          Evidence of completed requests within timeframes strengthens assessment.
+          
+      - id: "GDPR-AR-022"
+        applies_to: ["ART17"]
+        rule: |
+          Right to erasure requires:
+          1. Ability to identify all data locations
+          2. Technical capability to delete from all systems
+          3. Verification procedures post-deletion
+          4. Third-party notification procedures
+          Missing ANY of these = INSUFFICIENT_EVIDENCE at minimum.
+
+  # Security Assessment  
+  security_assessment:
+    description: "Rules for assessing Article 32 security measures"
+    rules:
+      - id: "GDPR-AR-030"
+        applies_to: ["ART32"]
+        rule: |
+          Security measures must be "appropriate to the risk."
+          Evidence must include:
+          1. Risk assessment documenting identified risks
+          2. Security measures mapped to identified risks
+          3. Testing/audit evidence of measure effectiveness
+          
+      - id: "GDPR-AR-031"
+        applies_to: ["ART32"]
+        rule: |
+          Encryption evidence must specify:
+          - Algorithm and key length
+          - Scope (at rest / in transit / both)
+          - Key management procedures
+          Generic "encryption is used" = INSUFFICIENT_EVIDENCE.
+          
+      - id: "GDPR-AR-032"
+        applies_to: ["ART32"]
+        rule: |
+          Access control evidence must demonstrate:
+          - Role-based access implementation
+          - Principle of least privilege
+          - Access review procedures and records
+          - Authentication mechanisms (MFA where applicable)
+
+  # Breach Notification Assessment
+  breach_assessment:
+    description: "Rules for assessing breach notification (Articles 33-34)"
+    rules:
+      - id: "GDPR-AR-040"
+        applies_to: ["ART33", "ART34"]
+        rule: |
+          Breach procedures must enable notification within 72 hours.
+          Evidence must include:
+          1. Breach detection capabilities
+          2. Escalation procedures with timeframes
+          3. Notification templates ready for use
+          4. Contact details for supervisory authority
+          
+      - id: "GDPR-AR-041"
+        applies_to: ["ART33"]
+        rule: |
+          Breach register must be maintained regardless of notification decisions.
+          Register should document:
+          - Nature of breach
+          - Categories and numbers of subjects affected
+          - Likely consequences
+          - Measures taken
+          - Decision on notification (with reasoning)
+
+  # International Transfer Assessment
+  transfer_assessment:
+    description: "Rules for assessing international transfers (Chapter V)"
+    rules:
+      - id: "GDPR-AR-050"
+        applies_to: ["ART44", "ART46"]
+        rule: |
+          Each international transfer requires:
+          1. Documented in transfer inventory
+          2. Valid transfer mechanism identified
+          3. Transfer impact assessment completed
+          Post-Schrems II: SCCs alone may be insufficient without supplementary measures.
+          
+      - id: "GDPR-AR-051"
+        applies_to: ["ART46"]
+        rule: |
+          Transfer Impact Assessment (TIA) must evaluate:
+          - Legal framework of destination country
+          - Surveillance laws and practices
+          - Supplementary measures needed
+          - Residual risks and acceptance decision
+
+  # Processor Assessment
+  processor_assessment:
+    description: "Rules for assessing processor relationships (Article 28)"
+    rules:
+      - id: "GDPR-AR-060"
+        applies_to: ["ART28"]
+        rule: |
+          Each processor relationship requires:
+          1. Written contract or DPA with all Article 28(3) provisions
+          2. Due diligence evidence (security assessment, certifications)
+          3. Ongoing monitoring procedures
+          
+      - id: "GDPR-AR-061"
+        applies_to: ["ART28"]
+        rule: |
+          Sub-processor management requires:
+          1. Sub-processor list maintained and available
+          2. Notification mechanism for new sub-processors
+          3. Flow-down of contractual obligations
+
+  # DPIA Assessment
+  dpia_assessment:
+    description: "Rules for assessing DPIAs (Article 35)"
+    rules:
+      - id: "GDPR-AR-070"
+        applies_to: ["ART35"]
+        rule: |
+          DPIA screening must be documented for all new processing activities.
+          High-risk indicators triggering mandatory DPIA:
+          - Systematic and extensive profiling with significant effects
+          - Large-scale processing of special category data
+          - Systematic monitoring of publicly accessible areas
+          - New technologies
+          - Automated decision-making with legal/significant effects
+          
+      - id: "GDPR-AR-071"
+        applies_to: ["ART35"]
+        rule: |
+          Completed DPIA must include:
+          1. Systematic description of processing operations
+          2. Assessment of necessity and proportionality
+          3. Assessment of risks to rights and freedoms
+          4. Measures to address risks
+          5. DPO consultation (where applicable)
+          6. Review date and outcome tracking
+
+# ============================================================================
+# SCORING METHODOLOGY
+# ============================================================================
+
+scoring:
+  description: |
+    Compliance scoring methodology for GDPR assessments.
+    Scores provide a quantitative view but should not replace detailed findings.
+  
+  article_weights:
+    critical_articles:
+      weight: 3
+      articles: ["ART5.1f", "ART6", "ART28", "ART32", "ART33", "ART44", "ART46"]
+      rationale: "Fundamental to data protection; breaches carry highest penalties"
+      
+    high_importance:
+      weight: 2
+      articles: ["ART5.1a", "ART5.1b", "ART5.1e", "ART5.2", "ART7", "ART13", "ART15", "ART17", "ART21", "ART22", "ART24", "ART25", "ART34", "ART35", "ART37"]
+      rationale: "Core compliance requirements; significant regulatory focus"
+      
+    standard_importance:
+      weight: 1
+      articles: ["ART5.1c", "ART5.1d", "ART12", "ART16", "ART18", "ART20", "ART30"]
+      rationale: "Important but violations typically less severe"
+
+  state_scores:
+    PASS: 100
+    FAIL: 0
+    INSUFFICIENT_EVIDENCE: 40
+    EVIDENCE_GAP: 30
+    CONFLICTING_EVIDENCE: 20
+    NEEDS_MANUAL_REVIEW: 50
+
+  overall_calculation:
+    formula: |
+      overall_score = sum(article_score * article_weight) / sum(article_weight)
+      
+    thresholds:
+      compliant: 85
+      substantially_compliant: 70
+      partially_compliant: 50
+      non_compliant: 0
+      
+    notes:
+      - "ANY critical article with FAIL status triggers overall NON-COMPLIANT regardless of score"
+      - "3+ high importance articles with FAIL status triggers overall NON-COMPLIANT"
+      - "Score alone does not determine compliance - qualitative assessment required"
+
+# ============================================================================
+# EVIDENCE QUALITY REQUIREMENTS
+# ============================================================================
+
+evidence_quality:
+  freshness:
+    description: "Maximum age of evidence for validity"
+    rules:
+      - type: "policy_document"
+        max_age_months: 24
+        review_cycle_months: 12
+        
+      - type: "security_scan"
+        max_age_months: 3
+        review_cycle_months: 1
+        
+      - type: "risk_assessment"
+        max_age_months: 12
+        review_cycle_months: 12
+        
+      - type: "training_records"
+        max_age_months: 12
+        review_cycle_months: 12
+        
+      - type: "audit_report"
+        max_age_months: 12
+        review_cycle_months: 12
+        
+      - type: "dpia"
+        max_age_months: 36
+        review_cycle_months: 12
+        note: "Must be reviewed when processing changes"
+        
+      - type: "dpa_contract"
+        max_age_months: 36
+        review_cycle_months: 24
+        
+      - type: "configuration"
+        max_age_months: 6
+        review_cycle_months: 3
+        note: "Should reflect current state"
+
+  completeness:
+    description: "Minimum evidence requirements for assessment"
+    rules:
+      - "At least one required evidence item must be provided per control"
+      - "Optional evidence strengthens but cannot substitute for required evidence"
+      - "Evidence must cover the entire scope of assessment (all systems, all data types)"
+      - "Gaps in coverage must be documented as EVIDENCE_GAP"
+
+  authenticity:
+    description: "Evidence authenticity requirements"
+    rules:
+      - "Screenshots must include timestamps and system identifiers"
+      - "Policies must show version, approval date, and approver"
+      - "Audit reports must be from qualified auditors with credentials documented"
+      - "System exports must include extraction metadata"
+      - "Contracts must be executed (signed) versions"
+
+# ============================================================================
+# OUTPUT FORMAT REQUIREMENTS
+# ============================================================================
+
+output_requirements:
+  assessment_report:
+    required_sections:
+      - title: "Executive Summary"
+        contents: ["Overall compliance status", "Critical findings count", "Immediate actions required"]
+        
+      - title: "Scope and Methodology"
+        contents: ["Assessment period", "Systems in scope", "Evidence collection methods", "Limitations"]
+        
+      - title: "Article-by-Article Assessment"
+        contents: ["Each article assessed", "Evidence cited", "State assigned", "Justification provided"]
+        
+      - title: "Evidence Inventory"
+        contents: ["All evidence artifacts", "Provenance metadata", "Gaps identified"]
+        
+      - title: "Findings and Recommendations"
+        contents: ["Non-compliance findings", "Risk ratings", "Remediation recommendations", "Timeframes"]
+        
+      - title: "Appendices"
+        contents: ["Evidence references", "Glossary", "Methodology details"]
+
+  finding_format:
+    required_fields:
+      - "finding_id"
+      - "gdpr_article"
+      - "title"
+      - "description"
+      - "assessment_state"
+      - "evidence_ids"
+      - "justification"
+      - "risk_rating"
+      - "recommendation"
+      - "remediation_timeframe"
+
+# ============================================================================
+# VALIDATION RULES
+# ============================================================================
+
+validation:
+  pre_assessment:
+    - "Verify evidence inventory is complete against control requirements"
+    - "Validate provenance metadata for all evidence"
+    - "Check evidence freshness against requirements"
+    - "Confirm scope coverage"
+    
+  during_assessment:
+    - "Verify each finding maps to evidence"
+    - "Check for forbidden phrases in justifications"
+    - "Validate assessment states are from allowed list"
+    - "Ensure no inference from missing evidence"
+    
+  post_assessment:
+    - "Verify all controls have been assessed"
+    - "Check consistency of related control assessments"
+    - "Validate scoring calculations"
+    - "Review EVIDENCE_GAP items for completeness"
+
+# ============================================================================
+# METADATA
+# ============================================================================
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2025-01-01"
+  author: "AI Security Auditor"
+  applicable_to: ["Controllers", "Processors"]
+  regulatory_references:
+    - "GDPR (EU) 2016/679"
+    - "EDPB Guidelines"
+    - "ICO Guidance"
+    - "CNIL Guidance"

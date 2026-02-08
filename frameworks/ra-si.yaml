@@ -1,0 +1,600 @@
+# NIST 800-53A Risk Assessment (RA) & System Integrity (SI) Families
+# Assessment Objectives and Procedures
+# AI-Powered Security Auditor Framework Integration
+
+# ============================================================================
+# RISK ASSESSMENT (RA) FAMILY
+# ============================================================================
+ra_family:
+  id: RA
+  name: "Risk Assessment"
+  description: |
+    Controls that ensure organizations conduct risk assessments, vulnerability
+    assessments, and implement monitoring and mitigation strategies.
+  automation_level: full
+  primary_agents: [vulnerability_scanner, code_analyzer, compliance_checker]
+
+ra_controls:
+  RA-1:
+    title: "Policy and Procedures"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: RA-1.a
+        description: "Develop and document risk assessment policy"
+        method: EXAMINE
+        objects:
+          - "risk assessment policy"
+          - "risk management framework"
+        automated: true
+        agent: compliance_checker
+        
+  RA-3:
+    title: "Risk Assessment"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC9.1]
+    assessment_objectives:
+      - id: RA-3.a
+        description: "Conduct risk assessments"
+        method: EXAMINE
+        objects:
+          - "risk assessment reports"
+          - "threat analysis"
+        automated: true
+        agent: compliance_checker
+        rag_query: "risk assessment threat analysis impact likelihood"
+        
+      - id: RA-3.b
+        description: "Document risk assessment results"
+        method: EXAMINE
+        objects:
+          - "risk register"
+          - "risk assessment documentation"
+        automated: true
+        agent: compliance_checker
+        
+      - id: RA-3.c
+        description: "Review risk assessment results"
+        method: EXAMINE
+        objects:
+          - "risk review records"
+          - "management approval"
+        automated: true
+        agent: compliance_checker
+        
+      - id: RA-3.d
+        description: "Disseminate risk assessment results"
+        method: EXAMINE
+        objects:
+          - "distribution records"
+          - "stakeholder communications"
+        automated: true
+        agent: compliance_checker
+        
+      - id: RA-3.e
+        description: "Update risk assessment per defined frequency"
+        method: EXAMINE
+        objects:
+          - "assessment schedule"
+          - "update records"
+        automated: true
+        agent: compliance_checker
+
+  RA-5:
+    title: "Vulnerability Monitoring and Scanning"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC6.6, CC9.1]
+    assessment_objectives:
+      - id: RA-5.a
+        description: "Monitor and scan for vulnerabilities"
+        method: TEST
+        objects:
+          - "vulnerability scanning tools"
+          - "network infrastructure"
+          - "applications"
+        automated: true
+        agent: vulnerability_scanner
+        scan_types:
+          - "network vulnerability scan"
+          - "web application scan"
+          - "authenticated scan"
+          - "configuration compliance"
+        owasp_zap_integration:
+          baseline_scan: true
+          full_scan: true
+          api_scan: true
+          
+      - id: RA-5.b
+        description: "Employ scanning tools with standards-based checks"
+        method: EXAMINE
+        objects:
+          - "scanner configuration"
+          - "vulnerability database"
+        automated: true
+        agent: vulnerability_scanner
+        standards:
+          - "CVE"
+          - "CWE"
+          - "CVSS"
+          - "OWASP Top 10"
+          
+      - id: RA-5.c
+        description: "Analyze vulnerability reports and results"
+        method: EXAMINE
+        objects:
+          - "vulnerability analysis reports"
+          - "risk ratings"
+        automated: true
+        agent: vulnerability_scanner
+        analysis_outputs:
+          - severity_classification
+          - cvss_scoring
+          - exploitability_assessment
+          - remediation_priority
+          
+      - id: RA-5.d
+        description: "Remediate vulnerabilities per timeframes"
+        method: EXAMINE
+        objects:
+          - "remediation tracking"
+          - "patch management records"
+        automated: partial
+        agent: compliance_checker
+        
+      - id: RA-5.e
+        description: "Share vulnerability information"
+        method: EXAMINE
+        objects:
+          - "vulnerability reports"
+          - "distribution records"
+        automated: true
+        agent: compliance_checker
+        
+      - id: RA-5.f
+        description: "Employ vulnerability monitoring tools"
+        method: TEST
+        objects:
+          - "continuous monitoring capabilities"
+        automated: true
+        agent: vulnerability_scanner
+        
+      - id: RA-5.2
+        description: "Update vulnerability information prior to scans"
+        method: EXAMINE
+        objects:
+          - "vulnerability database update logs"
+        automated: true
+        agent: vulnerability_scanner
+        baseline: [moderate, high]
+        
+      - id: RA-5.3
+        description: "Define breadth and depth of coverage"
+        method: EXAMINE
+        objects:
+          - "scan scope documentation"
+          - "asset inventory"
+        automated: true
+        agent: compliance_checker
+        baseline: [moderate, high]
+        
+      - id: RA-5.4
+        description: "Determine discoverable information"
+        method: TEST
+        objects:
+          - "information discovery results"
+        automated: true
+        agent: vulnerability_scanner
+        baseline: [high]
+        
+      - id: RA-5.5
+        description: "Include privileged access authorization"
+        method: TEST
+        objects:
+          - "authenticated scan results"
+        automated: true
+        agent: vulnerability_scanner
+        baseline: [moderate, high]
+        
+      - id: RA-5.11
+        description: "Establish public disclosure program"
+        method: EXAMINE
+        objects:
+          - "disclosure policy"
+          - "bug bounty program"
+        automated: true
+        agent: compliance_checker
+        baseline: [high]
+
+  RA-7:
+    title: "Risk Response"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC9.1]
+    assessment_objectives:
+      - id: RA-7.a
+        description: "Respond to findings from assessments"
+        method: EXAMINE
+        objects:
+          - "risk response procedures"
+          - "mitigation plans"
+        automated: true
+        agent: compliance_checker
+
+# ============================================================================
+# SYSTEM AND INFORMATION INTEGRITY (SI) FAMILY
+# ============================================================================
+si_family:
+  id: SI
+  name: "System and Information Integrity"
+  description: |
+    Controls that protect against malicious code, monitor systems for anomalies,
+    and maintain information integrity through flaw remediation.
+  automation_level: full
+  primary_agents: [vulnerability_scanner, code_analyzer, log_analyzer]
+
+si_controls:
+  SI-1:
+    title: "Policy and Procedures"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: SI-1.a
+        description: "Develop and document system integrity policy"
+        method: EXAMINE
+        objects:
+          - "system integrity policy"
+          - "security procedures"
+        automated: true
+        agent: compliance_checker
+
+  SI-2:
+    title: "Flaw Remediation"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC6.6]
+    assessment_objectives:
+      - id: SI-2.a
+        description: "Identify, report, and correct flaws"
+        method: EXAMINE
+        objects:
+          - "vulnerability reports"
+          - "remediation tracking"
+        automated: true
+        agents: [vulnerability_scanner, code_analyzer]
+        
+      - id: SI-2.b
+        description: "Test updates prior to installation"
+        method: EXAMINE
+        objects:
+          - "testing procedures"
+          - "test results"
+        automated: partial
+        agent: compliance_checker
+        
+      - id: SI-2.c
+        description: "Install security updates within timeframes"
+        method: EXAMINE
+        objects:
+          - "patch management records"
+          - "update logs"
+        automated: partial
+        agent: compliance_checker
+        
+      - id: SI-2.d
+        description: "Incorporate remediation into change management"
+        method: EXAMINE
+        objects:
+          - "change records"
+          - "remediation tracking"
+        automated: true
+        agent: compliance_checker
+        
+      - id: SI-2.2
+        description: "Employ automated flaw remediation status"
+        method: EXAMINE
+        objects:
+          - "automated patching tools"
+          - "compliance dashboards"
+        automated: true
+        agent: vulnerability_scanner
+        baseline: [moderate, high]
+
+  SI-3:
+    title: "Malicious Code Protection"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC6.6]
+    assessment_objectives:
+      - id: SI-3.a
+        description: "Implement malicious code protection"
+        method: EXAMINE
+        objects:
+          - "anti-malware configuration"
+          - "endpoint protection"
+        automated: partial
+        agent: compliance_checker
+        
+      - id: SI-3.b
+        description: "Update malicious code protection"
+        method: EXAMINE
+        objects:
+          - "signature update logs"
+          - "definition currency"
+        automated: partial
+        agent: log_analyzer
+        
+      - id: SI-3.c
+        description: "Configure periodic and real-time scans"
+        method: EXAMINE
+        objects:
+          - "scan configuration"
+          - "scan schedules"
+        automated: partial
+        agent: compliance_checker
+
+  SI-4:
+    title: "System Monitoring"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC7.1, CC7.2]
+    assessment_objectives:
+      - id: SI-4.a
+        description: "Monitor system for attacks and indicators"
+        method: EXAMINE
+        objects:
+          - "monitoring configuration"
+          - "IDS/IPS settings"
+          - "SIEM rules"
+        automated: true
+        agent: log_analyzer
+        detection_capabilities:
+          - "attack detection"
+          - "unauthorized access"
+          - "policy violations"
+          - "anomalous behavior"
+          
+      - id: SI-4.b
+        description: "Identify unauthorized use"
+        method: EXAMINE
+        objects:
+          - "detection rules"
+          - "alert configuration"
+        automated: true
+        agent: log_analyzer
+        
+      - id: SI-4.c
+        description: "Invoke internal monitoring capabilities"
+        method: EXAMINE
+        objects:
+          - "monitoring deployment"
+          - "coverage assessment"
+        automated: true
+        agent: log_analyzer
+        
+      - id: SI-4.d
+        description: "Analyze detected events"
+        method: EXAMINE
+        objects:
+          - "analysis procedures"
+          - "event investigation"
+        automated: true
+        agent: log_analyzer
+        
+      - id: SI-4.e
+        description: "Alert personnel on indicators"
+        method: EXAMINE
+        objects:
+          - "alerting configuration"
+          - "notification procedures"
+        automated: true
+        agent: log_analyzer
+        
+      - id: SI-4.g
+        description: "Provide monitoring output to personnel"
+        method: EXAMINE
+        objects:
+          - "dashboards"
+          - "reports"
+        automated: true
+        agent: log_analyzer
+        
+      - id: SI-4.2
+        description: "Employ automated tools for near real-time analysis"
+        method: EXAMINE
+        objects:
+          - "SIEM configuration"
+          - "automated analysis"
+        automated: true
+        agent: log_analyzer
+        baseline: [moderate, high]
+        
+      - id: SI-4.4
+        description: "Monitor inbound and outbound traffic"
+        method: EXAMINE
+        objects:
+          - "network monitoring"
+          - "traffic analysis"
+        automated: true
+        agent: log_analyzer
+        baseline: [moderate, high]
+        
+      - id: SI-4.5
+        description: "Alert on compromise indicators"
+        method: EXAMINE
+        objects:
+          - "IOC detection"
+          - "threat intelligence integration"
+        automated: true
+        agent: log_analyzer
+        baseline: [moderate, high]
+
+  SI-10:
+    title: "Information Input Validation"
+    baseline: [moderate, high]
+    assessment_objectives:
+      - id: SI-10.a
+        description: "Check validity of information inputs"
+        method: TEST
+        objects:
+          - "input validation mechanisms"
+          - "application code"
+        automated: true
+        agent: code_analyzer
+        vulnerability_patterns:
+          - sql_injection
+          - xss
+          - command_injection
+          - path_traversal
+          - ldap_injection
+          - xml_injection
+        cwe_mappings:
+          - CWE-20   # Improper Input Validation
+          - CWE-79   # XSS
+          - CWE-89   # SQL Injection
+          - CWE-78   # OS Command Injection
+
+  SI-11:
+    title: "Error Handling"
+    baseline: [moderate, high]
+    assessment_objectives:
+      - id: SI-11.a
+        description: "Generate error messages with necessary info"
+        method: EXAMINE
+        objects:
+          - "error handling code"
+          - "error messages"
+        automated: true
+        agent: code_analyzer
+        checks:
+          - "information disclosure"
+          - "stack trace exposure"
+          - "sensitive data in errors"
+        cwe_mappings:
+          - CWE-209  # Information Exposure Through Error Message
+          - CWE-215  # Insertion of Sensitive Information Into Debugging Code
+          
+      - id: SI-11.b
+        description: "Reveal error messages to defined personnel"
+        method: EXAMINE
+        objects:
+          - "error display configuration"
+          - "logging settings"
+        automated: true
+        agent: code_analyzer
+
+# ============================================================================
+# VULNERABILITY SCANNER AGENT CONFIGURATION
+# ============================================================================
+vulnerability_scanner_configuration:
+  owasp_zap:
+    enabled: true
+    scan_types:
+      baseline:
+        duration: "2-5 minutes"
+        coverage: "passive scanning"
+        control_mapping: [RA-5.a]
+        
+      full:
+        duration: "30-60 minutes"
+        coverage: "active scanning"
+        control_mapping: [RA-5.a, RA-5.b]
+        
+      api:
+        duration: "15-30 minutes"
+        coverage: "API endpoints"
+        control_mapping: [RA-5.a]
+    
+    severity_mapping:
+      High:
+        nist_impact: high
+        remediation_timeline: "30 days"
+        controls: [RA-5.c, SI-2.a]
+        
+      Medium:
+        nist_impact: moderate
+        remediation_timeline: "90 days"
+        controls: [RA-5.c, SI-2.a]
+        
+      Low:
+        nist_impact: low
+        remediation_timeline: "180 days"
+        controls: [RA-5.c]
+        
+      Informational:
+        nist_impact: info
+        remediation_timeline: "as scheduled"
+        controls: [RA-5.c]
+    
+    cwe_to_control_mapping:
+      CWE-79:   # XSS
+        controls: [SI-10, RA-5]
+        owasp: "A03:2021-Injection"
+        
+      CWE-89:   # SQL Injection
+        controls: [SI-10, RA-5]
+        owasp: "A03:2021-Injection"
+        
+      CWE-22:   # Path Traversal
+        controls: [SI-10, AC-3]
+        owasp: "A01:2021-Broken Access Control"
+        
+      CWE-352:  # CSRF
+        controls: [SI-10, SC-23]
+        owasp: "A01:2021-Broken Access Control"
+        
+      CWE-611:  # XXE
+        controls: [SI-10, RA-5]
+        owasp: "A05:2021-Security Misconfiguration"
+        
+      CWE-918:  # SSRF
+        controls: [SI-10, SC-7]
+        owasp: "A10:2021-SSRF"
+
+# ============================================================================
+# EVIDENCE REQUIREMENTS
+# ============================================================================
+evidence_requirements:
+  RA-5:
+    required_artifacts:
+      - artifact_type: "vulnerability_scan_report"
+        description: "Results from vulnerability scanning"
+        provenance_required: true
+        agent: vulnerability_scanner
+        minimum_frequency: "monthly"
+        
+      - artifact_type: "remediation_tracking"
+        description: "Evidence of vulnerability remediation"
+        provenance_required: true
+        
+      - artifact_type: "scan_coverage_report"
+        description: "Documentation of scan scope and coverage"
+        provenance_required: true
+        
+  SI-2:
+    required_artifacts:
+      - artifact_type: "patch_management_records"
+        description: "Evidence of timely patching"
+        provenance_required: true
+        
+      - artifact_type: "flaw_identification_report"
+        description: "List of identified flaws"
+        provenance_required: true
+        agents: [vulnerability_scanner, code_analyzer]
+        
+  SI-4:
+    required_artifacts:
+      - artifact_type: "monitoring_configuration"
+        description: "Evidence of monitoring implementation"
+        provenance_required: true
+        agent: log_analyzer
+        
+      - artifact_type: "detection_samples"
+        description: "Examples of detected events"
+        provenance_required: true
+        agent: log_analyzer
+        
+  SI-10:
+    required_artifacts:
+      - artifact_type: "code_analysis_report"
+        description: "Static analysis findings for input validation"
+        provenance_required: true
+        agent: code_analyzer
+        
+      - artifact_type: "vulnerability_test_results"
+        description: "Dynamic testing for injection flaws"
+        provenance_required: true
+        agent: vulnerability_scanner

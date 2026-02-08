@@ -1,0 +1,551 @@
+# NIST 800-53A Audit and Accountability (AU) Family
+# Assessment Objectives and Procedures
+# AI-Powered Security Auditor Framework Integration
+
+family:
+  id: AU
+  name: "Audit and Accountability"
+  description: |
+    Controls that create, protect, and retain audit records to enable
+    monitoring, analysis, investigation, and reporting of unauthorized activity.
+  automation_level: full
+  primary_agents: [log_analyzer, compliance_checker]
+
+controls:
+  AU-1:
+    title: "Policy and Procedures"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AU-1.a.1
+        description: "Develop and document audit and accountability policy"
+        method: EXAMINE
+        objects:
+          - "audit policy"
+          - "logging standards"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AU-1.a.2
+        description: "Policy addresses purpose, scope, roles, responsibilities"
+        method: EXAMINE
+        objects:
+          - "audit policy sections"
+        automated: true
+        agent: compliance_checker
+        rag_query: "audit logging policy purpose scope responsibilities management"
+        
+      - id: AU-1.c
+        description: "Review and update policy per organization timeframe"
+        method: EXAMINE
+        objects:
+          - "policy revision history"
+        automated: true
+        agent: compliance_checker
+
+  AU-2:
+    title: "Event Logging"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC7.1, CC7.2]
+    assessment_objectives:
+      - id: AU-2.a.1
+        description: "Identify events requiring logging"
+        method: EXAMINE
+        objects:
+          - "logging requirements document"
+          - "event types list"
+        automated: true
+        agent: compliance_checker
+        required_events:
+          - "successful/unsuccessful logon attempts"
+          - "privilege escalation"
+          - "account management"
+          - "object access"
+          - "policy changes"
+          - "system events"
+          
+      - id: AU-2.a.2
+        description: "Identify event types logged by each component"
+        method: EXAMINE
+        objects:
+          - "logging configuration"
+          - "system documentation"
+        automated: true
+        agent: log_analyzer
+        analysis: "log source inventory"
+        
+      - id: AU-2.b
+        description: "Coordinate logging requirements with organizations"
+        method: EXAMINE
+        objects:
+          - "coordination records"
+          - "shared logging agreements"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AU-2.c
+        description: "Provide rationale for logging decisions"
+        method: EXAMINE
+        objects:
+          - "logging justification"
+          - "risk assessment"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AU-2.d
+        description: "Review and update event types to be logged"
+        method: EXAMINE
+        objects:
+          - "review records"
+          - "logging configuration changes"
+        automated: true
+        agent: compliance_checker
+
+  AU-3:
+    title: "Content of Audit Records"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC7.1]
+    assessment_objectives:
+      - id: AU-3.a
+        description: "Audit records contain required content"
+        method: EXAMINE
+        objects:
+          - "sample audit records"
+          - "log entries"
+        automated: true
+        agent: log_analyzer
+        required_content:
+          - what: "type of event"
+          - when: "timestamp"
+          - where: "source location"
+          - source: "event source"
+          - outcome: "success or failure"
+          - who: "identity of subjects/objects"
+        validation_checks:
+          - "timestamp format"
+          - "user identification"
+          - "event type classification"
+          - "source IP/hostname"
+          - "action outcome"
+          
+      - id: AU-3.b
+        description: "Audit records contain additional required information"
+        method: EXAMINE
+        objects:
+          - "audit record samples"
+        automated: true
+        agent: log_analyzer
+        
+      - id: AU-3.1
+        description: "Generate additional detailed information"
+        method: EXAMINE
+        objects:
+          - "enhanced logging configuration"
+          - "detailed audit records"
+        automated: true
+        agent: log_analyzer
+        baseline: [moderate, high]
+
+  AU-4:
+    title: "Audit Log Storage Capacity"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AU-4.a
+        description: "Allocate sufficient storage for audit records"
+        method: EXAMINE
+        objects:
+          - "storage configuration"
+          - "capacity planning"
+        automated: partial
+        agent: compliance_checker
+        
+      - id: AU-4.1
+        description: "Transfer logs to alternate storage"
+        method: EXAMINE
+        objects:
+          - "log forwarding configuration"
+          - "SIEM integration"
+        automated: true
+        agent: log_analyzer
+
+  AU-5:
+    title: "Response to Audit Logging Process Failures"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AU-5.a
+        description: "Alert personnel on audit processing failures"
+        method: EXAMINE
+        objects:
+          - "alerting configuration"
+          - "failure notification procedures"
+        automated: true
+        agent: log_analyzer
+        checks:
+          - "logging failure alerts"
+          - "disk space alerts"
+          - "service monitoring"
+          
+      - id: AU-5.b
+        description: "Take defined actions on audit failures"
+        method: EXAMINE
+        objects:
+          - "failure response procedures"
+          - "incident response playbook"
+        automated: true
+        agent: compliance_checker
+
+  AU-6:
+    title: "Audit Record Review, Analysis, and Reporting"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC7.2, CC7.3]
+    assessment_objectives:
+      - id: AU-6.a
+        description: "Review and analyze audit records for indications"
+        method: EXAMINE
+        objects:
+          - "audit review procedures"
+          - "analysis reports"
+          - "log correlation results"
+        automated: true
+        agent: log_analyzer
+        analysis_capabilities:
+          - "anomaly detection"
+          - "pattern recognition"
+          - "threat correlation"
+          - "baseline deviation"
+        detection_categories:
+          - "inappropriate activity"
+          - "suspicious activity"
+          - "policy violations"
+          - "attack indicators"
+          
+      - id: AU-6.b
+        description: "Report findings to appropriate personnel"
+        method: EXAMINE
+        objects:
+          - "reporting procedures"
+          - "escalation matrix"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AU-6.c
+        description: "Adjust review and reporting frequency based on risk"
+        method: EXAMINE
+        objects:
+          - "risk-based review schedule"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AU-6.1
+        description: "Integrate analysis with vulnerability scanning"
+        method: EXAMINE
+        objects:
+          - "integrated analysis procedures"
+          - "correlation rules"
+        automated: true
+        agents: [log_analyzer, vulnerability_scanner]
+        baseline: [moderate, high]
+        
+      - id: AU-6.3
+        description: "Correlate across repositories"
+        method: EXAMINE
+        objects:
+          - "correlation configuration"
+          - "aggregated analysis"
+        automated: true
+        agent: log_analyzer
+        baseline: [moderate, high]
+        
+      - id: AU-6.5
+        description: "Integrate with monitoring information"
+        method: EXAMINE
+        objects:
+          - "integrated monitoring dashboard"
+          - "correlation outputs"
+        automated: true
+        agent: log_analyzer
+        baseline: [high]
+
+  AU-7:
+    title: "Audit Record Reduction and Report Generation"
+    baseline: [moderate, high]
+    assessment_objectives:
+      - id: AU-7.a
+        description: "Provide audit record reduction and report generation"
+        method: EXAMINE
+        objects:
+          - "reporting capabilities"
+          - "log analysis tools"
+        automated: true
+        agent: log_analyzer
+        capabilities:
+          - "filtering"
+          - "summarization"
+          - "trend analysis"
+          - "report generation"
+          
+      - id: AU-7.1
+        description: "Automatic processing for events of interest"
+        method: EXAMINE
+        objects:
+          - "automated analysis configuration"
+          - "rule-based processing"
+        automated: true
+        agent: log_analyzer
+
+  AU-8:
+    title: "Time Stamps"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AU-8.a
+        description: "Use internal clocks for timestamps"
+        method: EXAMINE
+        objects:
+          - "NTP configuration"
+          - "time synchronization settings"
+        automated: true
+        agent: log_analyzer
+        checks:
+          - "timestamp consistency"
+          - "time source configuration"
+          
+      - id: AU-8.b
+        description: "Map timestamps to UTC or offset"
+        method: EXAMINE
+        objects:
+          - "timestamp format in logs"
+        automated: true
+        agent: log_analyzer
+
+  AU-9:
+    title: "Protection of Audit Information"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AU-9.a
+        description: "Protect audit info from unauthorized access"
+        method: EXAMINE
+        objects:
+          - "log file permissions"
+          - "access controls on log storage"
+        automated: true
+        agent: code_analyzer
+        checks:
+          - "file permissions"
+          - "access control lists"
+          - "encryption at rest"
+          
+      - id: AU-9.b
+        description: "Alert on unauthorized access attempts"
+        method: EXAMINE
+        objects:
+          - "access monitoring configuration"
+          - "alert rules"
+        automated: true
+        agent: log_analyzer
+        
+      - id: AU-9.2
+        description: "Store logs on alternate system or media"
+        method: EXAMINE
+        objects:
+          - "log forwarding configuration"
+          - "backup procedures"
+        automated: true
+        agent: compliance_checker
+        baseline: [moderate, high]
+        
+      - id: AU-9.4
+        description: "Authorize access to subset of privileged users"
+        method: EXAMINE
+        objects:
+          - "log access permissions"
+          - "privileged access list"
+        automated: true
+        agent: code_analyzer
+        baseline: [moderate, high]
+
+  AU-11:
+    title: "Audit Record Retention"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AU-11.a
+        description: "Retain audit records per retention period"
+        method: EXAMINE
+        objects:
+          - "retention policy"
+          - "log retention configuration"
+        automated: true
+        agent: compliance_checker
+        checks:
+          - "retention period compliance"
+          - "archive configuration"
+          
+      - id: AU-11.b
+        description: "Support investigation requirements"
+        method: EXAMINE
+        objects:
+          - "archived log accessibility"
+          - "retrieval procedures"
+        automated: partial
+        agent: compliance_checker
+
+  AU-12:
+    title: "Audit Record Generation"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC7.1, CC7.2]
+    assessment_objectives:
+      - id: AU-12.a
+        description: "Provide audit generation at defined components"
+        method: EXAMINE
+        objects:
+          - "logging configuration"
+          - "component audit settings"
+        automated: true
+        agent: log_analyzer
+        checks:
+          - "audit source coverage"
+          - "event type coverage"
+          
+      - id: AU-12.b
+        description: "Allow authorized personnel to select events"
+        method: EXAMINE
+        objects:
+          - "logging management interface"
+          - "event selection procedures"
+        automated: partial
+        agent: compliance_checker
+        
+      - id: AU-12.c
+        description: "Generate records with required content"
+        method: EXAMINE
+        objects:
+          - "sample audit records"
+        automated: true
+        agent: log_analyzer
+        validation: "cross-reference with AU-3 requirements"
+        
+      - id: AU-12.1
+        description: "System-wide time-correlated audit trail"
+        method: EXAMINE
+        objects:
+          - "centralized logging"
+          - "correlation configuration"
+        automated: true
+        agent: log_analyzer
+        baseline: [moderate, high]
+        
+      - id: AU-12.3
+        description: "Limit authorized individuals for changes"
+        method: EXAMINE
+        objects:
+          - "logging configuration access controls"
+        automated: true
+        agent: code_analyzer
+        baseline: [high]
+
+# Log Analyzer Agent Configuration
+agent_configuration:
+  log_analyzer:
+    supported_formats:
+      - syslog
+      - json
+      - apache_combined
+      - apache_common
+      - windows_event
+      - cef
+      - leef
+      
+    detection_patterns:
+      authentication:
+        - pattern: "failed.*login|authentication.*failure"
+          severity: medium
+          control_mapping: [AU-2, AU-6]
+          
+        - pattern: "successful.*login|authentication.*success"
+          severity: info
+          control_mapping: [AU-2, AU-12]
+          
+        - pattern: "brute.*force|multiple.*failed"
+          severity: high
+          control_mapping: [AU-6, AC-7]
+          
+      privilege_escalation:
+        - pattern: "sudo|privilege.*elevat|admin.*access"
+          severity: medium
+          control_mapping: [AU-2, AC-6]
+          
+      account_management:
+        - pattern: "user.*created|account.*added"
+          severity: low
+          control_mapping: [AU-2, AC-2]
+          
+        - pattern: "user.*deleted|account.*removed"
+          severity: medium
+          control_mapping: [AU-2, AC-2]
+          
+      security_events:
+        - pattern: "security.*violation|policy.*breach"
+          severity: high
+          control_mapping: [AU-6, SI-4]
+          
+    correlation_rules:
+      - name: "Multiple Failed Logins"
+        description: "Detect potential brute force attacks"
+        threshold: 5
+        window: "5m"
+        control_mapping: [AU-6, AC-7]
+        
+      - name: "After Hours Access"
+        description: "Detect access outside business hours"
+        time_window: "00:00-06:00"
+        control_mapping: [AU-6, AC-2]
+        
+      - name: "Privilege Escalation After Failed Login"
+        description: "Detect suspicious privilege escalation"
+        sequence:
+          - "authentication.*failure"
+          - "privilege.*elevat"
+        window: "30m"
+        control_mapping: [AU-6, AC-6]
+
+# Evidence requirements for anti-hallucination
+evidence_requirements:
+  AU-2:
+    required_artifacts:
+      - artifact_type: "event_logging_policy"
+        description: "Documentation of events to be logged"
+        provenance_required: true
+        
+      - artifact_type: "logging_configuration"
+        description: "System logging settings"
+        provenance_required: true
+        agent: log_analyzer
+        
+  AU-3:
+    required_artifacts:
+      - artifact_type: "audit_record_sample"
+        description: "Sample log entries showing required fields"
+        provenance_required: true
+        agent: log_analyzer
+        minimum_samples: 10
+        
+  AU-6:
+    required_artifacts:
+      - artifact_type: "audit_review_report"
+        description: "Evidence of log review and analysis"
+        provenance_required: true
+        agent: log_analyzer
+        
+      - artifact_type: "anomaly_detection_results"
+        description: "Output from automated analysis"
+        provenance_required: true
+        agent: log_analyzer
+        
+  AU-12:
+    required_artifacts:
+      - artifact_type: "audit_source_inventory"
+        description: "List of systems generating audit records"
+        provenance_required: true
+        
+      - artifact_type: "log_coverage_assessment"
+        description: "Gap analysis of logging coverage"
+        provenance_required: true
+        agent: log_analyzer

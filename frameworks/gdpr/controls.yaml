@@ -1,0 +1,1109 @@
+# GDPR Compliance Framework
+# General Data Protection Regulation (EU) 2016/679
+# 
+# This framework maps GDPR articles to evidence requirements
+# for automated compliance assessment.
+#
+# Anti-Hallucination Principle: "If you can't prove it, you can't claim it"
+
+framework:
+  id: "GDPR"
+  name: "General Data Protection Regulation"
+  version: "2016/679"
+  effective_date: "2018-05-25"
+  jurisdiction: "European Union"
+  description: |
+    The General Data Protection Regulation is a regulation in EU law on data 
+    protection and privacy for all individuals within the European Union and 
+    the European Economic Area. It addresses the transfer of personal data 
+    outside the EU and EEA areas.
+
+# ============================================================================
+# CHAPTER II - PRINCIPLES
+# ============================================================================
+
+controls:
+  # Article 5 - Principles relating to processing of personal data
+  - id: "ART5.1a"
+    article: "5(1)(a)"
+    title: "Lawfulness, Fairness, and Transparency"
+    chapter: "II - Principles"
+    description: |
+      Personal data shall be processed lawfully, fairly and in a manner that 
+      is transparent in relation to the data subject.
+    keywords:
+      - lawful processing
+      - fairness
+      - transparency
+      - data subject rights
+    evidence_requirements:
+      - id: "ART5.1a-E1"
+        description: "Privacy policy accessible to data subjects"
+        artifact_types: ["policy_document", "web_page"]
+        required: true
+      - id: "ART5.1a-E2"
+        description: "Legal basis documentation for each processing activity"
+        artifact_types: ["legal_document", "records_of_processing"]
+        required: true
+      - id: "ART5.1a-E3"
+        description: "Clear and plain language in privacy communications"
+        artifact_types: ["policy_document", "consent_forms"]
+        required: true
+    assessment_criteria:
+      pass: "Evidence shows clear legal basis, accessible privacy policy, and plain language communications"
+      fail: "Missing legal basis documentation OR inaccessible/unclear privacy policy"
+    related_controls: ["ART6", "ART12", "ART13", "ART14"]
+    severity_if_fail: "high"
+
+  - id: "ART5.1b"
+    article: "5(1)(b)"
+    title: "Purpose Limitation"
+    chapter: "II - Principles"
+    description: |
+      Personal data shall be collected for specified, explicit and legitimate 
+      purposes and not further processed in a manner that is incompatible with 
+      those purposes.
+    keywords:
+      - purpose limitation
+      - specified purposes
+      - legitimate purposes
+      - compatible processing
+    evidence_requirements:
+      - id: "ART5.1b-E1"
+        description: "Records of processing activities with stated purposes"
+        artifact_types: ["records_of_processing", "ropa"]
+        required: true
+      - id: "ART5.1b-E2"
+        description: "Purpose compatibility assessments for secondary processing"
+        artifact_types: ["assessment_document", "legal_review"]
+        required: false
+      - id: "ART5.1b-E3"
+        description: "Data subject consent for new purposes"
+        artifact_types: ["consent_records", "audit_log"]
+        required: false
+    assessment_criteria:
+      pass: "Documented purposes for all processing activities with compatibility assessments where applicable"
+      fail: "Processing occurs without documented purpose OR incompatible secondary processing without consent"
+    related_controls: ["ART6", "ART30"]
+    severity_if_fail: "high"
+
+  - id: "ART5.1c"
+    article: "5(1)(c)"
+    title: "Data Minimisation"
+    chapter: "II - Principles"
+    description: |
+      Personal data shall be adequate, relevant and limited to what is 
+      necessary in relation to the purposes for which they are processed.
+    keywords:
+      - data minimisation
+      - adequacy
+      - relevance
+      - necessity
+    evidence_requirements:
+      - id: "ART5.1c-E1"
+        description: "Data inventory mapping fields to purposes"
+        artifact_types: ["data_inventory", "data_map"]
+        required: true
+      - id: "ART5.1c-E2"
+        description: "Data minimisation review documentation"
+        artifact_types: ["assessment_document", "review_record"]
+        required: true
+      - id: "ART5.1c-E3"
+        description: "Technical controls limiting data collection"
+        artifact_types: ["configuration", "code_review"]
+        required: false
+    assessment_criteria:
+      pass: "Data inventory demonstrates necessity of each data field for stated purposes"
+      fail: "Excessive data collection OR data fields without justified purpose"
+    related_controls: ["ART25", "ART35"]
+    severity_if_fail: "medium"
+
+  - id: "ART5.1d"
+    article: "5(1)(d)"
+    title: "Accuracy"
+    chapter: "II - Principles"
+    description: |
+      Personal data shall be accurate and, where necessary, kept up to date; 
+      every reasonable step must be taken to ensure that personal data that 
+      are inaccurate are erased or rectified without delay.
+    keywords:
+      - accuracy
+      - data quality
+      - rectification
+      - data updates
+    evidence_requirements:
+      - id: "ART5.1d-E1"
+        description: "Data quality procedures and policies"
+        artifact_types: ["policy_document", "procedure"]
+        required: true
+      - id: "ART5.1d-E2"
+        description: "Self-service data correction mechanisms"
+        artifact_types: ["system_screenshot", "technical_spec"]
+        required: false
+      - id: "ART5.1d-E3"
+        description: "Data validation rules in systems"
+        artifact_types: ["configuration", "code_review"]
+        required: false
+    assessment_criteria:
+      pass: "Documented data quality procedures with mechanisms for data subjects to update information"
+      fail: "No data quality procedures OR no mechanism for rectification"
+    related_controls: ["ART16"]
+    severity_if_fail: "medium"
+
+  - id: "ART5.1e"
+    article: "5(1)(e)"
+    title: "Storage Limitation"
+    chapter: "II - Principles"
+    description: |
+      Personal data shall be kept in a form which permits identification of 
+      data subjects for no longer than is necessary for the purposes for which 
+      the personal data are processed.
+    keywords:
+      - storage limitation
+      - retention periods
+      - data deletion
+      - anonymisation
+    evidence_requirements:
+      - id: "ART5.1e-E1"
+        description: "Data retention policy with defined periods"
+        artifact_types: ["policy_document", "retention_schedule"]
+        required: true
+      - id: "ART5.1e-E2"
+        description: "Automated deletion mechanisms"
+        artifact_types: ["configuration", "system_logs"]
+        required: true
+      - id: "ART5.1e-E3"
+        description: "Retention period justifications per data category"
+        artifact_types: ["legal_document", "assessment_document"]
+        required: true
+    assessment_criteria:
+      pass: "Defined retention periods with implemented automated deletion and documented justifications"
+      fail: "No retention policy OR retention without justification OR indefinite storage"
+    related_controls: ["ART17", "ART30"]
+    severity_if_fail: "high"
+
+  - id: "ART5.1f"
+    article: "5(1)(f)"
+    title: "Integrity and Confidentiality"
+    chapter: "II - Principles"
+    description: |
+      Personal data shall be processed in a manner that ensures appropriate 
+      security of the personal data, including protection against unauthorised 
+      or unlawful processing and against accidental loss, destruction or damage, 
+      using appropriate technical or organisational measures.
+    keywords:
+      - security
+      - confidentiality
+      - integrity
+      - technical measures
+      - organisational measures
+    evidence_requirements:
+      - id: "ART5.1f-E1"
+        description: "Information security policy"
+        artifact_types: ["policy_document"]
+        required: true
+      - id: "ART5.1f-E2"
+        description: "Encryption configuration for data at rest"
+        artifact_types: ["configuration", "technical_spec"]
+        required: true
+      - id: "ART5.1f-E3"
+        description: "Encryption configuration for data in transit"
+        artifact_types: ["configuration", "technical_spec"]
+        required: true
+      - id: "ART5.1f-E4"
+        description: "Access control configuration"
+        artifact_types: ["configuration", "audit_log"]
+        required: true
+      - id: "ART5.1f-E5"
+        description: "Security incident response procedures"
+        artifact_types: ["procedure", "runbook"]
+        required: true
+    assessment_criteria:
+      pass: "Documented security controls with evidence of encryption, access control, and incident response"
+      fail: "Missing encryption OR inadequate access controls OR no incident response procedures"
+    related_controls: ["ART32", "ART33", "ART34"]
+    severity_if_fail: "critical"
+
+  - id: "ART5.2"
+    article: "5(2)"
+    title: "Accountability"
+    chapter: "II - Principles"
+    description: |
+      The controller shall be responsible for, and be able to demonstrate 
+      compliance with, paragraph 1 (accountability).
+    keywords:
+      - accountability
+      - demonstrate compliance
+      - documentation
+      - records
+    evidence_requirements:
+      - id: "ART5.2-E1"
+        description: "Records of processing activities (ROPA)"
+        artifact_types: ["records_of_processing", "ropa"]
+        required: true
+      - id: "ART5.2-E2"
+        description: "Data protection policies and procedures"
+        artifact_types: ["policy_document", "procedure"]
+        required: true
+      - id: "ART5.2-E3"
+        description: "Training records for data handling staff"
+        artifact_types: ["training_records", "attendance_log"]
+        required: true
+      - id: "ART5.2-E4"
+        description: "Audit trails for data processing"
+        artifact_types: ["audit_log", "system_logs"]
+        required: true
+    assessment_criteria:
+      pass: "Complete documentation demonstrating compliance with all Article 5(1) principles"
+      fail: "Incomplete records OR inability to demonstrate compliance"
+    related_controls: ["ART24", "ART30"]
+    severity_if_fail: "high"
+
+# ============================================================================
+# CHAPTER II - LAWFULNESS OF PROCESSING
+# ============================================================================
+
+  - id: "ART6"
+    article: "6"
+    title: "Lawfulness of Processing"
+    chapter: "II - Principles"
+    description: |
+      Processing shall be lawful only if and to the extent that at least one 
+      of the legal bases applies: consent, contract, legal obligation, vital 
+      interests, public task, or legitimate interests.
+    keywords:
+      - legal basis
+      - consent
+      - contract
+      - legitimate interests
+      - lawful processing
+    evidence_requirements:
+      - id: "ART6-E1"
+        description: "Legal basis documentation for each processing activity"
+        artifact_types: ["legal_document", "records_of_processing"]
+        required: true
+      - id: "ART6-E2"
+        description: "Legitimate interests assessments (where applicable)"
+        artifact_types: ["assessment_document", "lia"]
+        required: false
+      - id: "ART6-E3"
+        description: "Consent management system configuration"
+        artifact_types: ["configuration", "system_screenshot"]
+        required: false
+      - id: "ART6-E4"
+        description: "Contractual basis documentation"
+        artifact_types: ["contract", "terms_of_service"]
+        required: false
+    assessment_criteria:
+      pass: "Each processing activity has documented, valid legal basis with supporting evidence"
+      fail: "Processing without documented legal basis OR invalid legal basis claimed"
+    related_controls: ["ART5.1a", "ART7", "ART9"]
+    severity_if_fail: "critical"
+
+  - id: "ART7"
+    article: "7"
+    title: "Conditions for Consent"
+    chapter: "II - Principles"
+    description: |
+      Where processing is based on consent, the controller shall be able to 
+      demonstrate that the data subject has consented. Consent must be freely 
+      given, specific, informed, and unambiguous.
+    keywords:
+      - consent
+      - freely given
+      - specific consent
+      - informed consent
+      - withdrawal
+    evidence_requirements:
+      - id: "ART7-E1"
+        description: "Consent collection mechanisms"
+        artifact_types: ["system_screenshot", "technical_spec"]
+        required: true
+      - id: "ART7-E2"
+        description: "Consent records with timestamps"
+        artifact_types: ["consent_records", "database_export"]
+        required: true
+      - id: "ART7-E3"
+        description: "Consent withdrawal mechanism"
+        artifact_types: ["system_screenshot", "procedure"]
+        required: true
+      - id: "ART7-E4"
+        description: "Consent text and presentation"
+        artifact_types: ["ui_screenshot", "form_template"]
+        required: true
+    assessment_criteria:
+      pass: "Consent is specific, informed, freely given with easy withdrawal and complete records"
+      fail: "Bundled consent OR pre-ticked boxes OR no withdrawal mechanism OR incomplete records"
+    related_controls: ["ART6", "ART8"]
+    severity_if_fail: "high"
+
+# ============================================================================
+# CHAPTER III - RIGHTS OF THE DATA SUBJECT
+# ============================================================================
+
+  - id: "ART12"
+    article: "12"
+    title: "Transparent Information and Communication"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      The controller shall take appropriate measures to provide information 
+      relating to processing in a concise, transparent, intelligible and 
+      easily accessible form, using clear and plain language.
+    keywords:
+      - transparency
+      - plain language
+      - accessible information
+      - data subject communication
+    evidence_requirements:
+      - id: "ART12-E1"
+        description: "Privacy notice in clear and plain language"
+        artifact_types: ["policy_document", "web_page"]
+        required: true
+      - id: "ART12-E2"
+        description: "Layered privacy information approach"
+        artifact_types: ["documentation", "ui_screenshot"]
+        required: false
+      - id: "ART12-E3"
+        description: "Multiple language versions (where applicable)"
+        artifact_types: ["policy_document"]
+        required: false
+      - id: "ART12-E4"
+        description: "Response time procedures for data subject requests"
+        artifact_types: ["procedure", "sla_document"]
+        required: true
+    assessment_criteria:
+      pass: "Privacy information is clear, accessible, and response procedures exist for data subject requests"
+      fail: "Unclear or inaccessible privacy information OR no response procedures"
+    related_controls: ["ART13", "ART14", "ART15"]
+    severity_if_fail: "medium"
+
+  - id: "ART13"
+    article: "13"
+    title: "Information When Data Collected from Subject"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      Where personal data is collected from the data subject, the controller 
+      shall provide specific information at the time of collection.
+    keywords:
+      - privacy notice
+      - collection notice
+      - controller identity
+      - processing purposes
+    evidence_requirements:
+      - id: "ART13-E1"
+        description: "Collection-point privacy notices"
+        artifact_types: ["ui_screenshot", "form_template"]
+        required: true
+      - id: "ART13-E2"
+        description: "Identity and contact details of controller"
+        artifact_types: ["policy_document"]
+        required: true
+      - id: "ART13-E3"
+        description: "DPO contact details (where applicable)"
+        artifact_types: ["policy_document", "contact_page"]
+        required: false
+      - id: "ART13-E4"
+        description: "Information about data subject rights"
+        artifact_types: ["policy_document"]
+        required: true
+      - id: "ART13-E5"
+        description: "Third-party sharing disclosures"
+        artifact_types: ["policy_document"]
+        required: true
+    assessment_criteria:
+      pass: "Complete Article 13 information provided at all collection points"
+      fail: "Missing required information elements at collection points"
+    related_controls: ["ART12", "ART14"]
+    severity_if_fail: "high"
+
+  - id: "ART15"
+    article: "15"
+    title: "Right of Access"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      The data subject shall have the right to obtain from the controller 
+      confirmation as to whether personal data concerning them is being 
+      processed, and access to that data.
+    keywords:
+      - right of access
+      - subject access request
+      - SAR
+      - data copy
+    evidence_requirements:
+      - id: "ART15-E1"
+        description: "Subject access request procedure"
+        artifact_types: ["procedure", "runbook"]
+        required: true
+      - id: "ART15-E2"
+        description: "SAR request portal or mechanism"
+        artifact_types: ["system_screenshot", "form_template"]
+        required: true
+      - id: "ART15-E3"
+        description: "Sample SAR responses (redacted)"
+        artifact_types: ["sample_response", "template"]
+        required: false
+      - id: "ART15-E4"
+        description: "SAR tracking and completion logs"
+        artifact_types: ["audit_log", "ticket_system"]
+        required: true
+    assessment_criteria:
+      pass: "Documented SAR procedure with mechanism for requests and tracking of completions"
+      fail: "No SAR procedure OR no request mechanism OR incomplete tracking"
+    related_controls: ["ART12", "ART20"]
+    severity_if_fail: "high"
+
+  - id: "ART16"
+    article: "16"
+    title: "Right to Rectification"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      The data subject shall have the right to obtain from the controller 
+      without undue delay the rectification of inaccurate personal data.
+    keywords:
+      - rectification
+      - correction
+      - data accuracy
+      - update data
+    evidence_requirements:
+      - id: "ART16-E1"
+        description: "Rectification request procedure"
+        artifact_types: ["procedure"]
+        required: true
+      - id: "ART16-E2"
+        description: "Self-service data correction capabilities"
+        artifact_types: ["system_screenshot", "technical_spec"]
+        required: false
+      - id: "ART16-E3"
+        description: "Rectification request logs"
+        artifact_types: ["audit_log", "ticket_system"]
+        required: true
+    assessment_criteria:
+      pass: "Documented procedure for rectification with tracking of requests"
+      fail: "No rectification procedure OR no tracking"
+    related_controls: ["ART5.1d", "ART17"]
+    severity_if_fail: "medium"
+
+  - id: "ART17"
+    article: "17"
+    title: "Right to Erasure (Right to be Forgotten)"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      The data subject shall have the right to obtain from the controller the 
+      erasure of personal data without undue delay under certain circumstances.
+    keywords:
+      - erasure
+      - right to be forgotten
+      - deletion
+      - data removal
+    evidence_requirements:
+      - id: "ART17-E1"
+        description: "Erasure request procedure"
+        artifact_types: ["procedure", "runbook"]
+        required: true
+      - id: "ART17-E2"
+        description: "Technical capability for data deletion"
+        artifact_types: ["technical_spec", "architecture_diagram"]
+        required: true
+      - id: "ART17-E3"
+        description: "Erasure verification procedures"
+        artifact_types: ["procedure", "checklist"]
+        required: true
+      - id: "ART17-E4"
+        description: "Erasure request and completion logs"
+        artifact_types: ["audit_log", "ticket_system"]
+        required: true
+      - id: "ART17-E5"
+        description: "Third-party notification procedures for erasure"
+        artifact_types: ["procedure"]
+        required: true
+    assessment_criteria:
+      pass: "Complete erasure procedure with technical capability, verification, and third-party notification"
+      fail: "No erasure capability OR no verification process OR no third-party notification"
+    related_controls: ["ART5.1e", "ART19"]
+    severity_if_fail: "high"
+
+  - id: "ART18"
+    article: "18"
+    title: "Right to Restriction of Processing"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      The data subject shall have the right to obtain from the controller 
+      restriction of processing under certain circumstances.
+    keywords:
+      - restriction
+      - processing restriction
+      - data freezing
+    evidence_requirements:
+      - id: "ART18-E1"
+        description: "Restriction request procedure"
+        artifact_types: ["procedure"]
+        required: true
+      - id: "ART18-E2"
+        description: "Technical capability to restrict processing"
+        artifact_types: ["technical_spec", "configuration"]
+        required: true
+      - id: "ART18-E3"
+        description: "Restriction tracking logs"
+        artifact_types: ["audit_log"]
+        required: true
+    assessment_criteria:
+      pass: "Documented procedure with technical capability to restrict processing"
+      fail: "No restriction capability OR no procedure"
+    related_controls: ["ART17", "ART21"]
+    severity_if_fail: "medium"
+
+  - id: "ART20"
+    article: "20"
+    title: "Right to Data Portability"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      The data subject shall have the right to receive personal data in a 
+      structured, commonly used and machine-readable format and to transmit 
+      that data to another controller.
+    keywords:
+      - data portability
+      - data export
+      - machine-readable
+      - data transfer
+    evidence_requirements:
+      - id: "ART20-E1"
+        description: "Data portability request procedure"
+        artifact_types: ["procedure"]
+        required: true
+      - id: "ART20-E2"
+        description: "Data export format specification"
+        artifact_types: ["technical_spec"]
+        required: true
+      - id: "ART20-E3"
+        description: "Sample data export (redacted)"
+        artifact_types: ["sample_export"]
+        required: false
+      - id: "ART20-E4"
+        description: "Self-service export capability"
+        artifact_types: ["system_screenshot"]
+        required: false
+    assessment_criteria:
+      pass: "Data portability procedure with machine-readable export format"
+      fail: "No portability capability OR non-standard export format"
+    related_controls: ["ART15"]
+    severity_if_fail: "medium"
+
+  - id: "ART21"
+    article: "21"
+    title: "Right to Object"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      The data subject shall have the right to object, on grounds relating to 
+      their particular situation, to processing based on legitimate interests 
+      or public interest. Also absolute right to object to direct marketing.
+    keywords:
+      - right to object
+      - objection
+      - direct marketing opt-out
+      - processing objection
+    evidence_requirements:
+      - id: "ART21-E1"
+        description: "Objection handling procedure"
+        artifact_types: ["procedure"]
+        required: true
+      - id: "ART21-E2"
+        description: "Marketing opt-out mechanism"
+        artifact_types: ["system_screenshot", "configuration"]
+        required: true
+      - id: "ART21-E3"
+        description: "Objection tracking logs"
+        artifact_types: ["audit_log"]
+        required: true
+      - id: "ART21-E4"
+        description: "Clear information about right to object"
+        artifact_types: ["policy_document"]
+        required: true
+    assessment_criteria:
+      pass: "Objection procedure with easy marketing opt-out and clear disclosure of rights"
+      fail: "No objection handling OR difficult marketing opt-out OR unclear rights disclosure"
+    related_controls: ["ART6", "ART12"]
+    severity_if_fail: "high"
+
+  - id: "ART22"
+    article: "22"
+    title: "Automated Decision-Making and Profiling"
+    chapter: "III - Rights of Data Subject"
+    description: |
+      The data subject shall have the right not to be subject to a decision 
+      based solely on automated processing, including profiling, which produces 
+      legal effects or similarly significantly affects them.
+    keywords:
+      - automated decision-making
+      - profiling
+      - algorithmic decisions
+      - human intervention
+    evidence_requirements:
+      - id: "ART22-E1"
+        description: "Automated decision-making inventory"
+        artifact_types: ["inventory", "documentation"]
+        required: true
+      - id: "ART22-E2"
+        description: "Human intervention procedures for automated decisions"
+        artifact_types: ["procedure"]
+        required: true
+      - id: "ART22-E3"
+        description: "Logic explanation documentation"
+        artifact_types: ["documentation", "technical_spec"]
+        required: true
+      - id: "ART22-E4"
+        description: "Safeguards for automated decisions"
+        artifact_types: ["technical_spec", "procedure"]
+        required: true
+    assessment_criteria:
+      pass: "Inventory of automated decisions with human intervention capability and logic explanations"
+      fail: "No inventory OR no human intervention capability OR no logic explanation"
+    related_controls: ["ART13", "ART14", "ART35"]
+    severity_if_fail: "high"
+
+# ============================================================================
+# CHAPTER IV - CONTROLLER AND PROCESSOR
+# ============================================================================
+
+  - id: "ART24"
+    article: "24"
+    title: "Responsibility of the Controller"
+    chapter: "IV - Controller and Processor"
+    description: |
+      The controller shall implement appropriate technical and organisational 
+      measures to ensure and demonstrate that processing is performed in 
+      accordance with the GDPR.
+    keywords:
+      - controller responsibility
+      - technical measures
+      - organisational measures
+      - policies and procedures
+    evidence_requirements:
+      - id: "ART24-E1"
+        description: "Data protection governance framework"
+        artifact_types: ["policy_document", "governance_document"]
+        required: true
+      - id: "ART24-E2"
+        description: "Data protection roles and responsibilities"
+        artifact_types: ["raci_matrix", "org_chart"]
+        required: true
+      - id: "ART24-E3"
+        description: "Regular compliance reviews"
+        artifact_types: ["audit_report", "review_record"]
+        required: true
+      - id: "ART24-E4"
+        description: "Documented policies approved by management"
+        artifact_types: ["policy_document"]
+        required: true
+    assessment_criteria:
+      pass: "Comprehensive data protection governance with defined responsibilities and regular reviews"
+      fail: "No governance framework OR undefined responsibilities OR no compliance reviews"
+    related_controls: ["ART5.2", "ART32"]
+    severity_if_fail: "high"
+
+  - id: "ART25"
+    article: "25"
+    title: "Data Protection by Design and Default"
+    chapter: "IV - Controller and Processor"
+    description: |
+      The controller shall implement appropriate technical and organisational 
+      measures designed to implement data-protection principles and integrate 
+      necessary safeguards into processing, both at the time of determination 
+      and at the time of processing itself.
+    keywords:
+      - privacy by design
+      - privacy by default
+      - data protection by design
+      - minimisation by default
+    evidence_requirements:
+      - id: "ART25-E1"
+        description: "Privacy by design requirements in SDLC"
+        artifact_types: ["procedure", "sdlc_document"]
+        required: true
+      - id: "ART25-E2"
+        description: "Default privacy settings documentation"
+        artifact_types: ["configuration", "technical_spec"]
+        required: true
+      - id: "ART25-E3"
+        description: "Privacy design review records"
+        artifact_types: ["review_record", "checklist"]
+        required: true
+      - id: "ART25-E4"
+        description: "Pseudonymisation or anonymisation techniques"
+        artifact_types: ["technical_spec", "documentation"]
+        required: false
+    assessment_criteria:
+      pass: "Privacy by design integrated into SDLC with privacy-protective defaults"
+      fail: "No PbD in SDLC OR non-privacy-protective defaults"
+    related_controls: ["ART5.1c", "ART32"]
+    severity_if_fail: "high"
+
+  - id: "ART28"
+    article: "28"
+    title: "Processor Requirements"
+    chapter: "IV - Controller and Processor"
+    description: |
+      Where processing is carried out by a processor, the controller shall use 
+      only processors providing sufficient guarantees. Processing by a processor 
+      shall be governed by a contract.
+    keywords:
+      - processor
+      - data processing agreement
+      - DPA
+      - sub-processor
+      - vendor management
+    evidence_requirements:
+      - id: "ART28-E1"
+        description: "Data processing agreements with all processors"
+        artifact_types: ["contract", "dpa"]
+        required: true
+      - id: "ART28-E2"
+        description: "Processor due diligence records"
+        artifact_types: ["assessment_document", "vendor_review"]
+        required: true
+      - id: "ART28-E3"
+        description: "Sub-processor management procedures"
+        artifact_types: ["procedure", "processor_list"]
+        required: true
+      - id: "ART28-E4"
+        description: "Processor audit rights and reports"
+        artifact_types: ["audit_report", "contract"]
+        required: false
+    assessment_criteria:
+      pass: "DPAs in place with all processors, due diligence conducted, sub-processors managed"
+      fail: "Missing DPAs OR no due diligence OR unmanaged sub-processors"
+    related_controls: ["ART32", "ART46"]
+    severity_if_fail: "critical"
+
+  - id: "ART30"
+    article: "30"
+    title: "Records of Processing Activities"
+    chapter: "IV - Controller and Processor"
+    description: |
+      Each controller shall maintain a record of processing activities under 
+      its responsibility, containing specified information.
+    keywords:
+      - ROPA
+      - records of processing
+      - processing register
+      - data inventory
+    evidence_requirements:
+      - id: "ART30-E1"
+        description: "Records of processing activities (ROPA)"
+        artifact_types: ["ropa", "records_of_processing"]
+        required: true
+      - id: "ART30-E2"
+        description: "ROPA update procedures"
+        artifact_types: ["procedure"]
+        required: true
+      - id: "ART30-E3"
+        description: "ROPA review and approval records"
+        artifact_types: ["review_record", "approval_log"]
+        required: true
+    assessment_criteria:
+      pass: "Complete ROPA maintained with regular updates and reviews"
+      fail: "No ROPA OR incomplete ROPA OR no update process"
+    related_controls: ["ART5.2", "ART24"]
+    severity_if_fail: "high"
+
+# ============================================================================
+# CHAPTER IV - SECURITY
+# ============================================================================
+
+  - id: "ART32"
+    article: "32"
+    title: "Security of Processing"
+    chapter: "IV - Controller and Processor"
+    description: |
+      The controller and processor shall implement appropriate technical and 
+      organisational measures to ensure a level of security appropriate to the 
+      risk, including pseudonymisation, encryption, confidentiality, integrity, 
+      availability, and resilience.
+    keywords:
+      - security measures
+      - encryption
+      - pseudonymisation
+      - confidentiality
+      - integrity
+      - availability
+      - resilience
+    evidence_requirements:
+      - id: "ART32-E1"
+        description: "Information security risk assessment"
+        artifact_types: ["risk_assessment", "assessment_document"]
+        required: true
+      - id: "ART32-E2"
+        description: "Encryption implementation (at rest and in transit)"
+        artifact_types: ["configuration", "technical_spec"]
+        required: true
+      - id: "ART32-E3"
+        description: "Access control policies and implementation"
+        artifact_types: ["policy_document", "configuration"]
+        required: true
+      - id: "ART32-E4"
+        description: "Backup and recovery procedures"
+        artifact_types: ["procedure", "test_results"]
+        required: true
+      - id: "ART32-E5"
+        description: "Security testing results (pen test, vulnerability scan)"
+        artifact_types: ["security_report", "scan_results"]
+        required: true
+      - id: "ART32-E6"
+        description: "Pseudonymisation techniques (where used)"
+        artifact_types: ["technical_spec"]
+        required: false
+    assessment_criteria:
+      pass: "Risk-based security measures with encryption, access controls, backups, and testing"
+      fail: "No risk assessment OR missing encryption OR inadequate access controls OR no testing"
+    related_controls: ["ART5.1f", "ART25"]
+    severity_if_fail: "critical"
+
+  - id: "ART33"
+    article: "33"
+    title: "Notification of Breach to Supervisory Authority"
+    chapter: "IV - Controller and Processor"
+    description: |
+      In the case of a personal data breach, the controller shall without undue 
+      delay and, where feasible, not later than 72 hours after having become 
+      aware of it, notify the personal data breach to the supervisory authority.
+    keywords:
+      - breach notification
+      - supervisory authority
+      - 72 hours
+      - data breach
+    evidence_requirements:
+      - id: "ART33-E1"
+        description: "Breach detection procedures"
+        artifact_types: ["procedure", "runbook"]
+        required: true
+      - id: "ART33-E2"
+        description: "Breach notification procedures"
+        artifact_types: ["procedure", "template"]
+        required: true
+      - id: "ART33-E3"
+        description: "Breach register"
+        artifact_types: ["log", "register"]
+        required: true
+      - id: "ART33-E4"
+        description: "Supervisory authority contact details"
+        artifact_types: ["documentation"]
+        required: true
+      - id: "ART33-E5"
+        description: "Breach assessment criteria"
+        artifact_types: ["procedure", "checklist"]
+        required: true
+    assessment_criteria:
+      pass: "Documented breach procedures enabling 72-hour notification with maintained register"
+      fail: "No breach procedures OR no notification capability OR no register"
+    related_controls: ["ART34", "ART32"]
+    severity_if_fail: "critical"
+
+  - id: "ART34"
+    article: "34"
+    title: "Communication of Breach to Data Subject"
+    chapter: "IV - Controller and Processor"
+    description: |
+      When the personal data breach is likely to result in a high risk to the 
+      rights and freedoms of natural persons, the controller shall communicate 
+      the personal data breach to the data subject without undue delay.
+    keywords:
+      - breach communication
+      - data subject notification
+      - high risk breach
+    evidence_requirements:
+      - id: "ART34-E1"
+        description: "Data subject notification procedures"
+        artifact_types: ["procedure"]
+        required: true
+      - id: "ART34-E2"
+        description: "Breach communication templates"
+        artifact_types: ["template"]
+        required: true
+      - id: "ART34-E3"
+        description: "Risk assessment criteria for subject notification"
+        artifact_types: ["procedure", "checklist"]
+        required: true
+      - id: "ART34-E4"
+        description: "Contact mechanisms for affected subjects"
+        artifact_types: ["documentation", "technical_spec"]
+        required: true
+    assessment_criteria:
+      pass: "Data subject notification procedures with templates and risk assessment criteria"
+      fail: "No subject notification procedures OR no risk assessment criteria"
+    related_controls: ["ART33"]
+    severity_if_fail: "high"
+
+# ============================================================================
+# CHAPTER IV - DATA PROTECTION IMPACT ASSESSMENT
+# ============================================================================
+
+  - id: "ART35"
+    article: "35"
+    title: "Data Protection Impact Assessment"
+    chapter: "IV - Controller and Processor"
+    description: |
+      Where a type of processing is likely to result in a high risk to the 
+      rights and freedoms of natural persons, the controller shall carry out 
+      an assessment of the impact of the envisaged processing operations.
+    keywords:
+      - DPIA
+      - data protection impact assessment
+      - privacy impact assessment
+      - high risk processing
+    evidence_requirements:
+      - id: "ART35-E1"
+        description: "DPIA procedure and criteria"
+        artifact_types: ["procedure"]
+        required: true
+      - id: "ART35-E2"
+        description: "DPIA screening criteria"
+        artifact_types: ["checklist", "procedure"]
+        required: true
+      - id: "ART35-E3"
+        description: "Completed DPIAs for high-risk processing"
+        artifact_types: ["dpia", "assessment_document"]
+        required: true
+      - id: "ART35-E4"
+        description: "DPIA review and approval records"
+        artifact_types: ["approval_log", "review_record"]
+        required: true
+      - id: "ART35-E5"
+        description: "DPO consultation records (where applicable)"
+        artifact_types: ["consultation_record"]
+        required: false
+    assessment_criteria:
+      pass: "DPIA procedure with completed assessments for high-risk processing"
+      fail: "No DPIA procedure OR high-risk processing without DPIA"
+    related_controls: ["ART24", "ART36"]
+    severity_if_fail: "high"
+
+# ============================================================================
+# CHAPTER IV - DATA PROTECTION OFFICER
+# ============================================================================
+
+  - id: "ART37"
+    article: "37"
+    title: "Designation of Data Protection Officer"
+    chapter: "IV - Controller and Processor"
+    description: |
+      The controller and processor shall designate a data protection officer 
+      where required (public authority, large-scale systematic monitoring, 
+      large-scale special category data processing).
+    keywords:
+      - DPO
+      - data protection officer
+      - designation
+    evidence_requirements:
+      - id: "ART37-E1"
+        description: "DPO appointment documentation"
+        artifact_types: ["appointment_letter", "hr_record"]
+        required: false
+      - id: "ART37-E2"
+        description: "DPO qualifications and expertise evidence"
+        artifact_types: ["cv", "certification"]
+        required: false
+      - id: "ART37-E3"
+        description: "Assessment of DPO requirement"
+        artifact_types: ["assessment_document"]
+        required: true
+      - id: "ART37-E4"
+        description: "DPO contact details published"
+        artifact_types: ["policy_document", "contact_page"]
+        required: false
+    assessment_criteria:
+      pass: "DPO appointed if required, or documented assessment showing DPO not required"
+      fail: "Required DPO not appointed OR no assessment of requirement"
+    related_controls: ["ART38", "ART39"]
+    severity_if_fail: "high"
+
+# ============================================================================
+# CHAPTER V - INTERNATIONAL TRANSFERS
+# ============================================================================
+
+  - id: "ART44"
+    article: "44"
+    title: "General Principles for Transfers"
+    chapter: "V - Transfers to Third Countries"
+    description: |
+      Any transfer of personal data to a third country or international 
+      organisation shall take place only if the conditions of Chapter V are 
+      complied with.
+    keywords:
+      - international transfer
+      - third country
+      - data transfer
+      - cross-border
+    evidence_requirements:
+      - id: "ART44-E1"
+        description: "International transfer inventory"
+        artifact_types: ["inventory", "data_map"]
+        required: true
+      - id: "ART44-E2"
+        description: "Transfer mechanism documentation"
+        artifact_types: ["legal_document", "contract"]
+        required: true
+      - id: "ART44-E3"
+        description: "Transfer impact assessments"
+        artifact_types: ["assessment_document", "tia"]
+        required: true
+    assessment_criteria:
+      pass: "All international transfers documented with valid transfer mechanisms"
+      fail: "Undocumented transfers OR transfers without valid mechanism"
+    related_controls: ["ART45", "ART46"]
+    severity_if_fail: "critical"
+
+  - id: "ART46"
+    article: "46"
+    title: "Transfers Subject to Appropriate Safeguards"
+    chapter: "V - Transfers to Third Countries"
+    description: |
+      In the absence of an adequacy decision, transfers may take place using 
+      appropriate safeguards (SCCs, BCRs, codes of conduct, certification).
+    keywords:
+      - standard contractual clauses
+      - SCC
+      - binding corporate rules
+      - BCR
+      - transfer safeguards
+    evidence_requirements:
+      - id: "ART46-E1"
+        description: "Standard contractual clauses (executed)"
+        artifact_types: ["contract", "scc"]
+        required: false
+      - id: "ART46-E2"
+        description: "Binding corporate rules (approved)"
+        artifact_types: ["bcr", "policy_document"]
+        required: false
+      - id: "ART46-E3"
+        description: "Supplementary measures documentation"
+        artifact_types: ["technical_spec", "documentation"]
+        required: false
+      - id: "ART46-E4"
+        description: "Transfer impact assessment"
+        artifact_types: ["assessment_document", "tia"]
+        required: true
+    assessment_criteria:
+      pass: "Valid transfer mechanism in place with supplementary measures where needed"
+      fail: "No valid transfer mechanism OR required supplementary measures missing"
+    related_controls: ["ART44", "ART49"]
+    severity_if_fail: "critical"
+
+# ============================================================================
+# METADATA
+# ============================================================================
+
+metadata:
+  total_controls: 31
+  chapters_covered:
+    - "II - Principles"
+    - "III - Rights of Data Subject"
+    - "IV - Controller and Processor"
+    - "V - Transfers to Third Countries"
+  last_updated: "2025-01-01"
+  version: "1.0.0"
+  applicable_to:
+    - "Controllers"
+    - "Processors"
+  severity_distribution:
+    critical: 6
+    high: 17
+    medium: 8

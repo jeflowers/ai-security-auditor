@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+.benchmarks/
+
+# Node / Dashboard
+dashboard/node_modules/
+dashboard/.next/
+dashboard/out/
+
+# Evidence & audit data (sensitive)
+evidence/raw/
+evidence/processed/
+audit-results/
+
+# RAG data (generated)
+rag_data/
+chroma_data/
+
+# Backup files
+*.bak
+*.bak.py
+*.bak.jsx
+
+# Logs
+*.log
+
+# Internal dev session files
+SESSION_SUMMARY.md
+security-auditor-implementation-plan.md
+pytest-results.txt
+
+# Security - never commit
+*.pem
+*.key
+*.crt
+push-to-github.sh

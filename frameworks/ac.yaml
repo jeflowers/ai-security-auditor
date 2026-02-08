@@ -1,0 +1,409 @@
+# NIST 800-53A Access Control (AC) Family
+# Assessment Objectives and Procedures
+# AI-Powered Security Auditor Framework Integration
+
+family:
+  id: AC
+  name: "Access Control"
+  description: |
+    Controls that limit information system access to authorized users,
+    processes acting on behalf of authorized users, and devices.
+  automation_level: full
+  primary_agents: [code_analyzer, compliance_checker]
+
+controls:
+  AC-1:
+    title: "Policy and Procedures"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AC-1.a.1
+        description: "Develop and document access control policy"
+        method: EXAMINE
+        objects:
+          - "access control policy"
+          - "ISSO/ISSM documentation"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-1.a.2
+        description: "Access control policy addresses purpose, scope, roles"
+        method: EXAMINE
+        objects:
+          - "access control policy sections"
+        automated: true
+        agent: compliance_checker
+        rag_query: "access control policy purpose scope responsibilities"
+        
+      - id: AC-1.b
+        description: "Designate official to manage access control policy"
+        method: INTERVIEW
+        objects:
+          - "authorizing official"
+          - "ISSO"
+        automated: false
+        note: "Requires human interview"
+        
+      - id: AC-1.c.1
+        description: "Review and update policy per organization timeframe"
+        method: EXAMINE
+        objects:
+          - "policy revision history"
+          - "review records"
+        automated: true
+        agent: compliance_checker
+
+  AC-2:
+    title: "Account Management"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC6.1, CC6.2, CC6.3]
+    assessment_objectives:
+      - id: AC-2.a
+        description: "Define and document account types"
+        method: EXAMINE
+        objects:
+          - "account management procedures"
+          - "user access policy"
+        automated: true
+        agent: compliance_checker
+        evidence_requirements:
+          - "List of authorized account types"
+          - "Account type definitions"
+        
+      - id: AC-2.b
+        description: "Assign account managers"
+        method: EXAMINE
+        objects:
+          - "role assignment documentation"
+          - "organizational chart"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-2.c
+        description: "Establish conditions for group/role membership"
+        method: EXAMINE
+        objects:
+          - "access control policy"
+          - "role definitions"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-2.d
+        description: "Specify authorized users and access authorizations"
+        method: EXAMINE
+        objects:
+          - "user access lists"
+          - "authorization records"
+          - "access control configurations"
+        automated: true
+        agent: code_analyzer
+        analysis_type: "configuration review"
+        
+      - id: AC-2.e
+        description: "Require approvals for account requests"
+        method: EXAMINE
+        objects:
+          - "account request forms"
+          - "approval workflows"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-2.f
+        description: "Create, enable, modify, disable, remove accounts"
+        method: TEST
+        objects:
+          - "account management system"
+          - "identity management platform"
+        automated: partial
+        agent: log_analyzer
+        evidence: "audit logs of account lifecycle events"
+        
+      - id: AC-2.g
+        description: "Monitor account usage"
+        method: EXAMINE
+        objects:
+          - "audit logs"
+          - "account activity reports"
+        automated: true
+        agent: log_analyzer
+        log_patterns:
+          - "login events"
+          - "account modifications"
+          - "privilege escalation"
+        
+      - id: AC-2.h
+        description: "Notify account managers of account changes"
+        method: EXAMINE
+        objects:
+          - "notification procedures"
+          - "alert configurations"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-2.i
+        description: "Authorize access based on valid authorization"
+        method: EXAMINE
+        objects:
+          - "access authorization records"
+          - "business justification"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-2.j
+        description: "Review accounts for compliance"
+        method: EXAMINE
+        objects:
+          - "access review reports"
+          - "recertification records"
+        automated: true
+        agent: compliance_checker
+        review_frequency: "per organization policy"
+        
+      - id: AC-2.k
+        description: "Establish shared/group account process"
+        method: EXAMINE
+        objects:
+          - "shared account policy"
+          - "group account procedures"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-2.l
+        description: "Align account management with personnel actions"
+        method: EXAMINE
+        objects:
+          - "HR integration procedures"
+          - "termination checklists"
+        automated: true
+        agent: compliance_checker
+
+  AC-3:
+    title: "Access Enforcement"
+    baseline: [low, moderate, high]
+    soc2_mapping: [CC6.1]
+    assessment_objectives:
+      - id: AC-3.a
+        description: "Enforce approved authorizations"
+        method: TEST
+        objects:
+          - "access control mechanisms"
+          - "authorization configurations"
+        automated: true
+        agent: code_analyzer
+        analysis_patterns:
+          - "authorization checks"
+          - "access control logic"
+          - "role-based access control"
+        cwe_mappings:
+          - CWE-285  # Improper Authorization
+          - CWE-862  # Missing Authorization
+          - CWE-863  # Incorrect Authorization
+
+  AC-6:
+    title: "Least Privilege"
+    baseline: [moderate, high]
+    soc2_mapping: [CC6.1]
+    assessment_objectives:
+      - id: AC-6.a
+        description: "Employ least privilege principle"
+        method: EXAMINE
+        objects:
+          - "access control policy"
+          - "role definitions"
+          - "permission assignments"
+        automated: true
+        agent: code_analyzer
+        analysis_patterns:
+          - "overprivileged accounts"
+          - "excessive permissions"
+          - "admin access patterns"
+        
+      - id: AC-6.1
+        description: "Authorize access for security functions"
+        method: EXAMINE
+        objects:
+          - "privileged access policy"
+          - "security function access lists"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-6.2
+        description: "Non-privileged access for non-security functions"
+        method: TEST
+        objects:
+          - "user account configurations"
+          - "privilege separation mechanisms"
+        automated: true
+        agent: code_analyzer
+        
+      - id: AC-6.5
+        description: "Restrict privileged accounts to designated personnel"
+        method: EXAMINE
+        objects:
+          - "privileged account lists"
+          - "designation records"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-6.9
+        description: "Log use of privileged functions"
+        method: EXAMINE
+        objects:
+          - "audit logs"
+          - "logging configurations"
+        automated: true
+        agent: log_analyzer
+        log_patterns:
+          - "sudo commands"
+          - "administrative actions"
+          - "privilege escalation"
+        
+      - id: AC-6.10
+        description: "Prevent non-privileged users from executing privileged functions"
+        method: TEST
+        objects:
+          - "access control mechanisms"
+        automated: true
+        agent: vulnerability_scanner
+        test_cases:
+          - "privilege escalation attempt"
+          - "unauthorized function execution"
+
+  AC-7:
+    title: "Unsuccessful Logon Attempts"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AC-7.a
+        description: "Enforce limit on consecutive invalid logon attempts"
+        method: TEST
+        objects:
+          - "authentication mechanisms"
+          - "lockout configurations"
+        automated: true
+        agent: vulnerability_scanner
+        test_cases:
+          - "brute force protection"
+          - "account lockout threshold"
+          
+      - id: AC-7.b
+        description: "Automatically lock/disable account or delay next logon"
+        method: EXAMINE
+        objects:
+          - "authentication configuration"
+          - "lockout policy"
+        automated: true
+        agent: code_analyzer
+        patterns:
+          - "lockout logic"
+          - "delay mechanisms"
+
+  AC-17:
+    title: "Remote Access"
+    baseline: [low, moderate, high]
+    assessment_objectives:
+      - id: AC-17.a
+        description: "Establish usage restrictions for remote access"
+        method: EXAMINE
+        objects:
+          - "remote access policy"
+          - "VPN configuration"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-17.b
+        description: "Establish implementation guidance for remote connections"
+        method: EXAMINE
+        objects:
+          - "remote access procedures"
+          - "connection requirements"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-17.c
+        description: "Authorize remote access prior to connection"
+        method: EXAMINE
+        objects:
+          - "remote access authorization records"
+          - "approval workflows"
+        automated: true
+        agent: compliance_checker
+        
+      - id: AC-17.d
+        description: "Monitor and control remote access methods"
+        method: EXAMINE
+        objects:
+          - "VPN logs"
+          - "remote session logs"
+        automated: true
+        agent: log_analyzer
+        
+      - id: AC-17.1
+        description: "Employ automated monitoring and control"
+        method: EXAMINE
+        objects:
+          - "monitoring configurations"
+          - "alerting rules"
+        automated: true
+        agent: log_analyzer
+        
+      - id: AC-17.2
+        description: "Protect confidentiality and integrity using cryptography"
+        method: TEST
+        objects:
+          - "encryption configurations"
+          - "TLS/VPN settings"
+        automated: true
+        agent: vulnerability_scanner
+        checks:
+          - "TLS version"
+          - "cipher strength"
+          - "certificate validity"
+
+# Evidence mapping for anti-hallucination compliance
+evidence_requirements:
+  AC-2:
+    required_artifacts:
+      - artifact_type: "account_types_definition"
+        description: "Documentation of authorized account types"
+        provenance_required: true
+        
+      - artifact_type: "user_access_list"
+        description: "Current list of user accounts and permissions"
+        provenance_required: true
+        freshness: "within 90 days"
+        
+      - artifact_type: "access_review_records"
+        description: "Evidence of periodic access reviews"
+        provenance_required: true
+        
+      - artifact_type: "account_lifecycle_logs"
+        description: "Audit logs showing account creation/modification/deletion"
+        provenance_required: true
+        agent: log_analyzer
+
+  AC-3:
+    required_artifacts:
+      - artifact_type: "access_control_configuration"
+        description: "System access control settings"
+        provenance_required: true
+        agent: code_analyzer
+        
+      - artifact_type: "authorization_test_results"
+        description: "Results of authorization testing"
+        provenance_required: true
+        agent: vulnerability_scanner
+
+  AC-6:
+    required_artifacts:
+      - artifact_type: "privilege_matrix"
+        description: "Role-to-permission mapping"
+        provenance_required: true
+        
+      - artifact_type: "privileged_account_list"
+        description: "Inventory of privileged accounts"
+        provenance_required: true
+        freshness: "within 30 days"
+        
+      - artifact_type: "privilege_use_logs"
+        description: "Audit logs of privileged function execution"
+        provenance_required: true
+        agent: log_analyzer

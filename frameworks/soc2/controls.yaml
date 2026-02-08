@@ -1,0 +1,518 @@
+# SOC 2 Trust Services Criteria - Control → Evidence Plan
+# Framework Version: 2017 (with 2022 updates)
+# AI Security Auditor Control Definitions
+#
+# Core Principle: "If you can't prove it, you can't claim it"
+# - Compliance = Verifiable evidence meeting requirements
+# - Audit = Defensible evidence against standards
+
+metadata:
+  framework: "SOC 2"
+  version: "2017"
+  last_updated: "2025-01-01"
+  categories:
+    CC: "Common Criteria (Security)"
+    A: "Availability"
+    PI: "Processing Integrity"
+    C: "Confidentiality"
+    P: "Privacy"
+
+# =============================================================================
+# CC6: Logical and Physical Access Controls
+# =============================================================================
+
+controls:
+  CC6.1:
+    title: "Logical Access Security Software, Infrastructure, and Architectures"
+    description: >
+      The entity implements logical access security software, infrastructure, 
+      and architectures over protected information assets to protect them from 
+      security events to meet the entity's objectives.
+    category: "CC"
+    subcategory: "Logical Access"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC6.1-E1"
+          name: "Access Control Policy"
+          type: "policy_document"
+          description: "Documented access control policy defining principles and requirements"
+          acceptable_sources:
+            - "policy_management_system"
+            - "document_repository"
+            - "wiki/confluence"
+          freshness_window_days: 365
+          minimum_strength: "approved_policy"
+          validation_rules:
+            - "document_exists"
+            - "approval_signature_present"
+            - "review_date_within_window"
+            - "version_control_active"
+          
+        - evidence_id: "CC6.1-E2"
+          name: "User Access List"
+          type: "system_extract"
+          description: "Current list of users with system access and their roles"
+          acceptable_sources:
+            - "identity_provider"
+            - "active_directory"
+            - "iam_system"
+            - "application_user_database"
+          freshness_window_days: 30
+          minimum_strength: "system_of_record"
+          validation_rules:
+            - "extract_timestamp_valid"
+            - "covers_all_in_scope_systems"
+            - "includes_role_assignments"
+            - "no_orphaned_accounts"
+          
+        - evidence_id: "CC6.1-E3"
+          name: "Access Review Evidence"
+          type: "review_record"
+          description: "Evidence of periodic access reviews performed"
+          acceptable_sources:
+            - "access_review_tool"
+            - "ticketing_system"
+            - "audit_trail"
+          freshness_window_days: 90
+          minimum_strength: "documented_review"
+          validation_rules:
+            - "review_completed_on_schedule"
+            - "reviewer_documented"
+            - "actions_taken_for_exceptions"
+            - "management_signoff_present"
+          
+        - evidence_id: "CC6.1-E4"
+          name: "Authentication Configuration"
+          type: "config_snapshot"
+          description: "System authentication settings (MFA, password policy)"
+          acceptable_sources:
+            - "identity_provider_config"
+            - "system_settings_export"
+            - "security_scanner_output"
+          freshness_window_days: 30
+          minimum_strength: "system_extract"
+          validation_rules:
+            - "mfa_enabled_for_privileged"
+            - "password_complexity_enforced"
+            - "session_timeout_configured"
+            - "account_lockout_enabled"
+
+      optional_evidence:
+        - evidence_id: "CC6.1-E5"
+          name: "Access Request Tickets"
+          type: "sample_records"
+          description: "Sample of access provisioning requests showing approval workflow"
+          sample_size: 25
+            
+    scoring_rubric:
+      scoring_weights:
+        policy_document: 0.20
+        system_extract: 0.30
+        review_record: 0.25
+        config_snapshot: 0.25
+        
+      score_thresholds:
+        pass: 0.80
+        pass_with_exceptions: 0.60
+        fail: 0.59
+        
+      finding_severity:
+        critical:
+          - "No access control policy exists"
+          - "No MFA for privileged access"
+          - "No access reviews performed in 12+ months"
+        high:
+          - "Policy not reviewed in 18+ months"
+          - "Orphaned accounts detected"
+          - "Access review overdue by 60+ days"
+        medium:
+          - "Incomplete role documentation"
+          - "Access review overdue by 30 days"
+        low:
+          - "Minor policy formatting issues"
+
+  CC6.2:
+    title: "User Registration and Authorization"
+    description: >
+      Prior to issuing system credentials and granting system access, the entity 
+      registers and authorizes new internal and external users.
+    category: "CC"
+    subcategory: "Logical Access"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC6.2-E1"
+          name: "User Provisioning Procedure"
+          type: "policy_document"
+          description: "Documented procedure for user registration and authorization"
+          acceptable_sources:
+            - "policy_management_system"
+            - "hr_system"
+            - "runbook_repository"
+          freshness_window_days: 365
+          minimum_strength: "approved_procedure"
+          validation_rules:
+            - "procedure_exists"
+            - "approval_workflow_defined"
+            - "role_based_access_defined"
+            
+        - evidence_id: "CC6.2-E2"
+          name: "Provisioning Request Samples"
+          type: "sample_records"
+          description: "Sample of access provisioning requests with approvals"
+          acceptable_sources:
+            - "ticketing_system"
+            - "workflow_system"
+          freshness_window_days: 90
+          minimum_strength: "documented_approval"
+          sample_size: 25
+          validation_rules:
+            - "manager_approval_present"
+            - "request_justification_documented"
+            - "access_matches_request"
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.85
+        pass_with_exceptions: 0.70
+        fail: 0.69
+
+  CC6.3:
+    title: "User Access Removal"
+    description: >
+      The entity removes access to protected information assets when appropriate, 
+      including upon termination of employment.
+    category: "CC"
+    subcategory: "Logical Access"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC6.3-E1"
+          name: "Termination Procedure"
+          type: "policy_document"
+          description: "Documented procedure for access removal upon termination"
+          acceptable_sources:
+            - "policy_management_system"
+            - "hr_procedures"
+          freshness_window_days: 365
+          minimum_strength: "approved_procedure"
+          validation_rules:
+            - "procedure_exists"
+            - "timeline_defined"
+            
+        - evidence_id: "CC6.3-E2"
+          name: "Termination Access Correlation"
+          type: "cross_reference"
+          description: "Correlation of terminations to access removal dates"
+          acceptable_sources:
+            - "hr_system"
+            - "identity_provider"
+          freshness_window_days: 90
+          minimum_strength: "system_correlation"
+          validation_rules:
+            - "access_removed_within_sla"
+            - "no_access_after_termination"
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.90
+        pass_with_exceptions: 0.75
+        fail: 0.74
+      finding_severity:
+        critical:
+          - "Active access found for terminated employees"
+          - "No termination procedure exists"
+
+  CC6.6:
+    title: "Protection Against Unauthorized Access"
+    description: >
+      The entity implements logical access security measures to protect against 
+      threats from sources outside its system boundaries.
+    category: "CC"
+    subcategory: "Logical Access"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC6.6-E1"
+          name: "Firewall Configuration"
+          type: "config_snapshot"
+          description: "Firewall rules and network segmentation configuration"
+          acceptable_sources:
+            - "firewall_export"
+            - "cloud_security_groups"
+          freshness_window_days: 30
+          minimum_strength: "system_extract"
+          validation_rules:
+            - "deny_by_default"
+            - "no_overly_permissive_rules"
+            
+        - evidence_id: "CC6.6-E2"
+          name: "Vulnerability Scan Results"
+          type: "scan_output"
+          description: "External vulnerability scan results"
+          acceptable_sources:
+            - "vulnerability_scanner"
+            - "penetration_test_report"
+          freshness_window_days: 90
+          minimum_strength: "authenticated_scan"
+          validation_rules:
+            - "scan_completed"
+            - "critical_vulns_remediated"
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.85
+        pass_with_exceptions: 0.70
+        fail: 0.69
+
+  CC6.7:
+    title: "Restriction of Information Transmission"
+    description: >
+      The entity restricts the transmission, movement, and removal of information 
+      to authorized internal and external users and processes.
+    category: "CC"
+    subcategory: "Logical Access"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC6.7-E1"
+          name: "Data Classification Policy"
+          type: "policy_document"
+          description: "Policy defining data classification and handling requirements"
+          acceptable_sources:
+            - "policy_management_system"
+          freshness_window_days: 365
+          validation_rules:
+            - "classification_levels_defined"
+            - "handling_requirements_per_level"
+            
+        - evidence_id: "CC6.7-E2"
+          name: "Encryption Configuration"
+          type: "config_snapshot"
+          description: "Encryption settings for data in transit"
+          acceptable_sources:
+            - "tls_scanner"
+            - "certificate_inventory"
+          freshness_window_days: 30
+          validation_rules:
+            - "tls_1.2_minimum"
+            - "strong_cipher_suites"
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.80
+        pass_with_exceptions: 0.65
+        fail: 0.64
+
+# =============================================================================
+# CC7: System Operations
+# =============================================================================
+
+  CC7.1:
+    title: "Detection of Security Events"
+    description: >
+      The entity uses defined vulnerability management, threat detection, and 
+      other mechanisms to identify and assess security events.
+    category: "CC"
+    subcategory: "System Operations"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC7.1-E1"
+          name: "Security Monitoring Configuration"
+          type: "config_snapshot"
+          description: "SIEM/monitoring tool configuration and alert rules"
+          acceptable_sources:
+            - "siem_console"
+            - "monitoring_platform"
+          freshness_window_days: 30
+          validation_rules:
+            - "critical_systems_monitored"
+            - "alert_rules_defined"
+            
+        - evidence_id: "CC7.1-E2"
+          name: "Security Alert Samples"
+          type: "sample_records"
+          description: "Sample security alerts showing review and response"
+          acceptable_sources:
+            - "siem_system"
+            - "ticketing_system"
+          freshness_window_days: 30
+          sample_size: 25
+          validation_rules:
+            - "alerts_reviewed_timely"
+            - "response_documented"
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.85
+        pass_with_exceptions: 0.70
+        fail: 0.69
+
+  CC7.2:
+    title: "Monitoring System Components"
+    description: >
+      The entity monitors system components for security-relevant events.
+    category: "CC"
+    subcategory: "System Operations"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC7.2-E1"
+          name: "Log Aggregation Configuration"
+          type: "config_snapshot"
+          description: "Centralized logging configuration and sources"
+          acceptable_sources:
+            - "siem_console"
+            - "log_aggregator"
+          freshness_window_days: 30
+          validation_rules:
+            - "all_critical_sources_configured"
+            - "log_ingestion_active"
+            
+        - evidence_id: "CC7.2-E2"
+          name: "Log Review Evidence"
+          type: "sample_records"
+          description: "Evidence of log review activities"
+          acceptable_sources:
+            - "ticketing_system"
+          freshness_window_days: 30
+          sample_size: 10
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.85
+        pass_with_exceptions: 0.70
+        fail: 0.69
+
+  CC7.3:
+    title: "Security Event Evaluation"
+    description: >
+      The entity evaluates security events to determine whether they could or 
+      have resulted in a failure to meet its objectives.
+    category: "CC"
+    subcategory: "System Operations"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC7.3-E1"
+          name: "Incident Response Plan"
+          type: "policy_document"
+          description: "Documented incident response procedures"
+          acceptable_sources:
+            - "policy_management_system"
+          freshness_window_days: 365
+          validation_rules:
+            - "plan_exists"
+            - "roles_defined"
+            - "escalation_paths_defined"
+            
+        - evidence_id: "CC7.3-E2"
+          name: "Incident Tickets"
+          type: "sample_records"
+          description: "Security incident tickets showing handling process"
+          acceptable_sources:
+            - "ticketing_system"
+            - "incident_management_tool"
+          freshness_window_days: 365
+          sample_size: "all_within_period"
+          validation_rules:
+            - "incidents_documented"
+            - "resolution_documented"
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.85
+        pass_with_exceptions: 0.70
+        fail: 0.69
+
+# =============================================================================
+# CC8: Change Management
+# =============================================================================
+
+  CC8.1:
+    title: "Change Management Process"
+    description: >
+      The entity authorizes, designs, develops, configures, documents, tests, 
+      approves, and implements changes to meet its objectives.
+    category: "CC"
+    subcategory: "Change Management"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC8.1-E1"
+          name: "Change Management Policy"
+          type: "policy_document"
+          description: "Documented change management policy and procedures"
+          acceptable_sources:
+            - "policy_management_system"
+          freshness_window_days: 365
+          validation_rules:
+            - "policy_exists"
+            - "approval_requirements_defined"
+            - "testing_requirements_defined"
+            
+        - evidence_id: "CC8.1-E2"
+          name: "Change Request Samples"
+          type: "sample_records"
+          description: "Sample change requests showing approval workflow"
+          acceptable_sources:
+            - "ticketing_system"
+            - "change_management_tool"
+          freshness_window_days: 90
+          sample_size: 25
+          validation_rules:
+            - "approval_obtained_before_implementation"
+            - "testing_documented"
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.85
+        pass_with_exceptions: 0.70
+        fail: 0.69
+
+# =============================================================================
+# CC9: Risk Mitigation
+# =============================================================================
+
+  CC9.1:
+    title: "Risk Identification and Assessment"
+    description: >
+      The entity identifies, selects, and develops risk mitigation activities 
+      for risks arising from potential business disruptions.
+    category: "CC"
+    subcategory: "Risk Mitigation"
+    
+    evidence_plan:
+      required_evidence:
+        - evidence_id: "CC9.1-E1"
+          name: "Risk Assessment Documentation"
+          type: "policy_document"
+          description: "Formal risk assessment documentation"
+          acceptable_sources:
+            - "grc_system"
+            - "document_repository"
+          freshness_window_days: 365
+          validation_rules:
+            - "assessment_current"
+            - "risks_identified"
+            - "mitigations_defined"
+            
+        - evidence_id: "CC9.1-E2"
+          name: "Risk Register"
+          type: "system_extract"
+          description: "Current risk register with status"
+          acceptable_sources:
+            - "grc_system"
+            - "risk_management_tool"
+          freshness_window_days: 90
+          validation_rules:
+            - "risks_tracked"
+            - "mitigation_status_current"
+
+    scoring_rubric:
+      score_thresholds:
+        pass: 0.80
+        pass_with_exceptions: 0.65
+        fail: 0.64

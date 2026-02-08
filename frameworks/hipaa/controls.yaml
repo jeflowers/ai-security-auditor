@@ -1,0 +1,1421 @@
+# HIPAA Security Rule Control Definitions
+# AI-Powered Security Auditor Framework
+# 
+# Reference: 45 CFR Part 164 - Security and Privacy
+# Applies to: Covered Entities and Business Associates
+#
+# Control ID Format: HIPAA-{Category}-{Standard}.{Implementation}
+#   Categories: AS (Administrative), PS (Physical), TS (Technical)
+
+framework:
+  name: "HIPAA Security Rule"
+  version: "2024.1"
+  description: "Health Insurance Portability and Accountability Act - Security Standards"
+  regulation: "45 CFR Part 164 Subpart C"
+  applies_to:
+    - "Covered Entities"
+    - "Business Associates"
+    - "Healthcare Clearinghouses"
+    - "Health Plans"
+
+# =============================================================================
+# ADMINISTRATIVE SAFEGUARDS - 45 CFR §164.308
+# =============================================================================
+
+controls:
+  # ---------------------------------------------------------------------------
+  # §164.308(a)(1) - Security Management Process
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.a1:
+    id: "HIPAA-AS-308.a1"
+    title: "Security Management Process"
+    regulation_ref: "45 CFR §164.308(a)(1)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      Implement policies and procedures to prevent, detect, contain, and 
+      correct security violations.
+    
+    implementation_specifications:
+      - id: "HIPAA-AS-308.a1.i"
+        title: "Risk Analysis"
+        status: "Required"
+        description: "Conduct an accurate and thorough assessment of potential risks and vulnerabilities to the confidentiality, integrity, and availability of ePHI."
+        
+      - id: "HIPAA-AS-308.a1.ii"
+        title: "Risk Management"
+        status: "Required"
+        description: "Implement security measures sufficient to reduce risks and vulnerabilities to a reasonable and appropriate level."
+        
+      - id: "HIPAA-AS-308.a1.iii"
+        title: "Sanction Policy"
+        status: "Required"
+        description: "Apply appropriate sanctions against workforce members who fail to comply with security policies and procedures."
+        
+      - id: "HIPAA-AS-308.a1.iv"
+        title: "Information System Activity Review"
+        status: "Required"
+        description: "Implement procedures to regularly review records of information system activity, such as audit logs, access reports, and security incident tracking reports."
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.a1-E1"
+        description: "Risk assessment documentation"
+        artifact_types:
+          - "Risk assessment report"
+          - "Vulnerability scan results"
+          - "Threat analysis"
+        required: true
+        
+      - id: "HIPAA-AS-308.a1-E2"
+        description: "Risk management plan"
+        artifact_types:
+          - "Risk mitigation strategies"
+          - "Risk treatment decisions"
+          - "Residual risk acceptance"
+        required: true
+        
+      - id: "HIPAA-AS-308.a1-E3"
+        description: "Sanction policy documentation"
+        artifact_types:
+          - "Workforce sanction policy"
+          - "Violation tracking records"
+          - "Disciplinary action logs"
+        required: true
+        
+      - id: "HIPAA-AS-308.a1-E4"
+        description: "System activity review logs"
+        artifact_types:
+          - "Audit log review records"
+          - "Access report reviews"
+          - "Security incident reports"
+        required: true
+    
+    testing_procedures:
+      - "Verify risk assessment is current (within 12 months)"
+      - "Confirm risk management decisions are documented"
+      - "Review sanction policy for completeness"
+      - "Verify regular review of audit logs"
+    
+    related_cwe_ids:
+      - 200  # Exposure of Sensitive Information
+      - 284  # Improper Access Control
+      - 778  # Insufficient Logging
+
+  # ---------------------------------------------------------------------------
+  # §164.308(a)(2) - Assigned Security Responsibility
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.a2:
+    id: "HIPAA-AS-308.a2"
+    title: "Assigned Security Responsibility"
+    regulation_ref: "45 CFR §164.308(a)(2)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      Identify the security official who is responsible for the development 
+      and implementation of security policies and procedures.
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.a2-E1"
+        description: "Security officer designation"
+        artifact_types:
+          - "Security officer appointment letter"
+          - "Job description with security responsibilities"
+          - "Organization chart showing security role"
+        required: true
+        
+      - id: "HIPAA-AS-308.a2-E2"
+        description: "Security responsibility documentation"
+        artifact_types:
+          - "Security program charter"
+          - "Documented security responsibilities"
+          - "Authority delegation records"
+        required: true
+    
+    testing_procedures:
+      - "Verify security officer is formally designated"
+      - "Confirm security responsibilities are documented"
+      - "Verify security officer has appropriate authority"
+    
+    related_cwe_ids:
+      - 269  # Improper Privilege Management
+
+  # ---------------------------------------------------------------------------
+  # §164.308(a)(3) - Workforce Security
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.a3:
+    id: "HIPAA-AS-308.a3"
+    title: "Workforce Security"
+    regulation_ref: "45 CFR §164.308(a)(3)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      Implement policies and procedures to ensure that all workforce members 
+      have appropriate access to ePHI and to prevent unauthorized access.
+    
+    implementation_specifications:
+      - id: "HIPAA-AS-308.a3.i"
+        title: "Authorization and/or Supervision"
+        status: "Addressable"
+        description: "Implement procedures for the authorization and/or supervision of workforce members who work with ePHI."
+        
+      - id: "HIPAA-AS-308.a3.ii"
+        title: "Workforce Clearance Procedure"
+        status: "Addressable"
+        description: "Implement procedures to determine that the access of a workforce member to ePHI is appropriate."
+        
+      - id: "HIPAA-AS-308.a3.iii"
+        title: "Termination Procedures"
+        status: "Addressable"
+        description: "Implement procedures for terminating access to ePHI when the employment ends or access is no longer required."
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.a3-E1"
+        description: "Access authorization procedures"
+        artifact_types:
+          - "Access request forms"
+          - "Authorization approval records"
+          - "Role-based access matrix"
+        required: true
+        
+      - id: "HIPAA-AS-308.a3-E2"
+        description: "Background check procedures"
+        artifact_types:
+          - "Background check policy"
+          - "Screening completion records"
+          - "Clearance verification"
+        required: false  # Addressable
+        
+      - id: "HIPAA-AS-308.a3-E3"
+        description: "Termination procedures"
+        artifact_types:
+          - "Termination checklist"
+          - "Access revocation records"
+          - "Exit interview documentation"
+        required: true
+    
+    testing_procedures:
+      - "Review access authorization process"
+      - "Verify termination procedures are followed"
+      - "Sample terminated employees for access revocation"
+    
+    related_cwe_ids:
+      - 269  # Improper Privilege Management
+      - 284  # Improper Access Control
+      - 285  # Improper Authorization
+
+  # ---------------------------------------------------------------------------
+  # §164.308(a)(4) - Information Access Management
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.a4:
+    id: "HIPAA-AS-308.a4"
+    title: "Information Access Management"
+    regulation_ref: "45 CFR §164.308(a)(4)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      Implement policies and procedures for authorizing access to ePHI 
+      consistent with the Privacy Rule's minimum necessary standard.
+    
+    implementation_specifications:
+      - id: "HIPAA-AS-308.a4.i"
+        title: "Isolating Healthcare Clearinghouse Functions"
+        status: "Required"
+        description: "If a healthcare clearinghouse is part of a larger organization, policies and procedures must protect ePHI from unauthorized access by the larger organization."
+        
+      - id: "HIPAA-AS-308.a4.ii"
+        title: "Access Authorization"
+        status: "Addressable"
+        description: "Implement policies and procedures for granting access to ePHI."
+        
+      - id: "HIPAA-AS-308.a4.iii"
+        title: "Access Establishment and Modification"
+        status: "Addressable"
+        description: "Implement policies and procedures that establish, document, review, and modify access rights."
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.a4-E1"
+        description: "Access authorization policies"
+        artifact_types:
+          - "Access control policy"
+          - "Minimum necessary policy"
+          - "Role definitions"
+        required: true
+        
+      - id: "HIPAA-AS-308.a4-E2"
+        description: "Access modification records"
+        artifact_types:
+          - "Access change requests"
+          - "Access review records"
+          - "Periodic access recertification"
+        required: true
+    
+    testing_procedures:
+      - "Verify minimum necessary standard implementation"
+      - "Review access authorization workflow"
+      - "Confirm periodic access reviews occur"
+    
+    related_cwe_ids:
+      - 269  # Improper Privilege Management
+      - 284  # Improper Access Control
+      - 732  # Incorrect Permission Assignment
+
+  # ---------------------------------------------------------------------------
+  # §164.308(a)(5) - Security Awareness and Training
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.a5:
+    id: "HIPAA-AS-308.a5"
+    title: "Security Awareness and Training"
+    regulation_ref: "45 CFR §164.308(a)(5)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      Implement a security awareness and training program for all workforce 
+      members including management.
+    
+    implementation_specifications:
+      - id: "HIPAA-AS-308.a5.i"
+        title: "Security Reminders"
+        status: "Addressable"
+        description: "Periodic security updates."
+        
+      - id: "HIPAA-AS-308.a5.ii"
+        title: "Protection from Malicious Software"
+        status: "Addressable"
+        description: "Procedures for guarding against, detecting, and reporting malicious software."
+        
+      - id: "HIPAA-AS-308.a5.iii"
+        title: "Log-in Monitoring"
+        status: "Addressable"
+        description: "Procedures for monitoring log-in attempts and reporting discrepancies."
+        
+      - id: "HIPAA-AS-308.a5.iv"
+        title: "Password Management"
+        status: "Addressable"
+        description: "Procedures for creating, changing, and safeguarding passwords."
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.a5-E1"
+        description: "Training program documentation"
+        artifact_types:
+          - "Training curriculum"
+          - "Training completion records"
+          - "Training materials"
+        required: true
+        
+      - id: "HIPAA-AS-308.a5-E2"
+        description: "Security awareness materials"
+        artifact_types:
+          - "Security bulletins"
+          - "Phishing awareness campaigns"
+          - "Security newsletter archives"
+        required: true
+        
+      - id: "HIPAA-AS-308.a5-E3"
+        description: "Malware protection procedures"
+        artifact_types:
+          - "Anti-malware policy"
+          - "Malware incident reports"
+          - "Endpoint protection logs"
+        required: true
+    
+    testing_procedures:
+      - "Verify all workforce received security training"
+      - "Review training completion rates"
+      - "Confirm training content covers HIPAA requirements"
+      - "Verify malware protection is in place"
+    
+    related_cwe_ids:
+      - 522  # Insufficiently Protected Credentials
+      - 307  # Improper Restriction of Excessive Authentication Attempts
+
+  # ---------------------------------------------------------------------------
+  # §164.308(a)(6) - Security Incident Procedures
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.a6:
+    id: "HIPAA-AS-308.a6"
+    title: "Security Incident Procedures"
+    regulation_ref: "45 CFR §164.308(a)(6)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      Implement policies and procedures to address security incidents.
+    
+    implementation_specifications:
+      - id: "HIPAA-AS-308.a6.i"
+        title: "Response and Reporting"
+        status: "Required"
+        description: "Identify and respond to suspected or known security incidents; mitigate harmful effects; document incidents and outcomes."
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.a6-E1"
+        description: "Incident response plan"
+        artifact_types:
+          - "Security incident response plan"
+          - "Incident classification criteria"
+          - "Escalation procedures"
+        required: true
+        
+      - id: "HIPAA-AS-308.a6-E2"
+        description: "Incident records"
+        artifact_types:
+          - "Security incident log"
+          - "Incident investigation reports"
+          - "Remediation documentation"
+        required: true
+        
+      - id: "HIPAA-AS-308.a6-E3"
+        description: "Breach notification records"
+        artifact_types:
+          - "Breach risk assessments"
+          - "Notification records"
+          - "HHS breach reports"
+        required: true
+    
+    testing_procedures:
+      - "Review incident response plan completeness"
+      - "Verify incidents are documented and tracked"
+      - "Confirm breach notification procedures are followed"
+      - "Test incident response through tabletop exercises"
+    
+    related_cwe_ids:
+      - 778  # Insufficient Logging
+      - 223  # Omission of Security-relevant Information
+
+  # ---------------------------------------------------------------------------
+  # §164.308(a)(7) - Contingency Plan
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.a7:
+    id: "HIPAA-AS-308.a7"
+    title: "Contingency Plan"
+    regulation_ref: "45 CFR §164.308(a)(7)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      Establish policies and procedures for responding to an emergency or 
+      other occurrence that damages systems containing ePHI.
+    
+    implementation_specifications:
+      - id: "HIPAA-AS-308.a7.i"
+        title: "Data Backup Plan"
+        status: "Required"
+        description: "Establish and implement procedures to create and maintain retrievable exact copies of ePHI."
+        
+      - id: "HIPAA-AS-308.a7.ii"
+        title: "Disaster Recovery Plan"
+        status: "Required"
+        description: "Establish procedures to restore any loss of data."
+        
+      - id: "HIPAA-AS-308.a7.iii"
+        title: "Emergency Mode Operation Plan"
+        status: "Required"
+        description: "Establish procedures to enable continuation of critical business processes for protection of ePHI during an emergency."
+        
+      - id: "HIPAA-AS-308.a7.iv"
+        title: "Testing and Revision Procedures"
+        status: "Addressable"
+        description: "Implement procedures for periodic testing and revision of contingency plans."
+        
+      - id: "HIPAA-AS-308.a7.v"
+        title: "Applications and Data Criticality Analysis"
+        status: "Addressable"
+        description: "Assess relative criticality of specific applications and data in support of contingency plan components."
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.a7-E1"
+        description: "Backup procedures and records"
+        artifact_types:
+          - "Backup policy"
+          - "Backup schedules"
+          - "Backup verification logs"
+          - "Backup restoration test results"
+        required: true
+        
+      - id: "HIPAA-AS-308.a7-E2"
+        description: "Disaster recovery plan"
+        artifact_types:
+          - "DR plan document"
+          - "Recovery procedures"
+          - "DR test results"
+        required: true
+        
+      - id: "HIPAA-AS-308.a7-E3"
+        description: "Business continuity plan"
+        artifact_types:
+          - "BCP document"
+          - "Critical systems inventory"
+          - "Emergency contact lists"
+        required: true
+    
+    testing_procedures:
+      - "Verify backup procedures are documented and followed"
+      - "Confirm backup restoration testing occurs regularly"
+      - "Review disaster recovery plan completeness"
+      - "Verify DR/BCP testing is performed annually"
+    
+    related_cwe_ids:
+      - 693  # Protection Mechanism Failure
+
+  # ---------------------------------------------------------------------------
+  # §164.308(a)(8) - Evaluation
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.a8:
+    id: "HIPAA-AS-308.a8"
+    title: "Evaluation"
+    regulation_ref: "45 CFR §164.308(a)(8)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      Perform periodic technical and nontechnical evaluations that establish 
+      the extent to which security policies and procedures meet HIPAA requirements.
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.a8-E1"
+        description: "Security evaluation records"
+        artifact_types:
+          - "Security assessment reports"
+          - "Gap analysis documentation"
+          - "Remediation tracking"
+        required: true
+        
+      - id: "HIPAA-AS-308.a8-E2"
+        description: "Compliance review documentation"
+        artifact_types:
+          - "Internal audit reports"
+          - "External audit reports"
+          - "Penetration test results"
+        required: true
+    
+    testing_procedures:
+      - "Verify security evaluations are performed periodically"
+      - "Review scope of evaluations"
+      - "Confirm findings are tracked to remediation"
+    
+    related_cwe_ids:
+      - 693  # Protection Mechanism Failure
+
+  # ---------------------------------------------------------------------------
+  # §164.308(b)(1) - Business Associate Contracts
+  # ---------------------------------------------------------------------------
+  HIPAA-AS-308.b1:
+    id: "HIPAA-AS-308.b1"
+    title: "Business Associate Contracts and Other Arrangements"
+    regulation_ref: "45 CFR §164.308(b)(1)"
+    category: "Administrative Safeguards"
+    status: "Required"
+    description: |
+      A covered entity may permit a business associate to create, receive, 
+      maintain, or transmit ePHI on its behalf only if satisfactory assurances 
+      are obtained in a written contract.
+    
+    evidence_requirements:
+      - id: "HIPAA-AS-308.b1-E1"
+        description: "Business associate agreements"
+        artifact_types:
+          - "BAA templates"
+          - "Executed BAAs"
+          - "BAA tracking inventory"
+        required: true
+        
+      - id: "HIPAA-AS-308.b1-E2"
+        description: "BA security verification"
+        artifact_types:
+          - "BA security questionnaires"
+          - "BA due diligence records"
+          - "BA compliance attestations"
+        required: true
+    
+    testing_procedures:
+      - "Verify all business associates have executed BAAs"
+      - "Review BAA content for required provisions"
+      - "Confirm BA inventory is complete and current"
+    
+    related_cwe_ids:
+      - 284  # Improper Access Control
+
+# =============================================================================
+# PHYSICAL SAFEGUARDS - 45 CFR §164.310
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # §164.310(a)(1) - Facility Access Controls
+  # ---------------------------------------------------------------------------
+  HIPAA-PS-310.a1:
+    id: "HIPAA-PS-310.a1"
+    title: "Facility Access Controls"
+    regulation_ref: "45 CFR §164.310(a)(1)"
+    category: "Physical Safeguards"
+    status: "Required"
+    description: |
+      Implement policies and procedures to limit physical access to 
+      electronic information systems and the facilities in which they are housed.
+    
+    implementation_specifications:
+      - id: "HIPAA-PS-310.a1.i"
+        title: "Contingency Operations"
+        status: "Addressable"
+        description: "Establish procedures for facility access in support of restoration of lost data under disaster recovery and emergency mode operations plans."
+        
+      - id: "HIPAA-PS-310.a1.ii"
+        title: "Facility Security Plan"
+        status: "Addressable"
+        description: "Implement policies and procedures to safeguard the facility and equipment from unauthorized physical access, tampering, and theft."
+        
+      - id: "HIPAA-PS-310.a1.iii"
+        title: "Access Control and Validation Procedures"
+        status: "Addressable"
+        description: "Implement procedures to control and validate a person's access to facilities based on their role or function."
+        
+      - id: "HIPAA-PS-310.a1.iv"
+        title: "Maintenance Records"
+        status: "Addressable"
+        description: "Implement policies and procedures to document repairs and modifications to physical components of a facility related to security."
+    
+    evidence_requirements:
+      - id: "HIPAA-PS-310.a1-E1"
+        description: "Physical security policies"
+        artifact_types:
+          - "Facility security plan"
+          - "Physical access policy"
+          - "Visitor management procedures"
+        required: true
+        
+      - id: "HIPAA-PS-310.a1-E2"
+        description: "Access control records"
+        artifact_types:
+          - "Badge access logs"
+          - "Visitor logs"
+          - "Physical access reviews"
+        required: true
+        
+      - id: "HIPAA-PS-310.a1-E3"
+        description: "Maintenance records"
+        artifact_types:
+          - "Facility maintenance logs"
+          - "Security system repair records"
+          - "Equipment modification records"
+        required: true
+    
+    testing_procedures:
+      - "Review physical access control procedures"
+      - "Verify badge access is appropriately restricted"
+      - "Confirm visitor procedures are followed"
+      - "Review maintenance records for completeness"
+    
+    related_cwe_ids:
+      - 284  # Improper Access Control
+
+  # ---------------------------------------------------------------------------
+  # §164.310(b) - Workstation Use
+  # ---------------------------------------------------------------------------
+  HIPAA-PS-310.b:
+    id: "HIPAA-PS-310.b"
+    title: "Workstation Use"
+    regulation_ref: "45 CFR §164.310(b)"
+    category: "Physical Safeguards"
+    status: "Required"
+    description: |
+      Implement policies and procedures that specify the proper functions to 
+      be performed, the manner in which those functions are to be performed, 
+      and the physical attributes of the surroundings of workstations.
+    
+    evidence_requirements:
+      - id: "HIPAA-PS-310.b-E1"
+        description: "Workstation use policy"
+        artifact_types:
+          - "Acceptable use policy"
+          - "Workstation security policy"
+          - "Remote work policy"
+        required: true
+        
+      - id: "HIPAA-PS-310.b-E2"
+        description: "Workstation configuration standards"
+        artifact_types:
+          - "Hardening standards"
+          - "Configuration baselines"
+          - "Screen lock requirements"
+        required: true
+    
+    testing_procedures:
+      - "Review workstation use policies"
+      - "Verify workstation configuration standards"
+      - "Confirm screen lock and timeout settings"
+    
+    related_cwe_ids:
+      - 16   # Configuration
+      - 732  # Incorrect Permission Assignment
+
+  # ---------------------------------------------------------------------------
+  # §164.310(c) - Workstation Security
+  # ---------------------------------------------------------------------------
+  HIPAA-PS-310.c:
+    id: "HIPAA-PS-310.c"
+    title: "Workstation Security"
+    regulation_ref: "45 CFR §164.310(c)"
+    category: "Physical Safeguards"
+    status: "Required"
+    description: |
+      Implement physical safeguards for all workstations that access ePHI, 
+      to restrict access to authorized users.
+    
+    evidence_requirements:
+      - id: "HIPAA-PS-310.c-E1"
+        description: "Workstation physical security"
+        artifact_types:
+          - "Physical security controls documentation"
+          - "Privacy screen deployment records"
+          - "Secure area designations"
+        required: true
+    
+    testing_procedures:
+      - "Verify workstations are in secure areas"
+      - "Confirm physical security controls are in place"
+      - "Review secure disposal procedures"
+    
+    related_cwe_ids:
+      - 284  # Improper Access Control
+
+  # ---------------------------------------------------------------------------
+  # §164.310(d)(1) - Device and Media Controls
+  # ---------------------------------------------------------------------------
+  HIPAA-PS-310.d1:
+    id: "HIPAA-PS-310.d1"
+    title: "Device and Media Controls"
+    regulation_ref: "45 CFR §164.310(d)(1)"
+    category: "Physical Safeguards"
+    status: "Required"
+    description: |
+      Implement policies and procedures that govern the receipt and removal 
+      of hardware and electronic media containing ePHI.
+    
+    implementation_specifications:
+      - id: "HIPAA-PS-310.d1.i"
+        title: "Disposal"
+        status: "Required"
+        description: "Implement policies and procedures to address the final disposition of ePHI and/or the hardware or electronic media on which it is stored."
+        
+      - id: "HIPAA-PS-310.d1.ii"
+        title: "Media Re-use"
+        status: "Required"
+        description: "Implement procedures for removal of ePHI from electronic media before re-use."
+        
+      - id: "HIPAA-PS-310.d1.iii"
+        title: "Accountability"
+        status: "Addressable"
+        description: "Maintain a record of the movements of hardware and electronic media."
+        
+      - id: "HIPAA-PS-310.d1.iv"
+        title: "Data Backup and Storage"
+        status: "Addressable"
+        description: "Create a retrievable, exact copy of ePHI before movement of equipment."
+    
+    evidence_requirements:
+      - id: "HIPAA-PS-310.d1-E1"
+        description: "Media disposal procedures"
+        artifact_types:
+          - "Media sanitization policy"
+          - "Disposal certificates"
+          - "Destruction logs"
+        required: true
+        
+      - id: "HIPAA-PS-310.d1-E2"
+        description: "Media tracking records"
+        artifact_types:
+          - "Media inventory"
+          - "Chain of custody records"
+          - "Equipment movement logs"
+        required: true
+    
+    testing_procedures:
+      - "Review media disposal procedures"
+      - "Verify sanitization methods are appropriate"
+      - "Confirm disposal is documented"
+      - "Review media tracking accuracy"
+    
+    related_cwe_ids:
+      - 226  # Sensitive Information in Resource Not Removed Before Reuse
+      - 312  # Cleartext Storage of Sensitive Information
+
+# =============================================================================
+# TECHNICAL SAFEGUARDS - 45 CFR §164.312
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # §164.312(a)(1) - Access Control
+  # ---------------------------------------------------------------------------
+  HIPAA-TS-312.a1:
+    id: "HIPAA-TS-312.a1"
+    title: "Access Control"
+    regulation_ref: "45 CFR §164.312(a)(1)"
+    category: "Technical Safeguards"
+    status: "Required"
+    description: |
+      Implement technical policies and procedures for electronic information 
+      systems that maintain ePHI to allow access only to authorized persons or software programs.
+    
+    implementation_specifications:
+      - id: "HIPAA-TS-312.a1.i"
+        title: "Unique User Identification"
+        status: "Required"
+        description: "Assign a unique name and/or number for identifying and tracking user identity."
+        
+      - id: "HIPAA-TS-312.a1.ii"
+        title: "Emergency Access Procedure"
+        status: "Required"
+        description: "Establish procedures for obtaining necessary ePHI during an emergency."
+        
+      - id: "HIPAA-TS-312.a1.iii"
+        title: "Automatic Logoff"
+        status: "Addressable"
+        description: "Implement electronic procedures that terminate an electronic session after a predetermined time of inactivity."
+        
+      - id: "HIPAA-TS-312.a1.iv"
+        title: "Encryption and Decryption"
+        status: "Addressable"
+        description: "Implement a mechanism to encrypt and decrypt ePHI."
+    
+    evidence_requirements:
+      - id: "HIPAA-TS-312.a1-E1"
+        description: "Access control configuration"
+        artifact_types:
+          - "User ID standards"
+          - "Authentication configuration"
+          - "Access control lists"
+        required: true
+        
+      - id: "HIPAA-TS-312.a1-E2"
+        description: "Emergency access procedures"
+        artifact_types:
+          - "Break-glass procedures"
+          - "Emergency access logs"
+          - "Emergency access review records"
+        required: true
+        
+      - id: "HIPAA-TS-312.a1-E3"
+        description: "Session management configuration"
+        artifact_types:
+          - "Session timeout settings"
+          - "Auto-logoff configuration"
+          - "Idle session policies"
+        required: true
+        
+      - id: "HIPAA-TS-312.a1-E4"
+        description: "Encryption implementation"
+        artifact_types:
+          - "Encryption at rest configuration"
+          - "Encryption key management"
+          - "Encryption standards documentation"
+        required: true
+    
+    testing_procedures:
+      - "Verify unique user identification is enforced"
+      - "Test automatic logoff functionality"
+      - "Verify encryption is implemented for ePHI at rest"
+      - "Review emergency access procedures"
+    
+    related_cwe_ids:
+      - 284  # Improper Access Control
+      - 287  # Improper Authentication
+      - 311  # Missing Encryption of Sensitive Data
+      - 613  # Insufficient Session Expiration
+
+  # ---------------------------------------------------------------------------
+  # §164.312(b) - Audit Controls
+  # ---------------------------------------------------------------------------
+  HIPAA-TS-312.b:
+    id: "HIPAA-TS-312.b"
+    title: "Audit Controls"
+    regulation_ref: "45 CFR §164.312(b)"
+    category: "Technical Safeguards"
+    status: "Required"
+    description: |
+      Implement hardware, software, and/or procedural mechanisms that record 
+      and examine activity in information systems that contain or use ePHI.
+    
+    evidence_requirements:
+      - id: "HIPAA-TS-312.b-E1"
+        description: "Audit logging configuration"
+        artifact_types:
+          - "Audit logging policy"
+          - "Log configuration settings"
+          - "Audit event definitions"
+        required: true
+        
+      - id: "HIPAA-TS-312.b-E2"
+        description: "Audit log samples"
+        artifact_types:
+          - "System access logs"
+          - "ePHI access logs"
+          - "Security event logs"
+        required: true
+        
+      - id: "HIPAA-TS-312.b-E3"
+        description: "Log review procedures"
+        artifact_types:
+          - "Log review schedule"
+          - "Log review records"
+          - "Anomaly investigation records"
+        required: true
+    
+    testing_procedures:
+      - "Verify audit logging is enabled on all ePHI systems"
+      - "Confirm logs capture required events"
+      - "Review log retention meets requirements"
+      - "Verify log review is performed regularly"
+    
+    related_cwe_ids:
+      - 778  # Insufficient Logging
+      - 779  # Logging of Excessive Data
+      - 223  # Omission of Security-relevant Information
+
+  # ---------------------------------------------------------------------------
+  # §164.312(c)(1) - Integrity
+  # ---------------------------------------------------------------------------
+  HIPAA-TS-312.c1:
+    id: "HIPAA-TS-312.c1"
+    title: "Integrity"
+    regulation_ref: "45 CFR §164.312(c)(1)"
+    category: "Technical Safeguards"
+    status: "Required"
+    description: |
+      Implement policies and procedures to protect ePHI from improper 
+      alteration or destruction.
+    
+    implementation_specifications:
+      - id: "HIPAA-TS-312.c1.i"
+        title: "Mechanism to Authenticate ePHI"
+        status: "Addressable"
+        description: "Implement electronic mechanisms to corroborate that ePHI has not been altered or destroyed in an unauthorized manner."
+    
+    evidence_requirements:
+      - id: "HIPAA-TS-312.c1-E1"
+        description: "Integrity controls"
+        artifact_types:
+          - "Data integrity policy"
+          - "Checksum/hash implementation"
+          - "Digital signature configuration"
+        required: true
+        
+      - id: "HIPAA-TS-312.c1-E2"
+        description: "Integrity monitoring"
+        artifact_types:
+          - "File integrity monitoring configuration"
+          - "Database integrity checks"
+          - "Integrity validation logs"
+        required: true
+    
+    testing_procedures:
+      - "Verify integrity controls are implemented"
+      - "Test file integrity monitoring"
+      - "Review integrity validation procedures"
+    
+    related_cwe_ids:
+      - 345  # Insufficient Verification of Data Authenticity
+      - 354  # Improper Validation of Integrity Check Value
+
+  # ---------------------------------------------------------------------------
+  # §164.312(d) - Person or Entity Authentication
+  # ---------------------------------------------------------------------------
+  HIPAA-TS-312.d:
+    id: "HIPAA-TS-312.d"
+    title: "Person or Entity Authentication"
+    regulation_ref: "45 CFR §164.312(d)"
+    category: "Technical Safeguards"
+    status: "Required"
+    description: |
+      Implement procedures to verify that a person or entity seeking access 
+      to ePHI is the one claimed.
+    
+    evidence_requirements:
+      - id: "HIPAA-TS-312.d-E1"
+        description: "Authentication mechanisms"
+        artifact_types:
+          - "Authentication policy"
+          - "MFA configuration"
+          - "Password policy"
+        required: true
+        
+      - id: "HIPAA-TS-312.d-E2"
+        description: "Authentication implementation"
+        artifact_types:
+          - "Identity provider configuration"
+          - "Authentication system logs"
+          - "Failed authentication monitoring"
+        required: true
+    
+    testing_procedures:
+      - "Verify authentication mechanisms are in place"
+      - "Test MFA implementation"
+      - "Review password complexity requirements"
+      - "Confirm authentication logging is enabled"
+    
+    related_cwe_ids:
+      - 287  # Improper Authentication
+      - 306  # Missing Authentication for Critical Function
+      - 522  # Insufficiently Protected Credentials
+
+  # ---------------------------------------------------------------------------
+  # §164.312(e)(1) - Transmission Security
+  # ---------------------------------------------------------------------------
+  HIPAA-TS-312.e1:
+    id: "HIPAA-TS-312.e1"
+    title: "Transmission Security"
+    regulation_ref: "45 CFR §164.312(e)(1)"
+    category: "Technical Safeguards"
+    status: "Required"
+    description: |
+      Implement technical security measures to guard against unauthorized 
+      access to ePHI that is being transmitted over an electronic network.
+    
+    implementation_specifications:
+      - id: "HIPAA-TS-312.e1.i"
+        title: "Integrity Controls"
+        status: "Addressable"
+        description: "Implement security measures to ensure that electronically transmitted ePHI is not improperly modified without detection."
+        
+      - id: "HIPAA-TS-312.e1.ii"
+        title: "Encryption"
+        status: "Addressable"
+        description: "Implement a mechanism to encrypt ePHI whenever deemed appropriate."
+    
+    evidence_requirements:
+      - id: "HIPAA-TS-312.e1-E1"
+        description: "Transmission encryption configuration"
+        artifact_types:
+          - "TLS/SSL configuration"
+          - "VPN configuration"
+          - "Encryption in transit policy"
+        required: true
+        
+      - id: "HIPAA-TS-312.e1-E2"
+        description: "Network security controls"
+        artifact_types:
+          - "Network diagrams"
+          - "Firewall rules"
+          - "Network segmentation documentation"
+        required: true
+    
+    testing_procedures:
+      - "Verify TLS is enforced for ePHI transmission"
+      - "Test encryption protocols and cipher suites"
+      - "Review network security architecture"
+      - "Confirm no unencrypted ePHI transmission"
+    
+    related_cwe_ids:
+      - 311  # Missing Encryption of Sensitive Data
+      - 319  # Cleartext Transmission of Sensitive Information
+      - 326  # Inadequate Encryption Strength
+
+# =============================================================================
+# ORGANIZATIONAL REQUIREMENTS - 45 CFR §164.314
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # §164.314(a)(1) - Business Associate Contracts or Arrangements
+  # ---------------------------------------------------------------------------
+  HIPAA-OR-314.a1:
+    id: "HIPAA-OR-314.a1"
+    title: "Business Associate Contracts or Other Arrangements"
+    regulation_ref: "45 CFR §164.314(a)(1)"
+    category: "Organizational Requirements"
+    status: "Required"
+    description: |
+      The contract between a covered entity and business associate must meet 
+      certain requirements related to the safeguarding of ePHI.
+    
+    evidence_requirements:
+      - id: "HIPAA-OR-314.a1-E1"
+        description: "Business associate contract provisions"
+        artifact_types:
+          - "BAA with required provisions"
+          - "Subcontractor requirements"
+          - "Termination provisions"
+        required: true
+    
+    testing_procedures:
+      - "Review BAA for required security provisions"
+      - "Verify subcontractor requirements are included"
+      - "Confirm breach notification provisions"
+    
+    related_cwe_ids:
+      - 284  # Improper Access Control
+
+# =============================================================================
+# POLICIES AND PROCEDURES - 45 CFR §164.316
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # §164.316(a) - Policies and Procedures
+  # ---------------------------------------------------------------------------
+  HIPAA-PP-316.a:
+    id: "HIPAA-PP-316.a"
+    title: "Policies and Procedures"
+    regulation_ref: "45 CFR §164.316(a)"
+    category: "Policies and Procedures"
+    status: "Required"
+    description: |
+      Implement reasonable and appropriate policies and procedures to comply 
+      with the Security Rule standards and implementation specifications.
+    
+    evidence_requirements:
+      - id: "HIPAA-PP-316.a-E1"
+        description: "Security policies and procedures"
+        artifact_types:
+          - "Information security policy"
+          - "Security procedures"
+          - "Policy approval records"
+        required: true
+    
+    testing_procedures:
+      - "Review policy comprehensiveness"
+      - "Verify policies address all required areas"
+      - "Confirm policies are approved and current"
+    
+    related_cwe_ids: []
+
+  # ---------------------------------------------------------------------------
+  # §164.316(b)(1) - Documentation
+  # ---------------------------------------------------------------------------
+  HIPAA-PP-316.b1:
+    id: "HIPAA-PP-316.b1"
+    title: "Documentation"
+    regulation_ref: "45 CFR §164.316(b)(1)"
+    category: "Policies and Procedures"
+    status: "Required"
+    description: |
+      Maintain the policies and procedures implemented to comply with the 
+      Security Rule in written (electronic or hard copy) form.
+    
+    implementation_specifications:
+      - id: "HIPAA-PP-316.b1.i"
+        title: "Time Limit"
+        status: "Required"
+        description: "Retain documentation for 6 years from date of creation or last effective date, whichever is later."
+        
+      - id: "HIPAA-PP-316.b1.ii"
+        title: "Availability"
+        status: "Required"
+        description: "Make documentation available to those persons responsible for implementing procedures."
+        
+      - id: "HIPAA-PP-316.b1.iii"
+        title: "Updates"
+        status: "Required"
+        description: "Review documentation periodically and update as needed in response to environmental or operational changes."
+    
+    evidence_requirements:
+      - id: "HIPAA-PP-316.b1-E1"
+        description: "Documentation retention"
+        artifact_types:
+          - "Document retention policy"
+          - "Document version history"
+          - "Archive records"
+        required: true
+        
+      - id: "HIPAA-PP-316.b1-E2"
+        description: "Documentation review records"
+        artifact_types:
+          - "Policy review schedule"
+          - "Review completion records"
+          - "Update history"
+        required: true
+    
+    testing_procedures:
+      - "Verify 6-year retention is maintained"
+      - "Confirm documentation is accessible"
+      - "Review documentation update history"
+    
+    related_cwe_ids: []
+
+# =============================================================================
+# BREACH NOTIFICATION RULE - 45 CFR §164.400-414
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # §164.402 - Breach Definition and Risk Assessment
+  # ---------------------------------------------------------------------------
+  HIPAA-BN-402:
+    id: "HIPAA-BN-402"
+    title: "Breach Risk Assessment"
+    regulation_ref: "45 CFR §164.402"
+    category: "Breach Notification"
+    status: "Required"
+    description: |
+      Conduct risk assessment to determine if a breach of unsecured PHI 
+      requires notification.
+    
+    evidence_requirements:
+      - id: "HIPAA-BN-402-E1"
+        description: "Breach risk assessment procedures"
+        artifact_types:
+          - "Breach risk assessment template"
+          - "Risk assessment completion records"
+          - "Low probability determination documentation"
+        required: true
+    
+    testing_procedures:
+      - "Review breach risk assessment procedures"
+      - "Verify 4-factor analysis is documented"
+      - "Confirm timely completion of assessments"
+    
+    related_cwe_ids:
+      - 200  # Exposure of Sensitive Information
+
+  # ---------------------------------------------------------------------------
+  # §164.404 - Notification to Individuals
+  # ---------------------------------------------------------------------------
+  HIPAA-BN-404:
+    id: "HIPAA-BN-404"
+    title: "Notification to Individuals"
+    regulation_ref: "45 CFR §164.404"
+    category: "Breach Notification"
+    status: "Required"
+    description: |
+      Notify affected individuals within 60 days of discovery of a breach 
+      of unsecured PHI.
+    
+    evidence_requirements:
+      - id: "HIPAA-BN-404-E1"
+        description: "Individual notification procedures"
+        artifact_types:
+          - "Notification letter templates"
+          - "Notification tracking records"
+          - "Substitute notice procedures"
+        required: true
+    
+    testing_procedures:
+      - "Review notification procedures for timeliness"
+      - "Verify notification content requirements"
+      - "Confirm tracking of notification completion"
+    
+    related_cwe_ids: []
+
+  # ---------------------------------------------------------------------------
+  # §164.408 - Notification to HHS
+  # ---------------------------------------------------------------------------
+  HIPAA-BN-408:
+    id: "HIPAA-BN-408"
+    title: "Notification to Secretary"
+    regulation_ref: "45 CFR §164.408"
+    category: "Breach Notification"
+    status: "Required"
+    description: |
+      Notify the Secretary of HHS following the discovery of a breach 
+      of unsecured PHI.
+    
+    evidence_requirements:
+      - id: "HIPAA-BN-408-E1"
+        description: "HHS notification procedures"
+        artifact_types:
+          - "HHS breach portal records"
+          - "Breach log"
+          - "Annual breach summary"
+        required: true
+    
+    testing_procedures:
+      - "Verify HHS notification timing compliance"
+      - "Review breach log completeness"
+      - "Confirm annual breach log submission"
+    
+    related_cwe_ids: []
+
+# =============================================================================
+# CWE TO HIPAA MAPPING
+# =============================================================================
+
+cwe_mapping:
+  # Access Control Issues
+  CWE-284:
+    controls:
+      - "HIPAA-AS-308.a3"
+      - "HIPAA-AS-308.a4"
+      - "HIPAA-TS-312.a1"
+    description: "Improper Access Control"
+    
+  CWE-285:
+    controls:
+      - "HIPAA-AS-308.a3"
+      - "HIPAA-TS-312.a1"
+    description: "Improper Authorization"
+    
+  CWE-287:
+    controls:
+      - "HIPAA-TS-312.d"
+      - "HIPAA-TS-312.a1"
+    description: "Improper Authentication"
+    
+  CWE-269:
+    controls:
+      - "HIPAA-AS-308.a2"
+      - "HIPAA-AS-308.a3"
+    description: "Improper Privilege Management"
+    
+  CWE-306:
+    controls:
+      - "HIPAA-TS-312.d"
+    description: "Missing Authentication for Critical Function"
+  
+  # Encryption Issues
+  CWE-311:
+    controls:
+      - "HIPAA-TS-312.a1"
+      - "HIPAA-TS-312.e1"
+    description: "Missing Encryption of Sensitive Data"
+    
+  CWE-312:
+    controls:
+      - "HIPAA-PS-310.d1"
+      - "HIPAA-TS-312.a1"
+    description: "Cleartext Storage of Sensitive Information"
+    
+  CWE-319:
+    controls:
+      - "HIPAA-TS-312.e1"
+    description: "Cleartext Transmission of Sensitive Information"
+    
+  CWE-326:
+    controls:
+      - "HIPAA-TS-312.e1"
+    description: "Inadequate Encryption Strength"
+  
+  # Logging and Monitoring
+  CWE-778:
+    controls:
+      - "HIPAA-AS-308.a1"
+      - "HIPAA-TS-312.b"
+    description: "Insufficient Logging"
+    
+  CWE-779:
+    controls:
+      - "HIPAA-TS-312.b"
+    description: "Logging of Excessive Data"
+    
+  CWE-223:
+    controls:
+      - "HIPAA-AS-308.a6"
+      - "HIPAA-TS-312.b"
+    description: "Omission of Security-relevant Information"
+  
+  # Data Integrity
+  CWE-345:
+    controls:
+      - "HIPAA-TS-312.c1"
+    description: "Insufficient Verification of Data Authenticity"
+    
+  CWE-354:
+    controls:
+      - "HIPAA-TS-312.c1"
+    description: "Improper Validation of Integrity Check Value"
+  
+  # Credential and Session Management
+  CWE-522:
+    controls:
+      - "HIPAA-AS-308.a5"
+      - "HIPAA-TS-312.d"
+    description: "Insufficiently Protected Credentials"
+    
+  CWE-613:
+    controls:
+      - "HIPAA-TS-312.a1"
+    description: "Insufficient Session Expiration"
+    
+  CWE-307:
+    controls:
+      - "HIPAA-AS-308.a5"
+    description: "Improper Restriction of Excessive Authentication Attempts"
+  
+  # Information Exposure
+  CWE-200:
+    controls:
+      - "HIPAA-AS-308.a1"
+      - "HIPAA-BN-402"
+    description: "Exposure of Sensitive Information"
+    
+  CWE-226:
+    controls:
+      - "HIPAA-PS-310.d1"
+    description: "Sensitive Information in Resource Not Removed Before Reuse"
+  
+  # Configuration
+  CWE-16:
+    controls:
+      - "HIPAA-PS-310.b"
+    description: "Configuration"
+    
+  CWE-732:
+    controls:
+      - "HIPAA-AS-308.a4"
+      - "HIPAA-PS-310.b"
+    description: "Incorrect Permission Assignment"
+    
+  CWE-693:
+    controls:
+      - "HIPAA-AS-308.a7"
+      - "HIPAA-AS-308.a8"
+    description: "Protection Mechanism Failure"
+
+# =============================================================================
+# OWASP TO HIPAA MAPPING
+# =============================================================================
+
+owasp_mapping:
+  "A01:2021-Broken Access Control":
+    controls:
+      - "HIPAA-AS-308.a3"
+      - "HIPAA-AS-308.a4"
+      - "HIPAA-TS-312.a1"
+    description: "Access control failures map to workforce security and technical access controls"
+    
+  "A02:2021-Cryptographic Failures":
+    controls:
+      - "HIPAA-TS-312.a1"
+      - "HIPAA-TS-312.e1"
+      - "HIPAA-PS-310.d1"
+    description: "Encryption failures map to encryption requirements and media controls"
+    
+  "A03:2021-Injection":
+    controls:
+      - "HIPAA-TS-312.c1"
+      - "HIPAA-TS-312.a1"
+    description: "Injection vulnerabilities can compromise ePHI integrity and access controls"
+    
+  "A04:2021-Insecure Design":
+    controls:
+      - "HIPAA-AS-308.a1"
+      - "HIPAA-AS-308.a8"
+    description: "Design flaws indicate insufficient risk analysis and evaluation"
+    
+  "A05:2021-Security Misconfiguration":
+    controls:
+      - "HIPAA-PS-310.b"
+      - "HIPAA-TS-312.a1"
+    description: "Misconfigurations violate workstation and access control requirements"
+    
+  "A06:2021-Vulnerable and Outdated Components":
+    controls:
+      - "HIPAA-AS-308.a1"
+      - "HIPAA-AS-308.a5"
+    description: "Vulnerable components indicate insufficient risk management"
+    
+  "A07:2021-Identification and Authentication Failures":
+    controls:
+      - "HIPAA-TS-312.d"
+      - "HIPAA-TS-312.a1"
+    description: "Authentication failures directly violate HIPAA authentication requirements"
+    
+  "A08:2021-Software and Data Integrity Failures":
+    controls:
+      - "HIPAA-TS-312.c1"
+      - "HIPAA-AS-308.a8"
+    description: "Integrity failures violate ePHI integrity controls"
+    
+  "A09:2021-Security Logging and Monitoring Failures":
+    controls:
+      - "HIPAA-TS-312.b"
+      - "HIPAA-AS-308.a1"
+      - "HIPAA-AS-308.a6"
+    description: "Logging failures violate audit controls and incident procedures"
+    
+  "A10:2021-Server-Side Request Forgery":
+    controls:
+      - "HIPAA-TS-312.a1"
+      - "HIPAA-TS-312.e1"
+    description: "SSRF can bypass access controls and transmission security"

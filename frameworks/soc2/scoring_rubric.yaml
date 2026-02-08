@@ -1,0 +1,270 @@
+# AI Scoring Rubric - Anti-Hallucination Rules
+# 
+# This rubric enforces evidence-based compliance assessment.
+# The AI MUST NOT make claims without verifiable evidence.
+#
+# Core Principle: "If you can't prove it, you can't claim it"
+
+metadata:
+  version: "1.0.0"
+  purpose: "Prevent AI hallucination in compliance assessments"
+  last_updated: "2025-01-01"
+
+# =============================================================================
+# FUNDAMENTAL RULES - These override all other behavior
+# =============================================================================
+
+fundamental_rules:
+  
+  rule_1_evidence_required:
+    name: "Evidence Required for Every Claim"
+    description: >
+      Every compliance claim MUST cite a specific evidence artifact.
+      No claim can be made without pointing to collected evidence.
+    
+    forbidden_patterns:
+      - "Based on general practices, likely compliant"
+      - "Industry standards suggest compliance"
+      - "Typically organizations would have..."
+      - "It's reasonable to assume..."
+      - "Based on similar organizations..."
+    
+    required_patterns:
+      - "Evidence artifact [ID] shows..."
+      - "According to evidence [ID] dated [DATE]..."
+      - "Configuration snapshot [ID] confirms..."
+      - "No evidence was collected for this requirement"
+    
+    examples:
+      wrong: "Based on the organization's size and industry, they likely have an access control policy in place."
+      right: "Evidence artifact [CC6.1-E1-001.pdf] dated 2024-03-15 shows an approved Access Control Policy signed by the CISO."
+      
+      wrong: "The firewall is probably configured correctly based on typical enterprise setups."
+      right: "No firewall configuration evidence was collected. Status: EVIDENCE_GAP. Cannot assess CC6.6 without firewall rule export."
+
+  rule_2_no_inference:
+    name: "No Inference from Absence"
+    description: >
+      Missing evidence does NOT mean the control doesn't exist.
+      Missing evidence means we CANNOT assess the control.
+    
+    forbidden_patterns:
+      - "No evidence provided, so the control likely doesn't exist"
+      - "Since we didn't receive X, we can conclude Y doesn't exist"
+      - "The absence of evidence suggests non-compliance"
+    
+    required_patterns:
+      - "EVIDENCE_GAP: [specific evidence type] not collected"
+      - "Unable to assess: Required evidence [ID] not provided"
+      - "Status: NEEDS_MANUAL_REVIEW - evidence insufficient"
+    
+    examples:
+      wrong: "No firewall config provided, so perimeter security controls don't exist."
+      right: "EVIDENCE_GAP: Firewall configuration (CC6.6-E1) not collected. Cannot assess perimeter security controls."
+
+  rule_3_explicit_mapping:
+    name: "Explicit Evidence-to-Finding Mapping"
+    description: >
+      Every finding MUST map to specific evidence with ID and filename.
+      Generic references are not acceptable.
+    
+    forbidden_patterns:
+      - "Based on the documentation provided..."
+      - "According to company policies..."
+      - "The evidence shows..."
+    
+    required_patterns:
+      - "Evidence [CC6.1-E1-001.pdf] hash [abc123...]"
+      - "System extract [CC6.1-E2-20250101.json] from [source]"
+      - "Sample records [CC6.2-E2-samples.csv] items 1-25"
+
+  rule_4_state_uncertainty:
+    name: "Acknowledge Uncertainty States"
+    description: >
+      Use explicit assessment states. Never claim certainty without evidence.
+    
+    valid_states:
+      PASS:
+        meaning: "Clear evidence satisfies the control requirement"
+        requires: "Specific evidence artifact meeting all validation rules"
+        
+      FAIL:
+        meaning: "Clear evidence shows non-compliance"
+        requires: "Specific evidence artifact demonstrating the gap"
+        
+      INSUFFICIENT_EVIDENCE:
+        meaning: "Evidence exists but doesn't fully prove compliance"
+        requires: "Evidence present but validation rules not satisfied"
+        
+      EVIDENCE_GAP:
+        meaning: "Required evidence was not collected"
+        requires: "No evidence artifact for required evidence type"
+        
+      CONFLICTING_EVIDENCE:
+        meaning: "Multiple evidence sources disagree"
+        requires: "Two or more evidence artifacts with contradictory information"
+        
+      NEEDS_MANUAL_REVIEW:
+        meaning: "AI cannot make determination, human review required"
+        requires: "Complex evidence requiring human judgment"
+
+  rule_5_provenance_required:
+    name: "Evidence Provenance Required"
+    description: >
+      Every evidence artifact must have complete provenance metadata.
+      Evidence without provenance cannot be used for assessment.
+    
+    required_metadata:
+      - source: "Where the evidence came from"
+      - timestamp: "When the evidence was collected"
+      - collector: "Who/what collected the evidence"
+      - scope: "What systems/period the evidence covers"
+      - hash: "Content hash for integrity verification"
+
+# =============================================================================
+# PROHIBITED BEHAVIORS
+# =============================================================================
+
+prohibited_behaviors:
+  
+  - id: "PB001"
+    name: "Assuming compliance without evidence"
+    description: "Making any positive compliance statement without citing specific evidence"
+    severity: "critical"
+    
+  - id: "PB002"
+    name: "Inferring one control from another"
+    description: "Assuming control X is satisfied because control Y is satisfied"
+    severity: "high"
+    example_wrong: "Since they have a change management policy, they probably have incident response too"
+    
+  - id: "PB003"
+    name: "Using general knowledge instead of evidence"
+    description: "Making statements based on what 'typical organizations do'"
+    severity: "critical"
+    
+  - id: "PB004"
+    name: "Ignoring conflicting evidence"
+    description: "Reporting PASS when evidence conflicts exist"
+    severity: "critical"
+    
+  - id: "PB005"
+    name: "Making up evidence IDs or timestamps"
+    description: "Citing evidence that doesn't exist in the collected set"
+    severity: "critical"
+    
+  - id: "PB006"
+    name: "Using weasel words"
+    description: "Using 'likely', 'probably', 'seems to', 'appears to' for compliance status"
+    severity: "high"
+    forbidden_words:
+      - "likely"
+      - "probably"
+      - "presumably"
+      - "seems to"
+      - "appears to"
+      - "might"
+      - "could be"
+      - "should have"
+
+# =============================================================================
+# SCORING METHODOLOGY
+# =============================================================================
+
+scoring_methodology:
+  
+  control_score_calculation:
+    formula: >
+      control_score = Σ(evidence_weight × evidence_score) / Σ(evidence_weight)
+      
+      where:
+        evidence_score = 1.0 if validation passes
+        evidence_score = 0.5 if partial validation
+        evidence_score = 0.0 if validation fails
+        evidence_score = NULL if not collected (reduces denominator)
+    
+    example:
+      control: "CC6.1"
+      evidence:
+        - type: "policy_document"
+          weight: 0.20
+          score: 1.0  # Policy exists and valid
+        - type: "system_extract"
+          weight: 0.30
+          score: 0.5  # Extract exists but stale
+        - type: "review_record"
+          weight: 0.25
+          score: null  # Not collected
+        - type: "config_snapshot"
+          weight: 0.25
+          score: 1.0  # Config valid
+      
+      calculation: >
+        (0.20×1.0 + 0.30×0.5 + 0.25×1.0) / (0.20 + 0.30 + 0.25) = 0.60/0.75 = 0.80
+        Result: PASS (≥0.80 threshold)
+
+  evidence_validation_rules:
+    freshness:
+      description: "Evidence must be within freshness window"
+      scoring:
+        within_window: 1.0
+        expired_30_days: 0.7
+        expired_90_days: 0.3
+        expired_180_days: 0.0
+        
+    completeness:
+      description: "Evidence must cover all in-scope systems"
+      scoring:
+        full_coverage: 1.0
+        partial_coverage: 0.5
+        no_coverage: 0.0
+        
+    source_validation:
+      description: "Evidence must come from acceptable source"
+      scoring:
+        acceptable_source: 1.0
+        related_source: 0.5
+        unverified_source: 0.0
+
+# =============================================================================
+# OUTPUT FORMAT REQUIREMENTS
+# =============================================================================
+
+output_requirements:
+  
+  finding_format:
+    required_fields:
+      - finding_id: "Unique identifier"
+      - control_id: "SOC 2 control reference"
+      - status: "One of the valid states"
+      - evidence_refs: "List of evidence artifact IDs"
+      - reasoning: "Explanation citing specific evidence"
+      - confidence: "HIGH/MEDIUM/LOW based on evidence quality"
+      
+    example:
+      finding_id: "F001"
+      control_id: "CC6.1"
+      status: "PASS"
+      evidence_refs:
+        - "CC6.1-E1-001.pdf"
+        - "CC6.1-E2-20250101.json"
+        - "CC6.1-E4-config-20250101.yaml"
+      reasoning: >
+        Access Control Policy [CC6.1-E1-001.pdf] approved 2024-03-15 defines 
+        role-based access requirements. User access list [CC6.1-E2-20250101.json] 
+        extracted from Okta shows 147 active users with role assignments. 
+        Authentication config [CC6.1-E4-config-20250101.yaml] confirms MFA 
+        enabled for all users. Note: Access review evidence (CC6.1-E3) not 
+        collected - marked for follow-up but not blocking.
+      confidence: "MEDIUM"
+      gaps:
+        - "CC6.1-E3: Access review evidence not collected"
+
+  assessment_summary_format:
+    required_sections:
+      - executive_summary: "High-level compliance status"
+      - evidence_inventory: "List of all collected evidence"
+      - evidence_gaps: "List of missing required evidence"
+      - control_assessments: "Per-control findings"
+      - recommendations: "Prioritized remediation actions"
+      - limitations: "What could not be assessed and why"

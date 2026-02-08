@@ -1,0 +1,656 @@
+# SOC 2 Report Types Configuration
+# AI-Powered Security Auditor - Type 1 and Type 2 Assessment Framework
+# Version: 1.0.0
+
+version: "1.0.0"
+description: |
+  Defines the assessment methodology for SOC 2 Type 1 and Type 2 reports.
+  Type 1 assesses control design at a point in time.
+  Type 2 assesses control design AND operating effectiveness over a period.
+
+# ============================================================================
+# REPORT TYPE DEFINITIONS
+# ============================================================================
+report_types:
+  type_1:
+    name: "SOC 2 Type 1"
+    full_name: "SOC 2 Type 1 Report"
+    description: |
+      Point-in-time assessment that evaluates:
+      1. Whether controls are suitably designed
+      2. Whether controls were implemented as of a specific date
+      Does NOT test operating effectiveness over time.
+    
+    assessment_focus: "design_and_implementation"
+    assessment_date: "point_in_time"  # Single date
+    typical_duration: "4-8 weeks"
+    
+    use_cases:
+      - "Initial SOC 2 compliance demonstration"
+      - "New service offerings requiring quick compliance evidence"
+      - "Baseline before pursuing Type 2"
+      - "Organizations with immature control environments"
+    
+    limitations:
+      - "Does not demonstrate sustained operation of controls"
+      - "Less assurance than Type 2"
+      - "May not satisfy customers requiring operating effectiveness evidence"
+      - "Valid only for the specific assessment date"
+    
+    agent_capabilities:
+      code_analyzer:
+        applicable: true
+        focus: "Control design assessment - are security controls coded correctly?"
+        utilization: "primary"
+        
+      vulnerability_scanner:
+        applicable: true
+        focus: "Point-in-time vulnerability assessment"
+        utilization: "primary"
+        
+      log_analyzer:
+        applicable: true
+        focus: "Verify logging is configured (not historical analysis)"
+        utilization: "limited"
+        
+      compliance_checker:
+        applicable: true
+        focus: "Policy and procedure documentation review"
+        utilization: "primary"
+
+  type_2:
+    name: "SOC 2 Type 2"
+    full_name: "SOC 2 Type 2 Report"
+    description: |
+      Period-of-time assessment that evaluates:
+      1. Whether controls are suitably designed
+      2. Whether controls were implemented
+      3. Whether controls operated effectively throughout the review period
+    
+    assessment_focus: "design_implementation_and_operating_effectiveness"
+    assessment_period: "6-12 months minimum"
+    typical_duration: "8-16 weeks (after review period ends)"
+    
+    use_cases:
+      - "Mature compliance programs"
+      - "Enterprise customer requirements"
+      - "Regulatory compliance demonstration"
+      - "Ongoing compliance maintenance"
+    
+    requirements:
+      - "Minimum 6-month review period"
+      - "Evidence spanning entire review period"
+      - "Sample-based testing of control operation"
+      - "Exception documentation and impact assessment"
+    
+    agent_capabilities:
+      code_analyzer:
+        applicable: true
+        focus: "Control design + code change analysis over period"
+        utilization: "primary"
+        
+      vulnerability_scanner:
+        applicable: true
+        focus: "Trend analysis of monthly scans across period"
+        utilization: "primary"
+        
+      log_analyzer:
+        applicable: true
+        focus: "Historical log analysis - operating effectiveness evidence"
+        utilization: "critical"  # Elevated for Type 2
+        
+      compliance_checker:
+        applicable: true
+        focus: "Policy compliance + evidence aggregation"
+        utilization: "primary"
+
+# ============================================================================
+# ASSESSMENT METHODOLOGY
+# ============================================================================
+assessment_methodology:
+  type_1:
+    phases:
+      - phase: 1
+        name: "Planning and Scoping"
+        duration: "1-2 weeks"
+        activities:
+          - "Define assessment date"
+          - "Identify in-scope trust service categories"
+          - "Map controls to criteria"
+          - "Plan evidence collection"
+        agent_role: "compliance_checker initializes scope"
+        
+      - phase: 2
+        name: "Evidence Collection"
+        duration: "1-2 weeks"
+        activities:
+          - "Gather policy and procedure documents"
+          - "Collect system configurations"
+          - "Execute point-in-time vulnerability scan"
+          - "Capture logging configurations"
+        agents:
+          - compliance_checker: "Document retrieval and indexing"
+          - code_analyzer: "Configuration and code review"
+          - vulnerability_scanner: "Single comprehensive scan"
+          - log_analyzer: "Logging configuration verification"
+          
+      - phase: 3
+        name: "Control Design Testing"
+        duration: "2-3 weeks"
+        activities:
+          - "Evaluate control design against criteria"
+          - "Verify implementation evidence"
+          - "Document design gaps"
+          - "Assess compensating controls"
+        agents:
+          - compliance_checker: "Control-to-criteria mapping"
+          - code_analyzer: "Design pattern verification"
+          
+      - phase: 4
+        name: "Reporting"
+        duration: "1-2 weeks"
+        activities:
+          - "Compile findings"
+          - "Generate control assessment matrix"
+          - "Document exceptions"
+          - "Prepare final report"
+        output: "SOC 2 Type 1 Report"
+
+  type_2:
+    phases:
+      - phase: 1
+        name: "Planning and Scoping"
+        duration: "1-2 weeks"
+        activities:
+          - "Define review period (start and end dates)"
+          - "Identify in-scope trust service categories"
+          - "Establish sampling methodology"
+          - "Plan evidence collection schedule"
+        agent_role: "compliance_checker initializes scope with period parameters"
+        
+      - phase: 2
+        name: "Continuous Evidence Collection"
+        duration: "Throughout review period"
+        activities:
+          - "Monthly vulnerability scans"
+          - "Ongoing log aggregation"
+          - "Change tracking"
+          - "Incident documentation"
+        agents:
+          - vulnerability_scanner: "Monthly scans with trend tracking"
+          - log_analyzer: "Continuous log aggregation and analysis"
+          - code_analyzer: "Change tracking and review"
+          
+      - phase: 3
+        name: "Design Testing"
+        duration: "2-3 weeks"
+        activities:
+          - "Evaluate control design (same as Type 1)"
+          - "Verify implementation"
+        note: "Same as Type 1 Phase 3"
+        
+      - phase: 4
+        name: "Operating Effectiveness Testing"
+        duration: "3-4 weeks"
+        activities:
+          - "Sample selection from review period"
+          - "Test control operation across samples"
+          - "Analyze trends and patterns"
+          - "Document exceptions with impact"
+        agents:
+          - log_analyzer: "Primary - historical effectiveness analysis"
+          - vulnerability_scanner: "Trend analysis of scan results"
+          - code_analyzer: "Change approval verification"
+          - compliance_checker: "Sample validation and gap analysis"
+        sampling:
+          frequency_based:
+            daily_controls: 25  # minimum samples
+            weekly_controls: 10
+            monthly_controls: 3
+            quarterly_controls: 2
+          exception_handling:
+            threshold: 1  # Any exception requires documentation
+            escalation: "All exceptions reported regardless of materiality"
+            
+      - phase: 5
+        name: "Reporting"
+        duration: "2-3 weeks"
+        activities:
+          - "Compile findings across period"
+          - "Document operating effectiveness results"
+          - "Quantify exception impact"
+          - "Prepare final report with sample details"
+        output: "SOC 2 Type 2 Report"
+
+# ============================================================================
+# EVIDENCE REQUIREMENTS BY REPORT TYPE
+# ============================================================================
+evidence_requirements:
+  type_1:
+    general:
+      - "All evidence must be dated as of assessment date"
+      - "Evidence must demonstrate control exists and is designed"
+      - "No historical trend data required"
+    
+    by_control_category:
+      access_control:
+        - artifact: "access_control_policy"
+          description: "Current access policy document"
+          
+        - artifact: "user_access_list"
+          description: "Point-in-time list of users and permissions"
+          
+        - artifact: "mfa_configuration"
+          description: "Screenshot/export of MFA settings"
+          
+      change_management:
+        - artifact: "change_management_policy"
+          description: "Current change policy"
+          
+        - artifact: "change_approval_workflow"
+          description: "Workflow configuration"
+          
+      vulnerability_management:
+        - artifact: "vulnerability_scan_results"
+          description: "Single scan as of assessment date"
+          agent: vulnerability_scanner
+          
+        - artifact: "remediation_policy"
+          description: "Vulnerability remediation procedures"
+          
+      logging_monitoring:
+        - artifact: "logging_configuration"
+          description: "Current logging settings"
+          agent: log_analyzer
+          
+        - artifact: "monitoring_policy"
+          description: "Monitoring and alerting procedures"
+
+  type_2:
+    general:
+      - "Evidence must span the entire review period"
+      - "Sample-based evidence with population/sample sizes"
+      - "Trend data showing consistent operation"
+      - "Exception documentation with root cause and remediation"
+    
+    by_control_category:
+      access_control:
+        - artifact: "access_control_policy"
+          description: "Policy with version history showing consistency"
+          
+        - artifact: "access_review_samples"
+          description: "25+ access review samples across period"
+          sample_size: 25
+          
+        - artifact: "provisioning_samples"
+          description: "Account provisioning evidence across period"
+          sample_size: 25
+          
+        - artifact: "termination_samples"
+          description: "Account termination evidence across period"
+          sample_size: 25
+          
+      change_management:
+        - artifact: "change_samples_standard"
+          description: "Standard change approvals across period"
+          sample_size: 25
+          
+        - artifact: "change_samples_emergency"
+          description: "All emergency changes (100%)"
+          sample_size: "all"
+          
+        - artifact: "change_testing_evidence"
+          description: "Evidence of testing before deployment"
+          
+      vulnerability_management:
+        - artifact: "vulnerability_scan_trend"
+          description: "Monthly scans showing trend"
+          agent: vulnerability_scanner
+          minimum_scans: 6
+          
+        - artifact: "remediation_samples"
+          description: "Remediation evidence across period"
+          sample_size: 25
+          agent: vulnerability_scanner
+          
+      logging_monitoring:
+        - artifact: "log_retention_evidence"
+          description: "Logs retained for entire period"
+          agent: log_analyzer
+          
+        - artifact: "log_review_samples"
+          description: "Evidence of log review activities"
+          sample_size: 25
+          agent: log_analyzer
+          
+        - artifact: "alert_response_samples"
+          description: "Alert investigation and response"
+          sample_size: 25
+          agent: log_analyzer
+
+# ============================================================================
+# ANTI-HALLUCINATION RULES BY REPORT TYPE
+# ============================================================================
+anti_hallucination:
+  type_1:
+    rules:
+      - rule: "Point-in-Time Evidence Only"
+        description: "All evidence citations must be dated as of assessment date"
+        validation: "Check evidence timestamp against assessment date"
+        
+      - rule: "No Operating Effectiveness Claims"
+        description: "Type 1 cannot assert that controls operated effectively"
+        forbidden_phrases:
+          - "controls operated effectively"
+          - "operating effectiveness demonstrated"
+          - "sustained operation"
+          - "throughout the period"
+          - "consistently applied"
+          - "over the review period"
+          
+      - rule: "Design-Focused Language"
+        description: "Use design and implementation language only"
+        acceptable_phrases:
+          - "controls are designed to"
+          - "controls were implemented"
+          - "as of [date], the control"
+          - "control design provides for"
+          - "the control is in place"
+          
+    valid_assessment_states:
+      - PASS: "Control is suitably designed and implemented"
+      - FAIL: "Control design or implementation deficiency identified"
+      - INSUFFICIENT_EVIDENCE: "Cannot determine design adequacy"
+      - EVIDENCE_GAP: "Required evidence not collected"
+      - NEEDS_MANUAL_REVIEW: "Requires inquiry method"
+
+  type_2:
+    rules:
+      - rule: "Period-Spanning Evidence Required"
+        description: "Operating effectiveness claims require evidence across period"
+        validation: "Evidence must span start to end of review period"
+        
+      - rule: "Sample-Based Claims"
+        description: "Effectiveness claims must cite sample sizes and results"
+        required_elements:
+          - "Sample size"
+          - "Population size"
+          - "Exceptions found"
+          - "Sample selection method"
+          
+      - rule: "Exception Documentation"
+        description: "All exceptions must be documented with impact assessment"
+        required_for_exceptions:
+          - "Exception description"
+          - "Root cause"
+          - "Impact assessment"
+          - "Remediation status"
+          
+      - rule: "Trend Substantiation"
+        description: "Trend claims must cite specific data points"
+        forbidden_phrases:
+          - "generally effective"
+          - "mostly compliant"
+          - "typically operates"
+          - "usually works"
+          - "tends to"
+          
+    valid_assessment_states:
+      - PASS: "Control operated effectively throughout the period"
+      - PASS_WITH_EXCEPTIONS: "Operated effectively with documented exceptions"
+      - FAIL: "Control did not operate effectively"
+      - INSUFFICIENT_EVIDENCE: "Cannot determine operating effectiveness"
+      - EVIDENCE_GAP: "Evidence does not span full period"
+      - NEEDS_MANUAL_REVIEW: "Requires inquiry or observation method"
+
+# ============================================================================
+# REPORT STRUCTURE
+# ============================================================================
+report_structure:
+  type_1:
+    sections:
+      - section: "Management Assertion"
+        description: "Management's statement about control design"
+        automated: false
+        
+      - section: "Service Auditor's Report"
+        description: "Opinion on control design and implementation"
+        automated: false
+        
+      - section: "System Description"
+        description: "Description of service and controls"
+        agent_contribution: compliance_checker
+        
+      - section: "Control Design Assessment"
+        description: "Assessment of each control objective"
+        subsections:
+          - "Control objective"
+          - "Control activities"
+          - "Tests of design"
+          - "Test results"
+        agent_contribution: [compliance_checker, code_analyzer, vulnerability_scanner]
+
+  type_2:
+    sections:
+      - section: "Management Assertion"
+        description: "Management's statement about design and effectiveness"
+        automated: false
+        
+      - section: "Service Auditor's Report"
+        description: "Opinion on design and operating effectiveness"
+        automated: false
+        
+      - section: "System Description"
+        description: "Description of service and controls"
+        agent_contribution: compliance_checker
+        
+      - section: "Control Operating Effectiveness"
+        description: "Assessment of each control objective"
+        subsections:
+          - "Control objective"
+          - "Control activities"
+          - "Tests of design"
+          - "Tests of operating effectiveness"
+          - "Sample information"
+          - "Test results"
+          - "Exceptions noted"
+        agent_contribution: [compliance_checker, code_analyzer, vulnerability_scanner, log_analyzer]
+        
+      - section: "Other Information"
+        description: "Management-provided supplementary information"
+        automated: false
+
+# ============================================================================
+# BRIDGING TYPE 1 TO TYPE 2
+# ============================================================================
+type_1_to_type_2_transition:
+  description: |
+    Organizations typically start with Type 1 and progress to Type 2.
+    This section defines how the Security Auditor supports this transition.
+  
+  preparation_checklist:
+    - item: "Establish continuous monitoring"
+      description: "Set up log aggregation and analysis"
+      agent: log_analyzer
+      
+    - item: "Implement scheduled scans"
+      description: "Monthly vulnerability scanning"
+      agent: vulnerability_scanner
+      
+    - item: "Enable change tracking"
+      description: "Track all configuration changes"
+      agent: code_analyzer
+      
+    - item: "Document sampling methodology"
+      description: "Define sample sizes and selection criteria"
+      agent: compliance_checker
+  
+  timeline:
+    - milestone: "Type 1 Complete"
+      activities:
+        - "All controls designed and implemented"
+        - "Baseline evidence collected"
+        
+    - milestone: "Type 2 Period Starts"
+      activities:
+        - "Begin continuous evidence collection"
+        - "Initiate monthly vulnerability scans"
+        - "Start log aggregation"
+        
+    - milestone: "Mid-Period Review"
+      timing: "3 months into period"
+      activities:
+        - "Review evidence coverage"
+        - "Identify gaps"
+        - "Adjust collection procedures"
+        
+    - milestone: "Type 2 Period Ends"
+      activities:
+        - "Final evidence collection"
+        - "Sample selection"
+        - "Operating effectiveness testing"
+        
+    - milestone: "Type 2 Report Issued"
+      timing: "8-16 weeks after period end"
+      activities:
+        - "Complete testing"
+        - "Document findings"
+        - "Issue report"
+
+# ============================================================================
+# AGENT UTILIZATION MATRIX
+# ============================================================================
+agent_utilization:
+  vulnerability_scanner:
+    type_1:
+      role: "primary"
+      activities:
+        - "Single comprehensive scan"
+        - "Severity classification"
+        - "Remediation status check"
+      output: "Point-in-time vulnerability report"
+      
+    type_2:
+      role: "primary"
+      activities:
+        - "Monthly scans (minimum 6)"
+        - "Trend analysis"
+        - "Remediation tracking across period"
+        - "SLA compliance verification"
+      output: "Vulnerability trend report with remediation metrics"
+      
+  code_analyzer:
+    type_1:
+      role: "primary"
+      activities:
+        - "Configuration review"
+        - "Security pattern analysis"
+        - "Design verification"
+      output: "Code security assessment"
+      
+    type_2:
+      role: "primary"
+      activities:
+        - "All Type 1 activities"
+        - "Change analysis across period"
+        - "Regression detection"
+      output: "Code security trend and change analysis"
+      
+  log_analyzer:
+    type_1:
+      role: "limited"
+      activities:
+        - "Verify logging is configured"
+        - "Check log retention settings"
+        - "Validate log content requirements"
+      output: "Logging configuration verification"
+      
+    type_2:
+      role: "critical"  # Elevated for Type 2
+      activities:
+        - "Historical log analysis across entire period"
+        - "Security event detection and trending"
+        - "Access pattern analysis"
+        - "Anomaly detection"
+        - "Operating effectiveness evidence"
+      output: "Operating effectiveness report with trend analysis"
+      
+  compliance_checker:
+    type_1:
+      role: "primary"
+      activities:
+        - "Policy document review"
+        - "Control-to-criteria mapping"
+        - "Design assessment"
+        - "Gap identification"
+      output: "Control design assessment"
+      
+    type_2:
+      role: "primary"
+      activities:
+        - "All Type 1 activities"
+        - "Sample-based testing coordination"
+        - "Exception tracking"
+        - "Period-spanning evidence aggregation"
+      output: "Operating effectiveness assessment with samples"
+
+# ============================================================================
+# SAMPLING METHODOLOGY (TYPE 2 ONLY)
+# ============================================================================
+sampling:
+  applies_to: "type_2"
+  
+  methods:
+    - method: "random"
+      description: "Random selection from population"
+      use_case: "Large populations with homogeneous items"
+      
+    - method: "systematic"
+      description: "Every nth item"
+      use_case: "Sequential populations"
+      
+    - method: "judgmental"
+      description: "Items selected based on risk"
+      use_case: "High-risk items requiring 100% testing"
+      
+    - method: "haphazard"
+      description: "Selection without specific methodology"
+      use_case: "Not recommended for SOC 2"
+  
+  sample_sizes:
+    daily_controls:
+      population: "260+ occurrences (daily over 12 months)"
+      minimum_sample: 25
+      increased_if_exceptions: 40
+      
+    weekly_controls:
+      population: "52 occurrences (weekly over 12 months)"
+      minimum_sample: 10
+      increased_if_exceptions: 20
+      
+    monthly_controls:
+      population: "12 occurrences"
+      minimum_sample: 3
+      increased_if_exceptions: 6
+      
+    quarterly_controls:
+      population: "4 occurrences"
+      minimum_sample: 2
+      increased_if_exceptions: "all"
+      
+    annual_controls:
+      population: "1 occurrence"
+      minimum_sample: 1
+      note: "100% testing required"
+  
+  exception_handling:
+    threshold: 0
+    description: "Any deviation from expected control operation"
+    documentation_required:
+      - "Exception description"
+      - "Date of occurrence"
+      - "Root cause analysis"
+      - "Impact assessment"
+      - "Compensating controls"
+      - "Remediation actions"
+      - "Management response"

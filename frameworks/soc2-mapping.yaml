@@ -1,0 +1,286 @@
+# SOC 2 to NIST 800-53 Control Mapping
+# AI-Powered Security Auditor - Cross-Framework Reference
+# This mapping enables bidirectional compliance assessment
+
+version: "1.0.0"
+description: |
+  Maps SOC 2 Trust Service Criteria to NIST 800-53 controls.
+  Enables the Security Auditor to assess against multiple frameworks
+  using the same evidence collection and agent analysis.
+
+# SOC 2 CC6.x - Logical and Physical Access Controls
+soc2_to_nist:
+  CC6.1:
+    title: "Logical Access Security"
+    nist_controls:
+      - control_id: AC-2
+        title: "Account Management"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e, f, g, h, i, j, k, l]
+        
+      - control_id: AC-3
+        title: "Access Enforcement"
+        relationship: direct
+        assessment_objectives: [a]
+        
+      - control_id: AC-6
+        title: "Least Privilege"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e, f, g, h, i, j]
+        
+      - control_id: IA-2
+        title: "Identification and Authentication (Organizational Users)"
+        relationship: direct
+        assessment_objectives: [a, b, c]
+        
+      - control_id: IA-5
+        title: "Authenticator Management"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e, f, g, h]
+
+  CC6.2:
+    title: "User Registration and Authorization"
+    nist_controls:
+      - control_id: AC-2
+        title: "Account Management"
+        relationship: direct
+        focus: "provisioning procedures"
+        
+      - control_id: PS-4
+        title: "Personnel Termination"
+        relationship: related
+        
+      - control_id: PS-5
+        title: "Personnel Transfer"
+        relationship: related
+
+  CC6.3:
+    title: "User Access Removal"
+    nist_controls:
+      - control_id: AC-2
+        title: "Account Management"
+        relationship: direct
+        focus: "account termination"
+        
+      - control_id: PS-4
+        title: "Personnel Termination"
+        relationship: direct
+
+  CC6.6:
+    title: "External Threat Protection"
+    nist_controls:
+      - control_id: RA-5
+        title: "Vulnerability Monitoring and Scanning"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e, f]
+        agent: vulnerability_scanner
+        
+      - control_id: SI-2
+        title: "Flaw Remediation"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e]
+        
+      - control_id: SI-3
+        title: "Malicious Code Protection"
+        relationship: direct
+        
+      - control_id: SC-7
+        title: "Boundary Protection"
+        relationship: direct
+        assessment_objectives: [a, b, c, d]
+
+  CC6.7:
+    title: "Information Transmission Security"
+    nist_controls:
+      - control_id: SC-8
+        title: "Transmission Confidentiality and Integrity"
+        relationship: direct
+        assessment_objectives: [a, b]
+        
+      - control_id: SC-13
+        title: "Cryptographic Protection"
+        relationship: direct
+        
+      - control_id: SC-23
+        title: "Session Authenticity"
+        relationship: direct
+
+# SOC 2 CC7.x - System Operations
+  CC7.1:
+    title: "Security Event Detection"
+    nist_controls:
+      - control_id: AU-2
+        title: "Event Logging"
+        relationship: direct
+        assessment_objectives: [a, b, c, d]
+        agent: log_analyzer
+        
+      - control_id: AU-3
+        title: "Content of Audit Records"
+        relationship: direct
+        assessment_objectives: [a, b]
+        
+      - control_id: SI-4
+        title: "System Monitoring"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e, f, g, h, i, j, k, l]
+
+  CC7.2:
+    title: "System Monitoring"
+    nist_controls:
+      - control_id: AU-6
+        title: "Audit Record Review, Analysis, and Reporting"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e]
+        agent: log_analyzer
+        
+      - control_id: AU-12
+        title: "Audit Record Generation"
+        relationship: direct
+        assessment_objectives: [a, b, c]
+
+  CC7.3:
+    title: "Security Event Evaluation"
+    nist_controls:
+      - control_id: IR-4
+        title: "Incident Handling"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e, f, g, h, i, j]
+        
+      - control_id: IR-5
+        title: "Incident Monitoring"
+        relationship: direct
+        assessment_objectives: [a, b]
+        
+      - control_id: IR-6
+        title: "Incident Reporting"
+        relationship: direct
+
+# SOC 2 CC8.x - Change Management
+  CC8.1:
+    title: "Change Management Process"
+    nist_controls:
+      - control_id: CM-2
+        title: "Baseline Configuration"
+        relationship: direct
+        assessment_objectives: [a, b, c]
+        
+      - control_id: CM-3
+        title: "Configuration Change Control"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e, f, g, h]
+        
+      - control_id: CM-4
+        title: "Impact Analysis"
+        relationship: direct
+        assessment_objectives: [a, b]
+        
+      - control_id: CM-6
+        title: "Configuration Settings"
+        relationship: direct
+
+# SOC 2 CC9.x - Risk Mitigation
+  CC9.1:
+    title: "Risk Assessment and Identification"
+    nist_controls:
+      - control_id: RA-3
+        title: "Risk Assessment"
+        relationship: direct
+        assessment_objectives: [a, b, c, d, e, f]
+        
+      - control_id: RA-5
+        title: "Vulnerability Monitoring and Scanning"
+        relationship: direct
+        agent: vulnerability_scanner
+        
+      - control_id: RA-7
+        title: "Risk Response"
+        relationship: direct
+
+# Agent capability mapping for automated assessment
+agent_capabilities:
+  vulnerability_scanner:
+    nist_method: TEST
+    primary_controls:
+      - RA-5   # Vulnerability Scanning
+      - SI-2   # Flaw Remediation
+      - SC-7   # Boundary Protection
+    evidence_types:
+      - "vulnerability scan results"
+      - "penetration test findings"
+      - "configuration compliance"
+      
+  code_analyzer:
+    nist_method: EXAMINE
+    primary_controls:
+      - SI-10  # Information Input Validation
+      - SI-11  # Error Handling
+      - SC-13  # Cryptographic Protection
+      - AC-3   # Access Enforcement
+    evidence_types:
+      - "source code review"
+      - "static analysis findings"
+      - "CWE/OWASP mapping"
+      
+  log_analyzer:
+    nist_method: EXAMINE
+    primary_controls:
+      - AU-2   # Event Logging
+      - AU-3   # Audit Record Content
+      - AU-6   # Audit Review
+      - AU-12  # Audit Generation
+      - SI-4   # System Monitoring
+    evidence_types:
+      - "audit log samples"
+      - "event correlation analysis"
+      - "anomaly detection results"
+      
+  compliance_checker:
+    nist_method: EXAMINE
+    primary_controls:
+      - PL-1   # Policy and Procedures
+      - AT-1   # Training Policy
+      - IR-1   # Incident Response Policy
+      - CM-1   # Configuration Management Policy
+    evidence_types:
+      - "policy documents"
+      - "procedure documents"
+      - "configuration standards"
+
+# Assessment workflow integration
+assessment_workflow:
+  phases:
+    - name: "Preparation"
+      activities:
+        - "Define assessment scope and boundaries"
+        - "Identify applicable controls based on baseline"
+        - "Map SOC 2 coverage to NIST requirements"
+        
+    - name: "Evidence Collection"
+      activities:
+        - "Gather documentation (EXAMINE objects)"
+        - "Configure automated scans (TEST objects)"
+        - "Schedule interviews if required (INTERVIEW)"
+        
+    - name: "Automated Assessment"
+      agents:
+        - vulnerability_scanner
+        - code_analyzer
+        - log_analyzer
+        - compliance_checker
+      outputs:
+        - "Control findings"
+        - "Evidence artifacts with provenance"
+        - "Severity classifications"
+        
+    - name: "Gap Analysis"
+      activities:
+        - "Compare findings against assessment objectives"
+        - "Identify controls with EVIDENCE_GAP status"
+        - "Flag controls requiring INTERVIEW method"
+        
+    - name: "Reporting"
+      outputs:
+        - "Security Assessment Report (SAR)"
+        - "Plan of Action and Milestones (POA&M)"
+        - "Risk exposure summary"

@@ -1,0 +1,214 @@
+# NIST 800-53A Framework Configuration
+# AI-Powered Security Auditor - Framework Integration
+# Version: 1.0.0
+# Based on: NIST SP 800-53A Rev. 5
+
+framework:
+  id: nist800-53a
+  name: "NIST SP 800-53A"
+  version: "Rev. 5"
+  full_title: "Assessing Security and Privacy Controls in Information Systems and Organizations"
+  description: |
+    NIST Special Publication 800-53A provides a comprehensive set of assessment procedures
+    for evaluating the security and privacy controls in NIST SP 800-53.
+  publication_date: "2022-01-25"
+  authority: "National Institute of Standards and Technology (NIST)"
+  
+# Assessment methodology configuration
+assessment:
+  methods:
+    - id: EXAMINE
+      name: "Examine"
+      description: "Reviewing, inspecting, observing, studying, or analyzing assessment objects"
+      automated_support: true
+      agent_mapping:
+        - agent: code_analyzer
+          objects: ["source code", "configurations", "specifications"]
+        - agent: log_analyzer
+          objects: ["audit records", "system logs", "event logs"]
+        - agent: compliance_checker
+          objects: ["policies", "procedures", "documentation"]
+    
+    - id: INTERVIEW
+      name: "Interview"
+      description: "Conducting discussions with individuals or groups"
+      automated_support: false
+      note: "Requires human interaction - not automatable"
+    
+    - id: TEST
+      name: "Test"
+      description: "Exercising assessment objects under specified conditions"
+      automated_support: true
+      agent_mapping:
+        - agent: vulnerability_scanner
+          objects: ["mechanisms", "activities", "operational systems"]
+
+  depth_levels:
+    - id: basic
+      name: "Basic"
+      description: "Minimum assurance; broad, limited-depth examination"
+      sample_size: "small"
+      analysis_detail: "overview"
+      
+    - id: focused
+      name: "Focused"
+      description: "Moderate assurance; specific, moderate-depth examination"
+      sample_size: "representative"
+      analysis_detail: "moderate"
+      
+    - id: comprehensive
+      name: "Comprehensive"
+      description: "Maximum assurance; thorough, in-depth examination"
+      sample_size: "complete"
+      analysis_detail: "thorough"
+
+  coverage_levels:
+    - id: representative
+      name: "Representative Sample"
+      description: "Examine a subset that represents the whole"
+      
+    - id: specific
+      name: "Specific Items"
+      description: "Examine specifically identified items"
+      
+    - id: comprehensive
+      name: "Comprehensive"
+      description: "Examine all items in the assessment scope"
+
+# Control families with automation status
+control_families:
+  - id: AC
+    name: "Access Control"
+    automation_level: full
+    primary_agents: [code_analyzer, compliance_checker]
+    
+  - id: AT
+    name: "Awareness and Training"
+    automation_level: partial
+    primary_agents: [compliance_checker]
+    
+  - id: AU
+    name: "Audit and Accountability"
+    automation_level: full
+    primary_agents: [log_analyzer, compliance_checker]
+    
+  - id: CA
+    name: "Assessment, Authorization, and Monitoring"
+    automation_level: partial
+    primary_agents: [compliance_checker]
+    
+  - id: CM
+    name: "Configuration Management"
+    automation_level: partial
+    primary_agents: [code_analyzer, compliance_checker]
+    
+  - id: CP
+    name: "Contingency Planning"
+    automation_level: documentation
+    primary_agents: [compliance_checker]
+    
+  - id: IA
+    name: "Identification and Authentication"
+    automation_level: full
+    primary_agents: [code_analyzer, vulnerability_scanner]
+    
+  - id: IR
+    name: "Incident Response"
+    automation_level: partial
+    primary_agents: [log_analyzer, compliance_checker]
+    
+  - id: MA
+    name: "Maintenance"
+    automation_level: documentation
+    primary_agents: [compliance_checker]
+    
+  - id: MP
+    name: "Media Protection"
+    automation_level: documentation
+    primary_agents: [compliance_checker]
+    
+  - id: PE
+    name: "Physical and Environmental Protection"
+    automation_level: none
+    primary_agents: []
+    note: "Physical controls require on-site assessment"
+    
+  - id: PL
+    name: "Planning"
+    automation_level: documentation
+    primary_agents: [compliance_checker]
+    
+  - id: PM
+    name: "Program Management"
+    automation_level: documentation
+    primary_agents: [compliance_checker]
+    
+  - id: PS
+    name: "Personnel Security"
+    automation_level: documentation
+    primary_agents: [compliance_checker]
+    
+  - id: PT
+    name: "Personally Identifiable Information Processing and Transparency"
+    automation_level: partial
+    primary_agents: [code_analyzer, compliance_checker]
+    
+  - id: RA
+    name: "Risk Assessment"
+    automation_level: full
+    primary_agents: [vulnerability_scanner, code_analyzer, compliance_checker]
+    
+  - id: SA
+    name: "System and Services Acquisition"
+    automation_level: partial
+    primary_agents: [code_analyzer, compliance_checker]
+    
+  - id: SC
+    name: "System and Communications Protection"
+    automation_level: full
+    primary_agents: [code_analyzer, vulnerability_scanner]
+    
+  - id: SI
+    name: "System and Information Integrity"
+    automation_level: full
+    primary_agents: [vulnerability_scanner, code_analyzer, log_analyzer]
+    
+  - id: SR
+    name: "Supply Chain Risk Management"
+    automation_level: documentation
+    primary_agents: [compliance_checker]
+
+# FedRAMP baseline mappings
+fedramp_baselines:
+  low:
+    name: "FedRAMP Low"
+    control_count: 125
+    description: "Minimal impact to confidentiality, integrity, and availability"
+    
+  moderate:
+    name: "FedRAMP Moderate"
+    control_count: 325
+    description: "Serious adverse impact (most common baseline)"
+    
+  high:
+    name: "FedRAMP High"
+    control_count: 421
+    description: "Severe or catastrophic adverse impact"
+
+# Anti-hallucination alignment
+anti_hallucination:
+  determination_mapping:
+    PASS: "Satisfied"
+    FAIL: "Other Than Satisfied"
+    INSUFFICIENT_EVIDENCE: "Other Than Satisfied - Incomplete Evidence"
+    EVIDENCE_GAP: "Not Assessed - Evidence Not Collected"
+    CONFLICTING_EVIDENCE: "Other Than Satisfied - Conflicting Documentation"
+    NEEDS_MANUAL_REVIEW: "Not Assessed - Requires Interview Method"
+  
+  required_documentation:
+    - "Assessment objective ID"
+    - "Method used (EXAMINE/INTERVIEW/TEST)"
+    - "Objects assessed"
+    - "Evidence artifact references"
+    - "Determination statement"
+    - "Assessor notes"

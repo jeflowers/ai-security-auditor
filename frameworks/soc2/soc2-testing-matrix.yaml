@@ -1,0 +1,704 @@
+# SOC 2 Control Testing Matrix
+# AI-Powered Security Auditor - Type 1 vs Type 2 Testing Requirements
+# Version: 1.0.0
+
+version: "1.0.0"
+description: |
+  Control-by-control testing specifications for SOC 2 Type 1 and Type 2 reports.
+  Defines specific tests, evidence requirements, and agent responsibilities.
+
+# ============================================================================
+# CC6.x - LOGICAL AND PHYSICAL ACCESS CONTROLS
+# ============================================================================
+cc6_controls:
+  CC6.1:
+    title: "Logical Access Security"
+    description: "Implement logical access security software, infrastructure, and architectures"
+    
+    type_1_testing:
+      objective: "Verify access control mechanisms are designed and implemented"
+      tests:
+        - test_id: "CC6.1-T1-01"
+          description: "Inspect access control policy documentation"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Access control policy"
+            - "Authentication standards"
+            
+        - test_id: "CC6.1-T1-02"
+          description: "Verify MFA configuration exists"
+          method: EXAMINE
+          agent: code_analyzer
+          evidence:
+            - "MFA configuration settings"
+            - "Authentication system config"
+            
+        - test_id: "CC6.1-T1-03"
+          description: "Review current user access list"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "User access report as of assessment date"
+            
+        - test_id: "CC6.1-T1-04"
+          description: "Test authentication mechanisms"
+          method: TEST
+          agent: vulnerability_scanner
+          evidence:
+            - "Authentication vulnerability scan results"
+            
+    type_2_testing:
+      objective: "Verify access controls operated effectively throughout period"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC6.1-T2-01"
+          description: "Sample access provisioning requests"
+          method: EXAMINE
+          agent: compliance_checker
+          sample_size: 25
+          population: "All provisioning requests during period"
+          evidence:
+            - "Access request forms"
+            - "Approval documentation"
+            - "Provisioning timestamps"
+            
+        - test_id: "CC6.1-T2-02"
+          description: "Sample access reviews performed"
+          method: EXAMINE
+          agent: log_analyzer
+          sample_size: 25
+          frequency: "quarterly reviews = all"
+          evidence:
+            - "Access review reports"
+            - "Review completion evidence"
+            
+        - test_id: "CC6.1-T2-03"
+          description: "Analyze authentication logs across period"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Authentication success/failure logs"
+            - "MFA usage statistics"
+          analysis:
+            - "Failed login trends"
+            - "Account lockout events"
+            - "After-hours access patterns"
+
+  CC6.2:
+    title: "User Registration and Authorization"
+    description: "Prior to issuing credentials, register and authorize new users"
+    
+    type_1_testing:
+      objective: "Verify user registration process is designed and documented"
+      tests:
+        - test_id: "CC6.2-T1-01"
+          description: "Review user provisioning procedures"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "User provisioning policy"
+            - "Onboarding procedures"
+            
+        - test_id: "CC6.2-T1-02"
+          description: "Verify provisioning workflow configuration"
+          method: EXAMINE
+          agent: code_analyzer
+          evidence:
+            - "Workflow configuration"
+            - "Approval requirements"
+            
+    type_2_testing:
+      objective: "Verify provisioning controls operated consistently"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC6.2-T2-01"
+          description: "Sample new user provisioning"
+          method: EXAMINE
+          agent: compliance_checker
+          sample_size: 25
+          evidence:
+            - "New hire access requests"
+            - "Manager approvals"
+            - "Provisioning completion"
+            
+        - test_id: "CC6.2-T2-02"
+          description: "Verify timeliness of provisioning"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Request to completion timestamps"
+          sla_check: "Provisioning within defined SLA"
+
+  CC6.3:
+    title: "User Access Removal"
+    description: "Remove access to protected information assets when no longer required"
+    
+    type_1_testing:
+      objective: "Verify termination procedures exist"
+      tests:
+        - test_id: "CC6.3-T1-01"
+          description: "Review termination procedures"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Termination policy"
+            - "Offboarding checklist"
+            
+        - test_id: "CC6.3-T1-02"
+          description: "Verify termination workflow"
+          method: EXAMINE
+          agent: code_analyzer
+          evidence:
+            - "Deprovisioning automation"
+            - "HR system integration"
+            
+    type_2_testing:
+      objective: "Verify access removal occurred timely for all terminations"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC6.3-T2-01"
+          description: "Sample terminated user access removal"
+          method: EXAMINE
+          agent: compliance_checker
+          sample_size: 25
+          population: "All terminations during period"
+          evidence:
+            - "Termination date"
+            - "Access removal date"
+            - "System access logs post-termination"
+            
+        - test_id: "CC6.3-T2-02"
+          description: "Verify no access after termination"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Authentication logs for terminated users"
+          check: "No successful logins post-termination"
+
+  CC6.6:
+    title: "External Threat Protection"
+    description: "Implement controls against threats from outside system boundaries"
+    
+    type_1_testing:
+      objective: "Verify vulnerability management program exists"
+      tests:
+        - test_id: "CC6.6-T1-01"
+          description: "Review vulnerability management policy"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Vulnerability management policy"
+            - "Scanning procedures"
+            - "Remediation SLAs"
+            
+        - test_id: "CC6.6-T1-02"
+          description: "Perform vulnerability scan"
+          method: TEST
+          agent: vulnerability_scanner
+          scan_type: "full"
+          evidence:
+            - "Vulnerability scan report"
+            - "CVSS severity breakdown"
+            
+        - test_id: "CC6.6-T1-03"
+          description: "Review firewall/WAF configuration"
+          method: EXAMINE
+          agent: code_analyzer
+          evidence:
+            - "Firewall rules"
+            - "WAF configuration"
+            
+    type_2_testing:
+      objective: "Verify vulnerability management operated effectively"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC6.6-T2-01"
+          description: "Analyze vulnerability scan trend"
+          method: EXAMINE
+          agent: vulnerability_scanner
+          minimum_scans: 6
+          evidence:
+            - "Monthly scan reports across period"
+            - "Vulnerability count trend"
+            - "CVSS score distribution over time"
+            
+        - test_id: "CC6.6-T2-02"
+          description: "Sample vulnerability remediation"
+          method: EXAMINE
+          agent: vulnerability_scanner
+          sample_size: 25
+          evidence:
+            - "Remediation tickets"
+            - "Resolution timestamps"
+            - "SLA compliance"
+            
+        - test_id: "CC6.6-T2-03"
+          description: "Verify critical/high remediation timeliness"
+          method: EXAMINE
+          agent: vulnerability_scanner
+          population: "All critical/high vulnerabilities"
+          evidence:
+            - "Time to remediation metrics"
+          sla_requirements:
+            critical: "14 days"
+            high: "30 days"
+            medium: "90 days"
+
+  CC6.7:
+    title: "Information Transmission Security"
+    description: "Restrict transmission of information to authorized channels"
+    
+    type_1_testing:
+      objective: "Verify encryption and transmission controls exist"
+      tests:
+        - test_id: "CC6.7-T1-01"
+          description: "Review encryption policy"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Encryption policy"
+            - "Data classification"
+            
+        - test_id: "CC6.7-T1-02"
+          description: "Test TLS configuration"
+          method: TEST
+          agent: vulnerability_scanner
+          evidence:
+            - "TLS scan results"
+            - "Certificate validity"
+            - "Cipher suite analysis"
+            
+        - test_id: "CC6.7-T1-03"
+          description: "Review code for encryption implementation"
+          method: EXAMINE
+          agent: code_analyzer
+          evidence:
+            - "Encryption code patterns"
+            - "Certificate handling"
+            
+    type_2_testing:
+      objective: "Verify encryption controls remained effective"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC6.7-T2-01"
+          description: "Monthly TLS configuration checks"
+          method: EXAMINE
+          agent: vulnerability_scanner
+          evidence:
+            - "TLS scan history"
+            - "Certificate renewal tracking"
+            
+        - test_id: "CC6.7-T2-02"
+          description: "Certificate expiration monitoring"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Certificate monitoring logs"
+            - "Renewal tickets"
+
+# ============================================================================
+# CC7.x - SYSTEM OPERATIONS
+# ============================================================================
+cc7_controls:
+  CC7.1:
+    title: "Security Event Detection"
+    description: "Detect security events and anomalies"
+    
+    type_1_testing:
+      objective: "Verify monitoring and alerting is configured"
+      tests:
+        - test_id: "CC7.1-T1-01"
+          description: "Review security monitoring policy"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Security monitoring policy"
+            - "Alerting procedures"
+            
+        - test_id: "CC7.1-T1-02"
+          description: "Verify logging configuration"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Log source inventory"
+            - "Logging configuration"
+            - "Log content verification"
+            
+        - test_id: "CC7.1-T1-03"
+          description: "Inspect SIEM/alerting configuration"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Alert rules"
+            - "Detection signatures"
+            
+    type_2_testing:
+      objective: "Verify detection operated effectively"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC7.1-T2-01"
+          description: "Sample security alerts generated"
+          method: EXAMINE
+          agent: log_analyzer
+          sample_size: 25
+          evidence:
+            - "Alert samples across period"
+            - "Alert investigation records"
+            
+        - test_id: "CC7.1-T2-02"
+          description: "Analyze detection effectiveness"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Alert volume trends"
+            - "Detection accuracy metrics"
+            - "False positive rates"
+
+  CC7.2:
+    title: "System Monitoring"
+    description: "Monitor system components for anomalies and security events"
+    
+    type_1_testing:
+      objective: "Verify monitoring is implemented"
+      tests:
+        - test_id: "CC7.2-T1-01"
+          description: "Review monitoring architecture"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Monitoring architecture diagram"
+            - "Log aggregation design"
+            
+        - test_id: "CC7.2-T1-02"
+          description: "Verify log retention configuration"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Log retention settings"
+            - "Storage configuration"
+            
+    type_2_testing:
+      objective: "Verify monitoring operated consistently"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC7.2-T2-01"
+          description: "Verify logs retained for entire period"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Log availability check"
+            - "Oldest available log date"
+            
+        - test_id: "CC7.2-T2-02"
+          description: "Sample log review activities"
+          method: EXAMINE
+          agent: log_analyzer
+          sample_size: 25
+          frequency: "weekly reviews"
+          evidence:
+            - "Log review documentation"
+            - "Review completion evidence"
+
+  CC7.3:
+    title: "Security Event Evaluation"
+    description: "Evaluate detected events and determine response"
+    
+    type_1_testing:
+      objective: "Verify incident response procedures exist"
+      tests:
+        - test_id: "CC7.3-T1-01"
+          description: "Review incident response plan"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Incident response policy"
+            - "Response procedures"
+            - "Escalation matrix"
+            
+        - test_id: "CC7.3-T1-02"
+          description: "Verify incident tracking system"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Incident tracking tool"
+            - "Workflow configuration"
+            
+    type_2_testing:
+      objective: "Verify incident response operated effectively"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC7.3-T2-01"
+          description: "Sample security incidents"
+          method: EXAMINE
+          agent: compliance_checker
+          sample_size: "all security incidents"
+          evidence:
+            - "Incident tickets"
+            - "Investigation documentation"
+            - "Resolution evidence"
+            
+        - test_id: "CC7.3-T2-02"
+          description: "Verify incident response timeliness"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Response time metrics"
+            - "SLA compliance"
+          sla_requirements:
+            critical: "1 hour initial response"
+            high: "4 hours"
+            medium: "24 hours"
+
+# ============================================================================
+# CC8.x - CHANGE MANAGEMENT
+# ============================================================================
+cc8_controls:
+  CC8.1:
+    title: "Change Management Process"
+    description: "Authorize, design, develop, configure, document, test, approve, and implement changes"
+    
+    type_1_testing:
+      objective: "Verify change management process is designed"
+      tests:
+        - test_id: "CC8.1-T1-01"
+          description: "Review change management policy"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Change management policy"
+            - "Change control procedures"
+            
+        - test_id: "CC8.1-T1-02"
+          description: "Verify CI/CD pipeline configuration"
+          method: EXAMINE
+          agent: code_analyzer
+          evidence:
+            - "CI/CD configuration files"
+            - "Approval gates"
+            - "Testing requirements"
+            
+        - test_id: "CC8.1-T1-03"
+          description: "Review change tracking system"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Change tracking tool"
+            - "Workflow configuration"
+            
+    type_2_testing:
+      objective: "Verify change management operated effectively"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC8.1-T2-01"
+          description: "Sample standard changes"
+          method: EXAMINE
+          agent: compliance_checker
+          sample_size: 25
+          evidence:
+            - "Change requests"
+            - "Approval documentation"
+            - "Testing evidence"
+            - "Deployment records"
+            
+        - test_id: "CC8.1-T2-02"
+          description: "Review all emergency changes"
+          method: EXAMINE
+          agent: compliance_checker
+          sample_size: "100%"
+          population: "All emergency changes"
+          evidence:
+            - "Emergency change requests"
+            - "Post-implementation approvals"
+            - "Root cause documentation"
+            
+        - test_id: "CC8.1-T2-03"
+          description: "Verify segregation of duties"
+          method: EXAMINE
+          agent: code_analyzer
+          evidence:
+            - "Developer vs approver mapping"
+            - "No self-approved changes"
+            
+        - test_id: "CC8.1-T2-04"
+          description: "Analyze change success rate"
+          method: EXAMINE
+          agent: log_analyzer
+          evidence:
+            - "Deployment logs"
+            - "Rollback incidents"
+            - "Change failure rate"
+
+# ============================================================================
+# CC9.x - RISK MITIGATION
+# ============================================================================
+cc9_controls:
+  CC9.1:
+    title: "Risk Assessment and Identification"
+    description: "Identify and manage risks that could affect achievement of objectives"
+    
+    type_1_testing:
+      objective: "Verify risk management program exists"
+      tests:
+        - test_id: "CC9.1-T1-01"
+          description: "Review risk management policy"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Risk management policy"
+            - "Risk assessment methodology"
+            
+        - test_id: "CC9.1-T1-02"
+          description: "Review current risk register"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Risk register"
+            - "Risk ratings"
+            - "Treatment plans"
+            
+        - test_id: "CC9.1-T1-03"
+          description: "Verify vulnerability risk integration"
+          method: EXAMINE
+          agent: vulnerability_scanner
+          evidence:
+            - "Vulnerability-to-risk mapping"
+            - "Risk-based prioritization"
+            
+    type_2_testing:
+      objective: "Verify risk management operated consistently"
+      includes_type_1: true
+      additional_tests:
+        - test_id: "CC9.1-T2-01"
+          description: "Sample risk assessments"
+          method: EXAMINE
+          agent: compliance_checker
+          sample_size: "all quarterly assessments"
+          population: "Quarterly risk reviews"
+          evidence:
+            - "Risk assessment reports"
+            - "Assessment completion dates"
+            
+        - test_id: "CC9.1-T2-02"
+          description: "Verify risk treatment progress"
+          method: EXAMINE
+          agent: compliance_checker
+          evidence:
+            - "Treatment plan status"
+            - "Milestone completion"
+            
+        - test_id: "CC9.1-T2-03"
+          description: "Analyze vulnerability risk trends"
+          method: EXAMINE
+          agent: vulnerability_scanner
+          evidence:
+            - "Risk score trends"
+            - "High-risk item resolution"
+
+# ============================================================================
+# AGENT TEST RESPONSIBILITIES
+# ============================================================================
+agent_responsibilities:
+  vulnerability_scanner:
+    type_1:
+      - "Single point-in-time vulnerability scan"
+      - "TLS/encryption configuration testing"
+      - "Authentication mechanism testing"
+    type_2:
+      - "Monthly vulnerability scans (minimum 6)"
+      - "Vulnerability trend analysis"
+      - "Remediation SLA compliance verification"
+      - "Risk score trending"
+      
+  code_analyzer:
+    type_1:
+      - "Configuration review"
+      - "CI/CD pipeline analysis"
+      - "Security pattern verification"
+      - "Encryption implementation review"
+    type_2:
+      - "All Type 1 responsibilities"
+      - "Change segregation of duties verification"
+      - "Code change frequency analysis"
+      
+  log_analyzer:
+    type_1:
+      - "Logging configuration verification"
+      - "Log retention settings check"
+      - "Alert rule inspection"
+    type_2:
+      - "Historical log analysis across period"
+      - "Security event detection effectiveness"
+      - "Access pattern analysis"
+      - "Incident response timeliness verification"
+      - "Change deployment log analysis"
+      - "Log retention validation"
+      
+  compliance_checker:
+    type_1:
+      - "Policy and procedure review"
+      - "Control-to-criteria mapping"
+      - "Design adequacy assessment"
+    type_2:
+      - "All Type 1 responsibilities"
+      - "Sample selection and tracking"
+      - "Exception documentation"
+      - "Evidence aggregation across period"
+
+# ============================================================================
+# EXCEPTION HANDLING
+# ============================================================================
+exception_criteria:
+  definition: |
+    An exception is any deviation from expected control operation.
+    All exceptions must be documented regardless of materiality.
+    
+  documentation_requirements:
+    - field: "exception_id"
+      description: "Unique identifier"
+      
+    - field: "control_id"
+      description: "Associated control"
+      
+    - field: "test_id"
+      description: "Test that identified exception"
+      
+    - field: "exception_date"
+      description: "When exception occurred"
+      
+    - field: "description"
+      description: "What was the deviation"
+      
+    - field: "root_cause"
+      description: "Why did it occur"
+      
+    - field: "impact"
+      description: "What is the effect"
+      values:
+        - "None - compensating control exists"
+        - "Low - minimal impact"
+        - "Moderate - partial control failure"
+        - "High - significant control failure"
+        
+    - field: "remediation"
+      description: "What was done to address"
+      
+    - field: "management_response"
+      description: "Management's position"
+      
+  impact_assessment:
+    none:
+      description: "Compensating control fully mitigates"
+      opinion_impact: "No effect on opinion"
+      
+    isolated:
+      description: "Single occurrence, not systemic"
+      opinion_impact: "Noted in report, no opinion modification"
+      
+    pattern:
+      description: "Multiple occurrences of same issue"
+      opinion_impact: "May affect opinion on specific control"
+      
+    pervasive:
+      description: "Widespread failure"
+      opinion_impact: "Qualified or adverse opinion"
